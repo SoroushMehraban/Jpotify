@@ -7,17 +7,14 @@ import java.awt.*;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class GUIFrame {
-    private JFrame jFrame;
-
+public class GUIFrame extends JFrame {
     /**
      * Class Constructor
      */
     public GUIFrame() {
-        JFrame frame = new JFrame(); //creating JFrame
-        frame.setLayout(new BorderLayout()); //frame layout
-        frame.setSize(940,512); //frame length : 940 * 512
-        frame.setLocationRelativeTo(null); //setting frame at the center of screen
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing the program when user close the window.
+        this.setLayout(new BorderLayout()); //frame layout
+        this.setSize(940,512); //frame length : 940 * 512
+        this.setLocationRelativeTo(null); //setting frame at the center of screen
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing the program when user close the window.
     }
 }
