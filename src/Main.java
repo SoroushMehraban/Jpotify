@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args) {
-        GUIFrame frame = new GUIFrame();
+        GUIFrame frame = GUIFrame.getInstance();
         SouthPanel southPanel = null;
         try {
             southPanel = new SouthPanel();
