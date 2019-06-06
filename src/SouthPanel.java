@@ -57,6 +57,17 @@ public class SouthPanel extends JPanel {
         eastPart = new JPanel();
     }
 
+    /**
+     * this class is about bottoms above Music Player Bar.
+     * the bottoms are :
+     * -play bottom: when user clicks, it plays music.
+     * -pause bottom: when user clicks, it pauses the msuic.
+     * -forward bottom: changes music to next music.
+     * -backward bottom: changes music to previous music.
+     *
+     * @author Soroush Mehraban & Morteza Damghani
+     * @version 1.0
+     */
     private class PlayPanel extends JPanel {
         private BufferedImage playImage;
         private BufferedImage pauseImage;
@@ -67,6 +78,10 @@ public class SouthPanel extends JPanel {
         private JLabel forwardLabel;
         private JLabel backwardLabel;
 
+        /**
+         * inner class constructor.
+         * @throws IOException when failed to open icons.
+         */
         public PlayPanel() throws IOException {
             //setting background color:
             this.setBackground(Color.getHSBColor(0, 0, 0.16f));
@@ -94,6 +109,12 @@ public class SouthPanel extends JPanel {
             this.add(forwardLabel);
         }
 
+        /**
+         * This method demonstrate what happens if mouse pressed,entered or exited from play bottom.
+         * when mouse pressed: it changes the bottom to pause bottom and plays the music.
+         * when mouse entered: it made that bottom look brighter.
+         * when mouse exited: it changes to previous form.
+         */
         private void createPlayLabelListener() {
             playLabel.addMouseListener(new MouseAdapter(
             ) {
@@ -125,6 +146,10 @@ public class SouthPanel extends JPanel {
             });
         }
 
+        /**
+         * this method changes the play bottom to pause bottom or vice versa.
+         * @param inputLabel bottom label to substitute.
+         */
         private void changePlayLabel(JLabel inputLabel) {
             playPanel.removeAll();
             playPanel.add(backwardLabel);
@@ -134,7 +159,12 @@ public class SouthPanel extends JPanel {
             playPanel.add(forwardLabel);
             GUIFrame.reload();
         }
-
+        /**
+         * This method demonstrate what happens if mouse pressed,entered or exited from pause bottom.
+         * when mouse pressed: it changes the bottom to play bottom and pauses the music.
+         * when mouse entered: it made that bottom look brighter.
+         * when mouse exited: it changes to previous form.
+         */
         private void createPauseLabelListener() {
             pauseLabel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -164,6 +194,12 @@ public class SouthPanel extends JPanel {
                 }
             });
         }
+        /**
+         * This method demonstrate what happens if mouse pressed,entered or exited from forward bottom.
+         * when mouse pressed: it goes to next music.
+         * when mouse entered: it made that bottom look brighter.
+         * when mouse exited: it changes to previous form.
+         */
         private void createForwardLabelListener() {
             forwardLabel.addMouseListener(new MouseAdapter(
             ) {
@@ -194,6 +230,12 @@ public class SouthPanel extends JPanel {
                 }
             });
         }
+        /**
+         * This method demonstrate what happens if mouse pressed,entered or exited from backward bottom.
+         * when mouse pressed: it goes to previous music.
+         * when mouse entered: it made that bottom look brighter.
+         * when mouse exited: it changes to previous form.
+         */
         private void createBackwardLabelListener() {
             backwardLabel.addMouseListener(new MouseAdapter(
             ) {
@@ -225,29 +267,43 @@ public class SouthPanel extends JPanel {
             });
         }
     }
+
+    /**
+     * this class is about Music Player bar which located on south panel.
+     * it has a ProgressBar which goes forward parallel with playing music.
+     * and has a two label revealing current time and total time of music.
+     *
+     * @author Soroush Mehraban & Morteza Damghani
+     * @version 1.0
+     */
     private class ProgressPanel extends JPanel{
         private JProgressBar musicPlayerBar;
         private JLabel currentTimeLabel;
         private JLabel totalTimeLabel;
 
+        /**
+         * Class Constructor.
+         */
         public ProgressPanel() {
+            //setting layout to Box layout and Line axis:
             this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+            //setting background:
             this.setBackground(Color.getHSBColor(0, 0, 0.16f));
-
+            //creating time labels:
             currentTimeLabel = new JLabel("2:15");
             currentTimeLabel.setForeground(Color.getHSBColor(0, 0, 0.7f));
             totalTimeLabel = new JLabel("4:07");
             totalTimeLabel.setForeground(Color.getHSBColor(0, 0, 0.7f));
-
+            //customizing progress bar colors:
             UIManager.put("ProgressBar.background", Color.getHSBColor(0, 0.09f, 0.36f));
             UIManager.put("ProgressBar.foreground", Color.getHSBColor(0, 0, 0.7f));
-
+            //creating music player bar:
             musicPlayerBar = new JProgressBar();
             musicPlayerBar.setAlignmentX(Component.CENTER_ALIGNMENT);
             musicPlayerBar.setPreferredSize(new Dimension(430, 7));
             musicPlayerBar.setMaximumSize(musicPlayerBar.getPreferredSize());
             musicPlayerBar.setMinimumSize(musicPlayerBar.getPreferredSize());
-
+            //adding components to pannel:
             this.add(currentTimeLabel);
             this.add(Box.createHorizontalStrut(10));
             this.add(musicPlayerBar);
@@ -255,6 +311,12 @@ public class SouthPanel extends JPanel {
             this.add(Box.createHorizontalStrut(10));
             this.add(totalTimeLabel);
         }
+
+        /**
+         * This method demonstrate what happens if mouse pressed or dragged on music player bar.
+         * when mouse pressed: it changes music to time where user clicks.
+         * when mouse dragged: it drags progress bar with mouse and after that,plays music from that point.
+         */
         private void createMusicPlayerBarAction(){
             musicPlayerBar.addMouseListener(new MouseAdapter() {
                 @Override
