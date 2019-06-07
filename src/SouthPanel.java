@@ -19,10 +19,10 @@ import java.io.IOException;
 public class SouthPanel extends JPanel {
     private JProgressBar soundBar;
     private JPanel westPart;
-    private JPanel eastPart;
+    private EastPartPanel eastPart;
     private JPanel centerPart;
-    private JPanel progressPanel;
-    private JPanel playPanel;
+    private ProgressPanel progressPanel;
+    private PlayPanel playPanel;
 
     /**
      * Class Constructor
@@ -54,7 +54,8 @@ public class SouthPanel extends JPanel {
         westPart = new JPanel();
         //this.add(westPart,BorderLayout.WEST);
 
-        eastPart = new JPanel();
+        eastPart = new EastPartPanel();
+        this.add(eastPart,BorderLayout.EAST);
     }
 
     /**
@@ -103,9 +104,9 @@ public class SouthPanel extends JPanel {
             createBackwardLabelListener();
             //adding labels to PlayPanel:
             this.add(backwardLabel);
-            this.add(Box.createHorizontalStrut(5));
+            this.add(Box.createHorizontalStrut(10));
             this.add(playLabel);
-            this.add(Box.createHorizontalStrut(5));
+            this.add(Box.createHorizontalStrut(10));
             this.add(forwardLabel);
         }
 
@@ -153,9 +154,9 @@ public class SouthPanel extends JPanel {
         private void changePlayLabel(JLabel inputLabel) {
             playPanel.removeAll();
             playPanel.add(backwardLabel);
-            playPanel.add(Box.createHorizontalStrut(5));
+            playPanel.add(Box.createHorizontalStrut(10));
             playPanel.add(inputLabel);
-            playPanel.add(Box.createHorizontalStrut(5));
+            playPanel.add(Box.createHorizontalStrut(10));
             playPanel.add(forwardLabel);
             GUIFrame.reload();
         }
@@ -299,10 +300,11 @@ public class SouthPanel extends JPanel {
             UIManager.put("ProgressBar.foreground", Color.getHSBColor(0, 0, 0.7f));
             //creating music player bar:
             musicPlayerBar = new JProgressBar();
-            musicPlayerBar.setAlignmentX(Component.CENTER_ALIGNMENT);
+            musicPlayerBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
             musicPlayerBar.setPreferredSize(new Dimension(430, 7));
             musicPlayerBar.setMaximumSize(musicPlayerBar.getPreferredSize());
             musicPlayerBar.setMinimumSize(musicPlayerBar.getPreferredSize());
+            musicPlayerBar.setBackground(Color.getHSBColor(0, 0.09f, 0.36f));
             //adding components to pannel:
             this.add(currentTimeLabel);
             this.add(Box.createHorizontalStrut(10));
@@ -331,6 +333,39 @@ public class SouthPanel extends JPanel {
                 }
             });
 
+        }
+    }
+    private class EastPartPanel extends JPanel{
+        private JProgressBar soundBar;
+        private JProgressBar sound;
+        private BufferedImage soundImageOff;
+        private BufferedImage soundImageMed;
+        private BufferedImage soundImageHigh;
+        private JLabel soundLabel;
+
+        public EastPartPanel() throws IOException {
+            //setting layout to Box layout and Line axis:
+            this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+            //setting background:
+            this.setBackground(Color.getHSBColor(0, 0, 0.16f));
+            //loading icons:
+            soundImageOff = ImageIO.read(new File("Icons/No-Sound-no-select.png"));
+            soundImageMed = ImageIO.read(new File("Icons/Med-Sound-no-select.png"));
+            soundImageHigh = ImageIO.read(new File("Icons/High-Sound-no-select.png"));
+            //creating soundlabel:
+            soundLabel = new JLabel(new ImageIcon(soundImageMed));
+            //creating soundBar:
+            soundBar = new JProgressBar();
+            soundBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+            soundBar.setPreferredSize(new Dimension(30, 7));
+            soundBar.setMaximumSize(soundBar.getPreferredSize());
+            soundBar.setMinimumSize(soundBar.getPreferredSize());
+            soundBar.setValue(50);
+            //adding components to panel:
+            this.add(soundLabel);
+            this.add(Box.createHorizontalStrut(5));
+            this.add(soundBar);
+            this.add(Box.createHorizontalStrut(20));
         }
     }
 }
