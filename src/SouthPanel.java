@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 public class SouthPanel extends JPanel {
     private JProgressBar soundBar;
-    private JPanel westPart;
+    private WestPartPanel westPart;
     private EastPartPanel eastPart;
     private JPanel centerPart;
     private ProgressPanel progressPanel;
@@ -51,8 +51,8 @@ public class SouthPanel extends JPanel {
         centerPart.add(Box.createVerticalStrut(5));
         //----------------------------------------------------------------------------
 
-        westPart = new JPanel();
-        //this.add(westPart,BorderLayout.WEST);
+        westPart = new WestPartPanel();
+        this.add(westPart,BorderLayout.WEST);
 
         eastPart = new EastPartPanel();
         this.add(eastPart,BorderLayout.EAST);
@@ -469,6 +469,63 @@ public class SouthPanel extends JPanel {
                         e1.printStackTrace();
                     }
                     super.mouseExited(e);
+                }
+            });
+        }
+    }
+    private class WestPartPanel extends JPanel{
+        private JLabel songName;
+        private JLabel artistName;
+        private BufferedImage plusIcon;
+        private JLabel plusLabel;
+
+        public WestPartPanel() throws IOException {
+            //setting layout to Box layout and Line axis:
+            this.setLayout(new GridLayout(2,2,0,1));
+            //setting background:
+            this.setBackground(Color.getHSBColor(0, 0, 0.16f));
+
+            songName = new JLabel("Song Name");
+            songName.setForeground(Color.getHSBColor(0, 0, 0.7f));
+
+            artistName = new JLabel("Artist Name");
+            artistName.setForeground(Color.getHSBColor(0, 0.09f, 0.36f));
+
+            plusIcon = ImageIO.read(new File("Icons/Plus-no-select.png"));
+            plusLabel = new JLabel(new ImageIcon(plusIcon));
+            createplusLabelAction();
+
+            this.add(songName);
+            this.add(plusLabel);
+            this.add(artistName);
+        }
+        private void createplusLabelAction(){
+            plusLabel.addMouseListener(new MouseAdapter(
+            ) {
+                /*@Override
+                public void mousePressed(MouseEvent e) {
+                    changePlayLabel(pauseLabel);
+                }*/
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    try {
+                        plusIcon = ImageIO.read(new File("Icons/Plus.png"));
+                        plusLabel.setIcon(new ImageIcon(plusIcon));
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    try {
+                        plusIcon = ImageIO.read(new File("Icons/Plus-no-select.png"));
+                        plusLabel.setIcon(new ImageIcon(plusIcon));
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+
                 }
             });
         }
