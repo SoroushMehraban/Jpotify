@@ -391,9 +391,9 @@ public class SouthPanel extends JPanel {
             //setting background:
             this.setBackground(Color.getHSBColor(0, 0, 0.16f));
             //creating time labels:
-            currentTimeLabel = new JLabel("2:15");
+            currentTimeLabel = new JLabel("00:00");
             currentTimeLabel.setForeground(Color.getHSBColor(0, 0, 0.7f));
-            totalTimeLabel = new JLabel("4:07");
+            totalTimeLabel = new JLabel("05:37");
             totalTimeLabel.setForeground(Color.getHSBColor(0, 0, 0.7f));
             //customizing progress bar colors:
             UIManager.put("ProgressBar.background", Color.getHSBColor(0, 0.09f, 0.36f));
@@ -424,15 +424,26 @@ public class SouthPanel extends JPanel {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     musicPlayerBar.setValue((int) (e.getX() / ((double) musicPlayerBar.getWidth()) * 100));
+                    setMusicCurrentTime();
                 }
             });
             musicPlayerBar.addMouseMotionListener(new MouseAdapter() {
                 @Override
                 public void mouseDragged(MouseEvent e) {
                     musicPlayerBar.setValue((int) (e.getX() / ((double) musicPlayerBar.getWidth()) * 100));
+                    setMusicCurrentTime();
                 }
             });
 
+        }
+        private void setMusicCurrentTime(){
+            String[] totalTimeString = totalTimeLabel.getText().split(":");
+            int totalTime = (Integer.parseInt(totalTimeString[0]) * 60) + Integer.parseInt(totalTimeString[1]);
+            int currentTime = (int)(totalTime * (musicPlayerBar.getValue()/100.0));
+            int hour = currentTime / 60;
+            int min = currentTime % 60;
+            String currentTimeString = String.format("%02d:%02d",hour,min);
+            currentTimeLabel.setText(currentTimeString);
         }
     }
 
