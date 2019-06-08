@@ -481,7 +481,8 @@ public class SouthPanel extends JPanel {
 
         public WestPartPanel() throws IOException {
             //setting layout to Box layout and Line axis:
-            this.setLayout(new GridLayout(2,2,0,1));
+            this.setLayout(new GridBagLayout());
+            GridBagConstraints constraints = new GridBagConstraints();
             //setting background:
             this.setBackground(Color.getHSBColor(0, 0, 0.16f));
 
@@ -495,9 +496,18 @@ public class SouthPanel extends JPanel {
             plusLabel = new JLabel(new ImageIcon(plusIcon));
             createplusLabelAction();
 
-            this.add(songName);
-            this.add(plusLabel);
-            this.add(artistName);
+            constraints.fill = GridBagConstraints.BOTH;
+            constraints.insets = new Insets(5,5,0,0);
+            constraints.gridx = 0;
+            constraints.gridy = 0;
+            this.add(songName, constraints);
+            constraints.gridx = 1;
+            constraints.gridy = 0;
+            this.add(plusLabel,constraints);
+            constraints.insets = new Insets(0,5,0,0);
+            constraints.gridx = 0;
+            constraints.gridy = 1;
+            this.add(artistName,constraints);
         }
         private void createplusLabelAction(){
             plusLabel.addMouseListener(new MouseAdapter(
