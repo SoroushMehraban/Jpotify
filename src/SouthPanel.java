@@ -74,16 +74,24 @@ public class SouthPanel extends JPanel {
         private BufferedImage pauseImage;
         private BufferedImage forwardImage;
         private BufferedImage backwardImage;
+        private BufferedImage repeatImage;
+        private BufferedImage shuffleImage;
         private JLabel playLabel;
         private JLabel pauseLabel;
         private JLabel forwardLabel;
         private JLabel backwardLabel;
+        private JLabel repeatLabel;
+        private JLabel shuffleLabel;
+        private boolean isShuffle;
+        private boolean isRepeat;
 
         /**
          * inner class constructor.
          * @throws IOException when failed to open icons.
          */
         public PlayPanel() throws IOException {
+            isShuffle = false;
+            isRepeat = false;
             //setting background color:
             this.setBackground(Color.getHSBColor(0, 0, 0.16f));
             //setting layout:
@@ -93,6 +101,8 @@ public class SouthPanel extends JPanel {
             pauseImage = ImageIO.read(new File("Icons/Pause-no-select.png"));
             forwardImage = ImageIO.read(new File("Icons/Forward-no-select.png"));
             backwardImage = ImageIO.read(new File("Icons/Backward-no-select.png"));
+            repeatImage = ImageIO.read(new File("Icons/Repeat-no-select.png"));
+            shuffleImage = ImageIO.read(new File("Icons/Shuffle-no-select.png"));
             //creating image labels:
             playLabel = new JLabel(new ImageIcon(playImage));
             createPlayLabelListener();//add Mouse listener to playLabel
@@ -102,12 +112,20 @@ public class SouthPanel extends JPanel {
             createForwardLabelListener();
             backwardLabel = new JLabel(new ImageIcon(backwardImage));
             createBackwardLabelListener();
+            repeatLabel = new JLabel(new ImageIcon(repeatImage));
+            createRepeatLabelListener();
+            shuffleLabel = new JLabel(new ImageIcon(shuffleImage));
+            createShuffleLabelListener();
             //adding labels to PlayPanel:
+            this.add(shuffleLabel);
+            this.add(Box.createHorizontalStrut(10));
             this.add(backwardLabel);
             this.add(Box.createHorizontalStrut(10));
             this.add(playLabel);
             this.add(Box.createHorizontalStrut(10));
             this.add(forwardLabel);
+            this.add(Box.createHorizontalStrut(10));
+            this.add(repeatLabel);
         }
 
         /**
@@ -260,6 +278,88 @@ public class SouthPanel extends JPanel {
                     try {
                         backwardImage = ImageIO.read(new File("Icons/Backward-no-select.png"));
                         backwardLabel.setIcon(new ImageIcon(backwardImage));
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    super.mouseExited(e);
+                }
+            });
+        }
+        /**
+         * This method demonstrate what happens if mouse pressed,entered or exited from play bottom.
+         * when mouse pressed: it changes the bottom to pause bottom and plays the music.
+         * when mouse entered: it made that bottom look brighter.
+         * when mouse exited: it changes to previous form.
+         */
+        private void createShuffleLabelListener() {
+            shuffleLabel.addMouseListener(new MouseAdapter(
+            ) {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    isShuffle = !isShuffle;
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    try {
+                        if(!isShuffle) {
+                            shuffleImage = ImageIO.read(new File("Icons/Shuffle.png"));
+                            shuffleLabel.setIcon(new ImageIcon(shuffleImage));
+                        }
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    try {
+                        if(!isShuffle)
+                            shuffleImage = ImageIO.read(new File("Icons/Shuffle-no-select.png"));
+                        else
+                            shuffleImage = ImageIO.read(new File("Icons/Shuffle.png"));
+                        shuffleLabel.setIcon(new ImageIcon(shuffleImage));
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    super.mouseExited(e);
+                }
+            });
+        }
+        /**
+         * This method demonstrate what happens if mouse pressed,entered or exited from repeat bottom.
+         * when mouse pressed: it repeat playing music after finished.
+         * when mouse entered: it made that bottom look brighter or vice versa if pressed before.
+         * when mouse exited: it changes to previous form.
+         */
+        private void createRepeatLabelListener() {
+            repeatLabel.addMouseListener(new MouseAdapter(
+            ) {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    isRepeat = !isRepeat;
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    try {
+                        if(!isRepeat) {
+                            repeatImage = ImageIO.read(new File("Icons/Repeat.png"));
+                            repeatLabel.setIcon(new ImageIcon(repeatImage));
+                        }
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    try {
+                        if(!isRepeat)
+                            repeatImage = ImageIO.read(new File("Icons/Repeat-no-select.png"));
+                        else
+                            repeatImage = ImageIO.read(new File("Icons/Repeat.png"));
+                        repeatLabel.setIcon(new ImageIcon(repeatImage));
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
