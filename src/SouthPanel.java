@@ -172,11 +172,15 @@ public class SouthPanel extends JPanel {
          */
         private void changePlayLabel(JLabel inputLabel) {
             playPanel.removeAll();
+            playPanel.add(shuffleLabel);
+            playPanel.add(Box.createHorizontalStrut(10));
             playPanel.add(backwardLabel);
             playPanel.add(Box.createHorizontalStrut(10));
             playPanel.add(inputLabel);
             playPanel.add(Box.createHorizontalStrut(10));
             playPanel.add(forwardLabel);
+            playPanel.add(Box.createHorizontalStrut(10));
+            playPanel.add(repeatLabel);
             GUIFrame.reload();
         }
         /**
