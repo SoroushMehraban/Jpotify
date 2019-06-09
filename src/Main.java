@@ -10,16 +10,11 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args) {
-        GUIFrame frame = GUIFrame.getInstance();
-        SouthPanel southPanel = null;
         try {
-            southPanel = new SouthPanel();
+            GUIFrame frame = GUIFrame.getInstance();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //southPanel.setBounds(200,200,500,200);
-        frame.add(southPanel,BorderLayout.SOUTH);
 
-        frame.setVisible(true);
     }
 }

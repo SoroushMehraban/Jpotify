@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -436,6 +437,10 @@ public class SouthPanel extends JPanel {
             });
 
         }
+
+        /**
+         * this method set current time to time which music player bar points on it.
+         */
         private void setMusicCurrentTime(){
             String[] totalTimeString = totalTimeLabel.getText().split(":");
             int totalTime = (Integer.parseInt(totalTimeString[0]) * 60) + Integer.parseInt(totalTimeString[1]);
