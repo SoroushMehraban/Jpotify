@@ -1,3 +1,7 @@
+package com.GUIFrame;
+
+import com.Panels.GeneralPanels.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -12,6 +16,7 @@ import java.io.IOException;
 public class GUIFrame extends JFrame {
     private static GUIFrame guiFrame;
     private SouthPanel southPanel;
+    private CenterPanel centerPanel;
     /**
      * Class Constructor
      */
@@ -21,6 +26,8 @@ public class GUIFrame extends JFrame {
         this.setLocationRelativeTo(null); //setting frame at the center of screen
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing the program when user close the window.
 
+        centerPanel = new CenterPanel();
+        this.add(centerPanel,BorderLayout.CENTER);
         southPanel = new SouthPanel();
         this.add(southPanel,BorderLayout.SOUTH);
         this.setVisible(true);
@@ -28,7 +35,7 @@ public class GUIFrame extends JFrame {
 
     /**
      * getting instance of class.
-     * @return a unique GUIFrame object.
+     * @return a unique com.GUIFrame.GUIFrame object.
      */
     public static GUIFrame getInstance() throws IOException {
         if(guiFrame == null)
@@ -37,7 +44,7 @@ public class GUIFrame extends JFrame {
     }
 
     /**
-     * reloading GUIFrame when components changes.
+     * reloading com.GUIFrame.GUIFrame when components changes.
      */
     public static void reload(){
         guiFrame.repaint();
