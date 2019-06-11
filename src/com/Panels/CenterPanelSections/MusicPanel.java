@@ -38,8 +38,9 @@ class MusicPanel extends JPanel{
         this.title.setForeground(Color.getHSBColor(0,0,0.86f));//setting title color
         this.title.setText(title);//setting title text
 
-        String stringModified = description.replace("\n","<br/>");
-        description = "<html>"+stringModified+"</html>";
+        String stringModified = description.replace("\n","<br/>");//fixing all \n with <br/> as a line breaker.
+        description ="<html><p style=\"width:170px\">"+stringModified+"</p></html>";//creating a paragraph width which line breaks after that.
+
 
         this.description = new JLabel();//creating description label
         this.description.setText(description);//setting description text

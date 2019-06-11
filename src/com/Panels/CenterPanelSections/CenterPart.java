@@ -31,7 +31,7 @@ public class CenterPart extends JPanel {
         //temporary part for testing it works true:
         try {
             BufferedImage image = ImageIO.read(new File("tempImage.jpg"));
-            String description = "12345678912345678912345678912" + '\n' + "lkfmasdlfj";
+            String description = "a first line for description which is long and should go to next line" + '\n' + "line after \\n";
             MusicPanel musicPanel = new MusicPanel(image,"Title",description);
             MusicPanel musicPanel2 = new MusicPanel(image,"Title2","description2");
             MusicPanel musicPanel3 = new MusicPanel(image,"Title3","description3");
