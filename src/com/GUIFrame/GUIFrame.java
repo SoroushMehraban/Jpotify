@@ -2,8 +2,13 @@ package com.GUIFrame;
 
 import com.Panels.GeneralPanels.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -25,7 +30,7 @@ public class GUIFrame extends JFrame {
         this.setSize(940,512); //frame length : 940 * 512
         this.setLocationRelativeTo(null); //setting frame at the center of screen
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing the program when user close the window.
-
+        this.setMinimumSize(new Dimension(940,512));
         centerPanel = new CenterPanel();
         this.add(centerPanel,BorderLayout.CENTER);
         southPanel = new SouthPanel();
