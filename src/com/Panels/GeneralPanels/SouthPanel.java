@@ -32,13 +32,13 @@ public class SouthPanel extends JPanel {
         this.setLayout(new BorderLayout());
 
         //setting background color of com.Panels.GeneralPanels.SouthPanel:
-        this.setBackground(Color.getHSBColor(0, 0, 0.16f));
+        this.setBackground(new Color(41,41,41));
 
         //-----------------------------------------------------------------------------
         //center part where PlayPanel and MusicPlayBar located on:
         centerPart = new JPanel();
         centerPart.setLayout(new BoxLayout(centerPart, BoxLayout.PAGE_AXIS));
-        centerPart.setBackground(Color.getHSBColor(0, 0, 0.16f));
+        centerPart.setBackground(new Color(41,41,41));
         this.add(centerPart, BorderLayout.CENTER);
 
         centerPart.add(Box.createVerticalStrut(5));

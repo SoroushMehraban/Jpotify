@@ -21,10 +21,10 @@ public class NorthPart extends JPanel {
      */
     public NorthPart() throws IOException {
         this.setLayout(new BorderLayout());
-        this.setBackground(Color.getHSBColor(0, 0, 0.09f));
+        this.setBackground(new Color(23,23,23));
 
         searchBox = new SearchBox(10);
-        searchBox.setForeground(Color.getHSBColor(0,0,0.66f));
+        searchBox.setForeground(new Color(168,168,168));
         this.add(searchBox,BorderLayout.WEST);
     }
 }

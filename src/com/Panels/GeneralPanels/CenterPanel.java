@@ -26,7 +26,7 @@ public class CenterPanel extends JPanel {
      */
     public CenterPanel() throws IOException {
         this.setLayout(new BorderLayout());//creating panel layout
-        this.setBackground(Color.getHSBColor(0, 0, 0.09f));//creating panel background
+        this.setBackground(new Color(23,23,23));//creating panel background
 
         northPart = new NorthPart();//creating north part of panel
         this.add(northPart,BorderLayout.NORTH);//adding north part of panel to center panel
@@ -41,29 +41,29 @@ public class CenterPanel extends JPanel {
      * this method customize JScrollPane's color to fit in center part theme.
      * @param jScrollPane our jScrollPane to to be customized.
      */
-    public static void customizeJScrollPane(JScrollPane jScrollPane){
+    private static void customizeJScrollPane(JScrollPane jScrollPane){
         jScrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
             @Override
             protected void configureScrollBarColors(){
-                this.thumbColor = Color.getHSBColor(0,0,0.33f);
-                this.trackColor = Color.getHSBColor(0,0,0.09f);
+                this.thumbColor = new Color(84,84,84);
+                this.trackColor = new Color(23,23,23);
             }
 
             @Override
             protected JButton createIncreaseButton(int orientation) {
                 return new BasicArrowButton(orientation,
-                        Color.getHSBColor(0,0,0.09f),
-                        Color.getHSBColor(0,0,0.09f),
-                        Color.getHSBColor(0,0,0.33f),
-                        Color.getHSBColor(0,0,0.09f));
+                        new Color(23,23,23),
+                        new Color(23,23,23),
+                        new Color(84,84,84),
+                        new Color(23,23,23));
             }
 
             protected JButton createDecreaseButton(int orientation)  {
                 return new BasicArrowButton(orientation,
-                        Color.getHSBColor(0,0,0.09f),
-                        Color.getHSBColor(0,0,0.09f),
-                        Color.getHSBColor(0,0,0.33f),
-                        Color.getHSBColor(0,0,0.09f));
+                        new Color(23,23,23),
+                        new Color(23,23,23),
+                        new Color(84,84,84),
+                        new Color(23,23,23));
             }
         });
     }

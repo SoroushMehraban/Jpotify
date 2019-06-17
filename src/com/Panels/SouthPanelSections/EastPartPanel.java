@@ -36,7 +36,7 @@ public class EastPartPanel extends JPanel {
         //setting layout to Box layout and Line axis:
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         //setting background:
-        this.setBackground(Color.getHSBColor(0, 0, 0.16f));
+        this.setBackground(new Color(41,41,41));
         //loading icons:
         soundImageOff = ImageIO.read(new File("Icons/No-Sound-no-select.png"));
         soundImageLow = ImageIO.read(new File("Icons/Low-Sound-no-select.png"));

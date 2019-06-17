@@ -25,22 +25,22 @@ public class ProgressPanel extends JPanel {
         //setting layout to Box layout and Line axis:
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         //setting background:
-        this.setBackground(Color.getHSBColor(0, 0, 0.16f));
+        this.setBackground(new Color(41,41,41));
         //creating time labels:
         currentTimeLabel = new JLabel("00:00");
-        currentTimeLabel.setForeground(Color.getHSBColor(0, 0, 0.7f));
+        currentTimeLabel.setForeground(new Color(179,179,179));
         totalTimeLabel = new JLabel("05:37");
-        totalTimeLabel.setForeground(Color.getHSBColor(0, 0, 0.7f));
+        totalTimeLabel.setForeground(new Color(179,179,179));
         //customizing progress bar colors:
-        UIManager.put("ProgressBar.background", Color.getHSBColor(0, 0.09f, 0.36f));
-        UIManager.put("ProgressBar.foreground", Color.getHSBColor(0, 0, 0.7f));
+        UIManager.put("ProgressBar.background", new Color(92,84,84));
+        UIManager.put("ProgressBar.foreground", new Color(179,179,179));
         //creating music player bar:
         musicPlayerBar = new JProgressBar();
         musicPlayerBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         musicPlayerBar.setPreferredSize(new Dimension(430, 7));
         musicPlayerBar.setMaximumSize(musicPlayerBar.getPreferredSize());
         musicPlayerBar.setMinimumSize(musicPlayerBar.getPreferredSize());
-        musicPlayerBar.setBackground(Color.getHSBColor(0, 0.09f, 0.36f));
+        musicPlayerBar.setBackground(new Color(92,84,84));
         //adding components to pannel:
         this.add(currentTimeLabel);
         this.add(Box.createHorizontalStrut(10));

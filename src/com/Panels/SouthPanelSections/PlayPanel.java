@@ -45,7 +45,7 @@ public class PlayPanel extends JPanel {
         isShuffle = false;
         isRepeat = false;
         //setting background color:
-        this.setBackground(Color.getHSBColor(0, 0, 0.16f));
+        this.setBackground(new Color(41,41,41));
         //setting layout:
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         //loading images:

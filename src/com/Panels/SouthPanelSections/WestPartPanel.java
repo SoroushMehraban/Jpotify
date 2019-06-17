@@ -31,13 +31,13 @@ public class WestPartPanel extends JPanel {
         this.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         //setting background:
-        this.setBackground(Color.getHSBColor(0, 0, 0.16f));
+        this.setBackground(new Color(41,41,41));
         //creating song name label:
         songName = new JLabel("Song Name");
-        songName.setForeground(Color.getHSBColor(0, 0, 0.7f));
+        songName.setForeground(new Color(179,179,179));
         //creating artist name label:
         artistName = new JLabel("Artist Name");
-        artistName.setForeground(Color.getHSBColor(0, 0.09f, 0.36f));
+        artistName.setForeground(new Color(92,84,84));
         //creating plus label with icon:
         plusIcon = ImageIO.read(new File("Icons/Plus-no-select.png"));
         plusLabel = new JLabel(new ImageIcon(plusIcon));

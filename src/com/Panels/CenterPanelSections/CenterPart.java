@@ -26,8 +26,8 @@ public class CenterPart extends JPanel {
         this.setLayout(new GridBagLayout());//setting panel layout
         constraints = new GridBagConstraints();//creating panel constraints to denote where components should located on.
         constraints.insets = new Insets(0,0,15,15);//denoting spaces between components.
-        this.setBackground(Color.getHSBColor(0, 0, 0.09f));//setting panel background
-        musicPanels = new ArrayList<MusicPanel>();//list of music panel which every one of them has a picture,title and description
+        this.setBackground(new Color(23,23,23));//setting panel background
+        musicPanels = new ArrayList<>();//list of music panel which every one of them has a picture,title and description
         //temporary part for testing it works true:
         try {
             BufferedImage image = ImageIO.read(new File("tempImage.jpg"));
@@ -51,7 +51,7 @@ public class CenterPart extends JPanel {
     /**
      * this method adds music panels to our center part.
      */
-    public void showList(){
+    private void showList(){
         this.removeAll();
         int gridx = 0;
         int gridy = 0;

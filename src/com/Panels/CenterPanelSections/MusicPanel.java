@@ -25,9 +25,9 @@ class MusicPanel extends JPanel{
      * @param title title of music,album or playlist
      * @param description description for music,album or playlist
      */
-    public MusicPanel(BufferedImage musicImage, String title, String description) {
+    MusicPanel(BufferedImage musicImage, String title, String description) {
         this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));//setting panel layout
-        this.setBackground(Color.getHSBColor(0, 0, 0.09f));//setting panel default background
+        this.setBackground(new Color(23,23,23));//setting panel default background
         this.setPreferredSize(new Dimension(200,270));//setting panel's preferred size
         createMusicPanelListener();//creating panel listener
 
@@ -35,7 +35,7 @@ class MusicPanel extends JPanel{
         this.musicLabel = new JLabel(new ImageIcon(showingImage));//creating a label to show image
 
         this.title = new JLabel();//creating title label
-        this.title.setForeground(Color.getHSBColor(0,0,0.86f));//setting title color
+        this.title.setForeground(new Color(219,219,219));//setting title color
         this.title.setText(title);//setting title text
 
         String stringModified = description.replace("\n","<br/>");//fixing all \n with <br/> as a line breaker.
@@ -44,7 +44,7 @@ class MusicPanel extends JPanel{
 
         this.description = new JLabel();//creating description label
         this.description.setText(description);//setting description text
-        this.description.setForeground(Color.getHSBColor(0,0,0.47f));//setting description color
+        this.description.setForeground(new Color(120,120,120));//setting description color
         //adding components to panel:
         this.add(this.musicLabel);
         this.add(this.title);
@@ -62,13 +62,13 @@ class MusicPanel extends JPanel{
             @Override
             public void mouseExited(MouseEvent e) {
                 MusicPanel source = (MusicPanel)e.getSource();
-                source.setBackground(Color.getHSBColor(0, 0, 0.09f));
+                source.setBackground(new Color(23,23,23));
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 MusicPanel source = (MusicPanel)e.getSource();
-                source.setBackground(Color.getHSBColor(0, 0, 0.16f));
+                source.setBackground(new Color(41,41,41));
             }
         });
     }
