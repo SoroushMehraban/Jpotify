@@ -1,5 +1,13 @@
 package com.MP3;
 
+import com.mpatric.mp3agic.ID3v2;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.UnsupportedTagException;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,7 +23,7 @@ public class MP3Info {
     private String title;
     private String artist;
     private String album;
-
+    private String inputFileDirectory;
     /**
      * class constructor.
      * at first if file exists, it throws additional bytes away and then extract data at last 125 bytes of mp3 file.
@@ -25,6 +33,7 @@ public class MP3Info {
      * @throws NoSuchFieldException if there isn't any mp3 file in directory.
      */
     public MP3Info(String inputFileDirectory) throws IOException, NoSuchFieldException {
+        this.inputFileDirectory = inputFileDirectory;
         File file = new File(inputFileDirectory);
         if(file.exists() && file.isFile()){
             FileInputStream in = new FileInputStream(inputFileDirectory);
@@ -45,7 +54,7 @@ public class MP3Info {
      * @throws IOException if can not read from file
      */
     private String findInfo(FileInputStream in) throws IOException {
-        ArrayList<Byte> infoBytes = new ArrayList<Byte>();
+        ArrayList<Byte> infoBytes = new ArrayList<>();
         int input;
         boolean firstInput = true;
         while((input = in.read()) != 0 || firstInput)
@@ -79,5 +88,13 @@ public class MP3Info {
      */
     public String getAlbum() {
         return album;
+    }
+
+    public BufferedImage getImage() throws InvalidDataException, IOException, UnsupportedTagException {
+        Mp3File mp3File = new Mp3File(inputFileDirectory);
+        ID3v2 id3v2Tag = mp3File.getId3v2Tag();
+        byte[] imageData = id3v2Tag.getAlbumImage();
+        ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
+        return ImageIO.read(bis);
     }
 }
