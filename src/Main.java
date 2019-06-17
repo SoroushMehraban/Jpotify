@@ -10,12 +10,11 @@ import java.io.IOException;
  * @version 1.0
  */
 public class Main {
-    public static void main(String[] args) throws IOException {
-        /*try {
+    public static void main(String[] args){
+        try {
             GUIFrame frame = GUIFrame.getInstance();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
-        MP3Info mp3Info = new MP3Info("Soroush Tabarsi - Grey (Ft Seventh Soul) [128].mp3");
+        }
     }
 }

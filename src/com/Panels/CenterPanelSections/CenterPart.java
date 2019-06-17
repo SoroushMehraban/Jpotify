@@ -43,13 +43,7 @@ public class CenterPart extends JPanel {
             addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
             addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
             addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (InvalidDataException e) {
-            e.printStackTrace();
-        } catch (UnsupportedTagException e) {
+        } catch (IOException | UnsupportedTagException | InvalidDataException | NoSuchFieldException e) {
             e.printStackTrace();
         }
     }
@@ -74,9 +68,17 @@ public class CenterPart extends JPanel {
         }
 //        GUIFrame.reload();
     }
+
+    /**
+     * add a given music panel to centerPanel(more details implements later)
+     *
+     * @param image image of music
+     * @param title title of music
+     * @param description description to be shown in panel
+     */
     public void addPanel(BufferedImage image,String title, String description){
-        MusicPanel musicPanel = new MusicPanel(image, title, description);
-        musicPanels.add(musicPanel);
-        showList();
+        MusicPanel musicPanel = new MusicPanel(image, title, description);//creating a desired music panel
+        musicPanels.add(musicPanel);//adding given musicPanel to music panels.
+        showList();//update our list to show given musicPanel.
     }
 }

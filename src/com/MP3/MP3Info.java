@@ -90,11 +90,16 @@ public class MP3Info {
         return album;
     }
 
+    /**
+     * @return image of music.
+     * @see Mp3File
+     * @see ID3v2
+     */
     public BufferedImage getImage() throws InvalidDataException, IOException, UnsupportedTagException {
-        Mp3File mp3File = new Mp3File(inputFileDirectory);
+        Mp3File mp3File = new Mp3File(inputFileDirectory);//creating a MP3file of object to give us desired image
         ID3v2 id3v2Tag = mp3File.getId3v2Tag();
-        byte[] imageData = id3v2Tag.getAlbumImage();
-        ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
-        return ImageIO.read(bis);
+        byte[] imageData = id3v2Tag.getAlbumImage();//getting bytes of our image.
+        ByteArrayInputStream bis = new ByteArrayInputStream(imageData);//converting bytes to ByteArrayInputStream so it can be read by ImageIO
+        return ImageIO.read(bis);//desired image
     }
 }
