@@ -1,5 +1,9 @@
 package com.Panels.CenterPanelSections;
 
+import com.MP3.MP3Info;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -30,20 +34,22 @@ public class CenterPart extends JPanel {
         musicPanels = new ArrayList<>();//list of music panel which every one of them has a picture,title and description
         //temporary part for testing it works true:
         try {
-            BufferedImage image = ImageIO.read(new File("tempImage.jpg"));
+            MP3Info mp3Info = new MP3Info("Soroush Tabarsi - Grey (Ft Seventh Soul) [128].mp3");
             String description = "a first line for description which is long and should go to next line" + '\n' + "line after \\n";
-            MusicPanel musicPanel = new MusicPanel(image,"Title",description);
-            MusicPanel musicPanel2 = new MusicPanel(image,"Title2","description2");
-            MusicPanel musicPanel3 = new MusicPanel(image,"Title3","description3");
-            MusicPanel musicPanel4 = new MusicPanel(image,"Title4","description4");
-            MusicPanel musicPanel5 = new MusicPanel(image,"Title5","description5");
-            musicPanels.add(musicPanel);
-            musicPanels.add(musicPanel2);
-            musicPanels.add(musicPanel3);
-            musicPanels.add(musicPanel4);
-            musicPanels.add(musicPanel5);
-            showList();
+            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
+            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
+            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
+            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
+            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
+            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
+            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (InvalidDataException e) {
+            e.printStackTrace();
+        } catch (UnsupportedTagException e) {
             e.printStackTrace();
         }
     }
@@ -68,5 +74,9 @@ public class CenterPart extends JPanel {
         }
 //        GUIFrame.reload();
     }
-
+    public void addPanel(BufferedImage image,String title, String description){
+        MusicPanel musicPanel = new MusicPanel(image, title, description);
+        musicPanels.add(musicPanel);
+        showList();
+    }
 }
