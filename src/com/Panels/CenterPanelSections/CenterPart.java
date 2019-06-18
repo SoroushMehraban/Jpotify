@@ -36,13 +36,19 @@ public class CenterPart extends JPanel {
         try {
             MP3Info mp3Info = new MP3Info("Soroush Tabarsi - Grey (Ft Seventh Soul) [128].mp3");
             String description = "a first line for description which is long and should go to next line" + '\n' + "line after \\n";
-            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
-            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
-            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
-            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
-            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
-            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
-            addPanel(mp3Info.getImage(),mp3Info.getTitle(),description);
+            addPanel(mp3Info,description);
+            addPanel(mp3Info,description);
+            addPanel(mp3Info,description);
+            addPanel(mp3Info,description);
+            addPanel(mp3Info,description);
+            addPanel(mp3Info,description);
+            addPanel(mp3Info,description);
+            addPanel(mp3Info,description);
+            addPanel(mp3Info,description);
+            addPanel(mp3Info,description);
+            addPanel(mp3Info,description);
+            addPanel(mp3Info,description);
+            addPanel(mp3Info,description);
         } catch (IOException | UnsupportedTagException | InvalidDataException | NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -72,12 +78,14 @@ public class CenterPart extends JPanel {
     /**
      * add a given music panel to centerPanel(more details implements later)
      *
-     * @param image image of music
-     * @param title title of music
-     * @param description description to be shown in panel
+     * @param mp3Info the music we want to add
+     * @param description description which shows under of title.
+     * @throws InvalidDataException
+     * @throws IOException
+     * @throws UnsupportedTagException
      */
-    public void addPanel(BufferedImage image,String title, String description){
-        MusicPanel musicPanel = new MusicPanel(image, title, description);//creating a desired music panel
+    public void addPanel(MP3Info mp3Info,String description) throws InvalidDataException, IOException, UnsupportedTagException {
+        MusicPanel musicPanel = new MusicPanel(mp3Info, description);//creating a desired music panel
         musicPanels.add(musicPanel);//adding given musicPanel to music panels.
         showList();//update our list to show given musicPanel.
     }

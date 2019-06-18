@@ -91,6 +91,14 @@ public class MP3Info {
     }
 
     /**
+     *
+     * @return directory of mp3 file.
+     */
+    public String getInputFileDirectory() {
+        return inputFileDirectory;
+    }
+
+    /**
      * @return image of music.
      * @see Mp3File
      * @see ID3v2

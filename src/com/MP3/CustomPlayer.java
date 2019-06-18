@@ -122,6 +122,10 @@ public class CustomPlayer {
         return (int) ((passedBytes / (double) total) * getTotalSeconds()) - 3;
     }
 
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
     /**
      * closing player(helps us when another music is going to start in our program)
      */

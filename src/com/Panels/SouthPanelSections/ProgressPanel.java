@@ -1,9 +1,12 @@
 package com.Panels.SouthPanelSections;
 
+import com.MP3.CustomPlayer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 /**
  * this class is about Music Player bar which located on south panel.
@@ -17,6 +20,7 @@ public class ProgressPanel extends JPanel {
     private JProgressBar musicPlayerBar;
     private JLabel currentTimeLabel;
     private JLabel totalTimeLabel;
+    private CustomPlayer player;
 
     /**
      * Class Constructor.
@@ -29,7 +33,7 @@ public class ProgressPanel extends JPanel {
         //creating time labels:
         currentTimeLabel = new JLabel("00:00");
         currentTimeLabel.setForeground(new Color(179,179,179));
-        totalTimeLabel = new JLabel("05:37");
+        totalTimeLabel = new JLabel("00:00");
         totalTimeLabel.setForeground(new Color(179,179,179));
         //customizing progress bar colors:
         UIManager.put("ProgressBar.background", new Color(92,84,84));
@@ -59,15 +63,21 @@ public class ProgressPanel extends JPanel {
         musicPlayerBar.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                musicPlayerBar.setValue((int) (e.getX() / ((double) musicPlayerBar.getWidth()) * 100));
-                setMusicCurrentTime();
+                if(player != null && player.isPlaying()) {
+                    musicPlayerBar.setValue((int) (e.getX() / ((double) musicPlayerBar.getWidth()) * 100));
+                    player.resume(e.getX() / ((double) musicPlayerBar.getWidth()));
+                    setMusicCurrentTime();
+                }
             }
         });
         musicPlayerBar.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                musicPlayerBar.setValue((int) (e.getX() / ((double) musicPlayerBar.getWidth()) * 100));
-                setMusicCurrentTime();
+                if(player != null && player.isPlaying()){
+                    player.resume(e.getX() / ((double) musicPlayerBar.getWidth()));
+                    musicPlayerBar.setValue((int) (e.getX() / ((double) musicPlayerBar.getWidth()) * 100));
+                    setMusicCurrentTime();
+                }
             }
         });
 
@@ -77,12 +87,49 @@ public class ProgressPanel extends JPanel {
      * this method set current time to time which music player bar points on it.
      */
     private void setMusicCurrentTime(){
-        String[] totalTimeString = totalTimeLabel.getText().split(":");
-        int totalTime = (Integer.parseInt(totalTimeString[0]) * 60) + Integer.parseInt(totalTimeString[1]);
-        int currentTime = (int)(totalTime * (musicPlayerBar.getValue()/100.0));
-        int hour = currentTime / 60;
-        int min = currentTime % 60;
-        String currentTimeString = String.format("%02d:%02d",hour,min);
+        int currentTime;
+        try {
+            currentTime = player.getCurrentSeconds();
+        } catch (IOException e) {//if stream is closed, our method then do nothing
+            return;
+        }
+        int min = currentTime / 60;
+        int sec = currentTime % 60;
+        String currentTimeString = String.format("%02d:%02d",min, sec);
         currentTimeLabel.setText(currentTimeString);
+    }
+
+    /**
+     * this method called when a musicPanel clicked. it control the playing music by changing MusicPlayerBar.
+     *
+     * @param player player we want to control.
+     */
+    public void controlMusic(CustomPlayer player){
+        this.player = player;//setting player to control it in listeners
+        int totalmin = player.getTotalSeconds() / 60;//getting music's  total minutes.
+        int totalSec = player.getTotalSeconds() % 60;//getting music's total  seconds.
+        String totalTimeString = String.format("%02d:%02d",totalmin, totalSec);//creating a formatted String to show in jlabel
+        totalTimeLabel.setText(totalTimeString);//setting jlabel's text
+        Thread t = new Thread(new Runnable() {//creating thread
+            @Override
+            public void run() {//creating thread to control player parralell with our program.
+                while (true){//this loop runs until music's fileInputStream closed (music finished).
+                    if(player.isPlaying()) {//changing progressbar if music is playing
+                        try {
+                            musicPlayerBar.setValue((int) ((player.getCurrentSeconds() / (double) player.getTotalSeconds()) * 100));
+                        } catch (IOException e) {//if music finished. our job is done and thread is going to be terminated.
+                            break;
+                        }
+                    }
+                    setMusicCurrentTime();
+                    try {
+                        Thread.sleep(500);//sleep like 0.5 sec to perform better
+                    } catch (InterruptedException e) {
+                        JOptionPane.showMessageDialog(null, "Error controlling mp3 file");
+                    }
+                }
+            }
+        });
+        t.start();
     }
 }

@@ -1,6 +1,8 @@
 package com.Panels.SouthPanelSections;
 
 import com.GUIFrame.GUIFrame;
+import com.MP3.CustomPlayer;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -36,6 +38,10 @@ public class PlayPanel extends JPanel {
     private JLabel shuffleLabel;
     private boolean isShuffle;
     private boolean isRepeat;
+    private boolean isPlaying;
+    private boolean firstPlaying;
+    private CustomPlayer player;
+    private Thread playerThread;
 
     /**
      * inner class constructor.
@@ -44,6 +50,7 @@ public class PlayPanel extends JPanel {
     public PlayPanel() throws IOException {
         isShuffle = false;
         isRepeat = false;
+        isPlaying = false;
         //setting background color:
         this.setBackground(new Color(41,41,41));
         //setting layout:
@@ -91,7 +98,10 @@ public class PlayPanel extends JPanel {
         ) {
             @Override
             public void mousePressed(MouseEvent e) {
-                changePlayLabel(pauseLabel);
+                if(player != null) {
+                    player.resume();
+                    changePlayLabel(pauseLabel);
+                }
             }
 
             @Override
@@ -116,24 +126,6 @@ public class PlayPanel extends JPanel {
             }
         });
     }
-
-    /**
-     * this method changes the play bottom to pause bottom or vice versa.
-     * @param inputLabel bottom label to substitute.
-     */
-    private void changePlayLabel(JLabel inputLabel) {
-        this.removeAll();
-        this.add(shuffleLabel);
-        this.add(Box.createHorizontalStrut(10));
-        this.add(backwardLabel);
-        this.add(Box.createHorizontalStrut(10));
-        this.add(inputLabel);
-        this.add(Box.createHorizontalStrut(10));
-        this.add(forwardLabel);
-        this.add(Box.createHorizontalStrut(10));
-        this.add(repeatLabel);
-        GUIFrame.reload();
-    }
     /**
      * This method demonstrate what happens if mouse pressed,entered or exited from pause bottom.
      * when mouse pressed: it changes the bottom to play bottom and pauses the music.
@@ -144,7 +136,10 @@ public class PlayPanel extends JPanel {
         pauseLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                changePlayLabel(playLabel);
+                if(player != null) {
+                    player.pause();
+                    changePlayLabel(playLabel);
+                }
             }
 
             @Override
@@ -168,6 +163,23 @@ public class PlayPanel extends JPanel {
                 super.mouseExited(e);
             }
         });
+    }
+    /**
+     * this method changes the play bottom to pause bottom or vice versa.
+     * @param inputLabel bottom label to substitute.
+     */
+    private void changePlayLabel(JLabel inputLabel) {
+        this.removeAll();
+        this.add(shuffleLabel);
+        this.add(Box.createHorizontalStrut(10));
+        this.add(backwardLabel);
+        this.add(Box.createHorizontalStrut(10));
+        this.add(inputLabel);
+        this.add(Box.createHorizontalStrut(10));
+        this.add(forwardLabel);
+        this.add(Box.createHorizontalStrut(10));
+        this.add(repeatLabel);
+        GUIFrame.reload();
     }
     /**
      * This method demonstrate what happens if mouse pressed,entered or exited from forward bottom.
@@ -322,5 +334,15 @@ public class PlayPanel extends JPanel {
                 super.mouseExited(e);
             }
         });
+    }
+
+    /**
+     * this method runs music from beginning after a MusicPanel clicked.
+     * @param player player we want to play
+     */
+    public void playMusic(CustomPlayer player){
+        this.player = player;
+        changePlayLabel(pauseLabel);
+        this.player.play(CustomPlayer.START_TIME);
     }
 }

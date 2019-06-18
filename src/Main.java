@@ -1,6 +1,4 @@
 import com.GUIFrame.GUIFrame;
-import com.MP3.MP3Info;
-
 import java.io.IOException;
 
 /**

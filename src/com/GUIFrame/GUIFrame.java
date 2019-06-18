@@ -2,13 +2,8 @@ package com.GUIFrame;
 
 import com.Panels.GeneralPanels.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicArrowButton;
-import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -20,7 +15,7 @@ import java.io.IOException;
  */
 public class GUIFrame extends JFrame {
     private static GUIFrame guiFrame;
-    private SouthPanel southPanel;
+    private static SouthPanel southPanel;
     private CenterPanel centerPanel;
     /**
      * Class Constructor
@@ -54,5 +49,8 @@ public class GUIFrame extends JFrame {
     public static void reload(){
         guiFrame.repaint();
         guiFrame.revalidate();
+    }
+    public static void playSelectedMusic(String directory){
+        southPanel.play(directory);
     }
 }

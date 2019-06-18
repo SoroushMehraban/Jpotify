@@ -1,7 +1,7 @@
 package com.Panels.GeneralPanels;
 
+import com.MP3.CustomPlayer;
 import com.Panels.SouthPanelSections.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -15,13 +15,14 @@ import java.io.IOException;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class SouthPanel extends JPanel {
+public class SouthPanel extends JPanel{
     private JProgressBar soundBar;
     private WestPartPanel westPart;
     private EastPartPanel eastPart;
     private JPanel centerPart;
     private ProgressPanel progressPanel;
     private PlayPanel playPanel;
+    private CustomPlayer customPlayer;
 
     /**
      * Class Constructor
@@ -55,5 +56,18 @@ public class SouthPanel extends JPanel {
 
         eastPart = new EastPartPanel();
         this.add(eastPart,BorderLayout.EAST);
+    }
+
+    /**
+     * this method runs when a musicPanel clicked.
+     * it handle player by giving it to it's components.
+     * @param directory directory of music
+     */
+    public void play(String directory) {
+        if(customPlayer != null)//if previous music is playing
+            customPlayer.close();
+        customPlayer = new CustomPlayer(directory);
+        playPanel.playMusic(customPlayer);
+        progressPanel.controlMusic(customPlayer);
     }
 }
