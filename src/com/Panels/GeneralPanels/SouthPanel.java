@@ -69,5 +69,6 @@ public class SouthPanel extends JPanel{
         customPlayer = new CustomPlayer(directory);
         playPanel.playMusic(customPlayer);
         progressPanel.controlMusic(customPlayer);
+        westPart.updateNames(directory);
     }
 }

@@ -1,5 +1,7 @@
 package com.Panels.SouthPanelSections;
 
+import com.MP3.MP3Info;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +31,7 @@ public class WestPartPanel extends JPanel {
     public WestPartPanel() throws IOException {
         //setting layout to Box layout and Line axis:
         this.setLayout(new GridBagLayout());
+        this.setPreferredSize(new Dimension(100,50));
         GridBagConstraints constraints = new GridBagConstraints();
         //setting background:
         this.setBackground(new Color(41,41,41));
@@ -88,8 +91,26 @@ public class WestPartPanel extends JPanel {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-
             }
         });
+    }
+    public void updateNames(String directory){
+        try {
+            MP3Info mp3Info = new MP3Info(directory);
+            String artist = createShortenedText(mp3Info.getArtist());
+            String songTitle = createShortenedText(mp3Info.getTitle());
+            artistName.setText(artist);
+            songName.setText(songTitle);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading mp3 file");
+        } catch (NoSuchFieldException e) {
+            JOptionPane.showMessageDialog(null, "There isn't any mp3 file in directory to get info");
+        }
+    }
+    private String createShortenedText(String text){
+        if(text.length() <= 15)
+            return text;
+        else
+            return text.substring(0,12) + "...";
     }
 }
