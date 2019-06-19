@@ -20,8 +20,6 @@ import java.io.IOException;
  * -description: description for album,playlist or music.
  */
 class MusicPanel extends JPanel{
-    private Image showingImage;
-    private JLabel musicLabel;
     private JLabel title;
     private JLabel description;
     private MP3Info mp3Info;
@@ -30,13 +28,13 @@ class MusicPanel extends JPanel{
      * a constructor which has common features between Library and music
      * @param description description to show
      */
-    private MusicPanel(BufferedImage image,String title, String description){
+    MusicPanel(BufferedImage image,String title, String description){
         this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));//setting panel layout
         this.setBackground(new Color(23,23,23));//setting panel default background
         this.setPreferredSize(new Dimension(200,270));//setting panel's preferred size
 
-        showingImage = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);//making a specified size for image
-        this.musicLabel = new JLabel(new ImageIcon(showingImage));//creating a label to show image
+        Image showingImage = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);//making a specified size for image
+        JLabel musicLabel = new JLabel(new ImageIcon(showingImage));//creating a label to show image
 
         this.title = new JLabel();//creating title label
         this.title.setText(title);//setting title text
@@ -49,7 +47,7 @@ class MusicPanel extends JPanel{
         this.description.setForeground(new Color(120,120,120));//setting description color
 
         //adding components to panel:
-        this.add(this.musicLabel);
+        this.add(musicLabel);
         this.add(this.title);
         this.add(this.description);
 
@@ -70,18 +68,6 @@ class MusicPanel extends JPanel{
     }
 
     /**
-     * this constructor is called when panel is library or it's playlist
-     * @param image image to show at top of panel
-     * @param title title to show under the image
-     * @param description description to show under the title
-     * @param a duty of this panel
-     */
-    MusicPanel(BufferedImage image, String title, String description, MouseListener a){
-        this(image,title,description);//calling private constructor to set common features.
-        this.addMouseListener(a);
-    }
-
-    /**
      * this method creates a Mouse listener for music panel
      * it does two things:
      * -when mouse entered: it changes to a brighter color.
@@ -91,7 +77,7 @@ class MusicPanel extends JPanel{
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                GUIFrame.playSelectedMusic(mp3Info.getInputFileDirectory());
+                GUIFrame.playClickedMusic(mp3Info.getInputFileDirectory());
             }
             @Override
             public void mouseExited(MouseEvent e) {
@@ -105,5 +91,9 @@ class MusicPanel extends JPanel{
                 source.setBackground(new Color(41,41,41));
             }
         });
+    }
+
+    void setAlbumListener(MouseListener a){
+        this.addMouseListener(a);
     }
 }

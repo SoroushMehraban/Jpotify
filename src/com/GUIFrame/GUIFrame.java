@@ -1,10 +1,12 @@
 package com.GUIFrame;
 
+import com.MP3.MP3Info;
 import com.Panels.GeneralPanels.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * the window GUI where User can play a music.
@@ -16,7 +18,7 @@ import java.io.IOException;
 public class GUIFrame extends JFrame {
     private static GUIFrame guiFrame;
     private static SouthPanel southPanel;
-    private CenterPanel centerPanel;
+    private static CenterPanel centerPanel;
     /**
      * Class Constructor
      */
@@ -31,6 +33,23 @@ public class GUIFrame extends JFrame {
         southPanel = new SouthPanel();
         this.add(southPanel,BorderLayout.SOUTH);
         this.setVisible(true);
+
+        //temp code to determine it can show albums and musics:
+        try {
+            MP3Info mp3Info = new MP3Info("Soroush Tabarsi - Grey (Ft Seventh Soul) [128].mp3");
+            ArrayList<MP3Info> mp3Infos = new ArrayList<>();
+            mp3Infos.add(mp3Info);
+            mp3Infos.add(mp3Info);
+            mp3Infos.add(mp3Info);
+            mp3Infos.add(mp3Info);
+            mp3Infos.add(mp3Info);
+            mp3Infos.add(mp3Info);
+            mp3Infos.add(mp3Info);
+            mp3Infos.add(mp3Info);
+            addAlbum(mp3Info.getAlbum(),mp3Infos,"Sample text to show");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -50,7 +69,22 @@ public class GUIFrame extends JFrame {
         guiFrame.repaint();
         guiFrame.revalidate();
     }
-    public static void playSelectedMusic(String directory){
+
+    /**
+     * this method play clicked music and then can be controlled in south panel.
+     * @param directory directory of music.
+     */
+    public static void playClickedMusic(String directory){
         southPanel.play(directory);
+    }
+
+    /**
+     * this method add an album which is selected in library.
+     * @param albumTitle title of album to be shown.
+     * @param albumMusicsInfo list of all musics info which related to a album.
+     * @param description description to be shown.
+     */
+    public static void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo, String description) {
+        centerPanel.addAlbum(albumTitle,albumMusicsInfo,description);
     }
 }

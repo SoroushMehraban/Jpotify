@@ -1,11 +1,13 @@
 package com.Panels.GeneralPanels;
 
+import com.MP3.MP3Info;
 import com.Panels.CenterPanelSections.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * This class is about center panel of our Jpotify
@@ -68,4 +70,13 @@ public class CenterPanel extends JPanel {
         });
     }
 
+    /**
+     * this method simply calls addAlbum method in centerPart object.
+     * @param albumTitle title of album
+     * @param albumMusicsInfo list of musics info related to album
+     * @param description description to be shown in album panel
+     */
+    public void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo, String description){
+        centerPart.addAlbum(albumTitle,albumMusicsInfo, description);
+    }
 }
