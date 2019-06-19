@@ -26,8 +26,9 @@ class SearchBox extends JTextField {
      * @param size size of search box.
      * @throws IOException if opening search icon failed.
      */
-    public SearchBox(int size) throws IOException {
+    SearchBox(int size) throws IOException {
         super(size);//setting size of search box
+        this.setMaximumSize(new Dimension(100,50));//set maximum size to fit in BoxLayout of north part
         defaultText = "Search...";//setting default text
         searchImage = ImageIO.read(new File("Icons/Search-no-select.png"));//loading search icon
         setOpaque(false);//this remove some pixels behind the borders

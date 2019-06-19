@@ -24,6 +24,7 @@ import java.util.Random;
 public class CenterPart extends JPanel {
     private HashMap<String,ArrayList<MusicPanel>> musics;
     private ArrayList<MusicPanel> albumPanels;
+    private State state;
     private GridBagConstraints constraints;
 
     /**
@@ -41,7 +42,7 @@ public class CenterPart extends JPanel {
     /**
      * when this method calls, it shows albums in center part of Center panel.
      */
-    private void showHome(){
+    public void showHome(){
         this.removeAll();//removing all components in center part
         //initializing grids:
         int gridx = 0;
@@ -65,6 +66,7 @@ public class CenterPart extends JPanel {
                 gridx = 0;
             }
         }
+        state = State.HOME;
         //updating center part of center panel:
         this.repaint();
         this.revalidate();
@@ -90,6 +92,7 @@ public class CenterPart extends JPanel {
                 gridy++;
             }
         }
+        state = State.MUSIC;
         //updating center part of center panel:
         this.repaint();
         this.revalidate();
@@ -172,8 +175,9 @@ public class CenterPart extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                System.out.println("album pressed");
                 showMusics(albumTitle);
+                MusicPanel source = (MusicPanel)e.getSource();
+                source.setBackground(new Color(23,23,23));
             }
 
             @Override
@@ -182,5 +186,9 @@ public class CenterPart extends JPanel {
                 source.setBackground(new Color(41,41,41));
             }
         });
+    }
+
+    public State getState() {
+        return state;
     }
 }
