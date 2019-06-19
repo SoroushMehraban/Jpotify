@@ -10,6 +10,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.Line.Info;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.Port;
+
 /**
  * This class is about east part of south panel
  * it has a Sound Bar where user can change volume of music
@@ -25,6 +31,7 @@ public class EastPartPanel extends JPanel {
     private BufferedImage soundImageMed;
     private BufferedImage soundImageHigh;
     private JLabel soundLabel;
+    private int lastSoundBarValue;
 
     /**
      * class constuctor,
@@ -53,6 +60,8 @@ public class EastPartPanel extends JPanel {
         soundBar.setMinimumSize(soundBar.getPreferredSize());
         createSoundBarAction();
         soundBar.setValue(50);
+        lastSoundBarValue = 50;
+        changeVolumeSystem(50);
         //adding components to panel:
         this.add(soundLabel);
         this.add(Box.createHorizontalStrut(5));
@@ -70,13 +79,17 @@ public class EastPartPanel extends JPanel {
             @Override
             public void mouseDragged(MouseEvent e) {
                 soundBar.setValue((int) (e.getX() / ((double) soundBar.getWidth()) * 100));
+                changeVolumeSystem((float) (e.getX() / ((double) soundBar.getWidth())));
+                lastSoundBarValue = soundBar.getValue();
                 setSoundIcon();
             }
         });
         soundBar.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                changeVolumeSystem((float) (e.getX() / ((double) soundBar.getWidth())));
                 soundBar.setValue((int) (e.getX() / ((double) soundBar.getWidth()) * 100));
+                lastSoundBarValue = soundBar.getValue();
                 setSoundIcon();
             }
         });
@@ -98,17 +111,30 @@ public class EastPartPanel extends JPanel {
     }
     /**
      * This method demonstrate what happens if mouse pressed,entered or exited from sound Icon beside sound bar.
-     * when mouse pressed: if volume is >0 it cuts it off but when is =0 it changes to 50%.
+     * when mouse pressed: if volume is >0 it cuts it off but when is =0 it changes to previous volume or 0.5 if it's recent value is 0.
      * when mouse entered: it made that bottom look brighter.
      * when mouse exited: it changes to previous form.
      */
     private void createSoundLabelAction(){
         soundLabel.addMouseListener(new MouseAdapter(
         ) {
-                /*@Override
+                @Override
                 public void mousePressed(MouseEvent e) {
-                    changePlayLabel(pauseLabel);
-                }*/
+                    if(soundBar.getValue() > 0) {
+                        changeVolumeSystem(0);
+                        soundBar.setValue(0);
+                        soundLabel.setIcon(new ImageIcon(soundImageOff));
+                    }
+                    else{
+                        if(lastSoundBarValue > 0)
+                            soundBar.setValue(lastSoundBarValue);
+                        else
+                            soundBar.setValue(50);
+                        changeVolumeSystem((float) (soundBar.getValue() / 100.0));
+                        setSoundIcon();
+                    }
+
+                }
 
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -145,5 +171,32 @@ public class EastPartPanel extends JPanel {
                 super.mouseExited(e);
             }
         });
+    }
+
+    /**
+     * Changing volume to where user desired.
+     * this method doesn't change volume which shows at right corner of task bar of windows and just change music volume.
+     * @param volume desired value of volume
+     */
+    private void changeVolumeSystem(float volume){
+        Info source = Port.Info.SPEAKER;//getting speaker's source
+
+        if (AudioSystem.isLineSupported(source))//if AudioSystem support it and we can change it
+        {
+            try
+            {
+                Port outline = (Port) AudioSystem.getLine(source);
+                outline.open();
+                FloatControl volumeControl = (FloatControl) outline.getControl(FloatControl.Type.VOLUME);
+                if(volume > 0.02f)
+                    volumeControl.setValue(volume);
+                else
+                    volumeControl.setValue(0);
+            }
+            catch (LineUnavailableException ex)
+            {
+                JOptionPane.showMessageDialog(null, "source not supported");
+            }
+        }
     }
 }
