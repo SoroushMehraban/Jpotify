@@ -27,18 +27,23 @@ public class NorthPart extends JPanel {
      * @throws IOException if opening search box icon failed.
      */
     public NorthPart() throws IOException {
+        //setting north part layout:
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+        //setting background color:
         this.setBackground(new Color(23,23,23));
 
+        //loading images:
         leftArrowNoSelectedImage = ImageIO.read(new File("Icons/LeftArrow-no-select.png"));
         leftArrowImage = ImageIO.read(new File("Icons/LeftArrow.png"));
+        //creating label to be controlled by user:
         leftArrowLabel = new JLabel(new ImageIcon(leftArrowNoSelectedImage));
-        this.add(leftArrowLabel);
-        this.add(Box.createHorizontalStrut(10));
 
-        searchBox = new SearchBox(10);
-        searchBox.setForeground(new Color(168,168,168));
-        this.add(searchBox);
+        this.add(leftArrowLabel);//adding label to left corner
+        this.add(Box.createHorizontalStrut(10));//creating some spaces after label
+
+        searchBox = new SearchBox(10);//creating searchbox
+        searchBox.setForeground(new Color(168,168,168));//setting search box text color
+        this.add(searchBox);//adding search box beside left arrow label
     }
 
     public BufferedImage getLeftArrowNoSelectedImage() {

@@ -188,6 +188,10 @@ public class CenterPart extends JPanel {
         });
     }
 
+    /**
+     * getting state to indicate which state we are if we want to change that.
+     * @return present state
+     */
     public State getState() {
         return state;
     }

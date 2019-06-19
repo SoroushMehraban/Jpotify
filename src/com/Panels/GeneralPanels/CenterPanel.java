@@ -83,6 +83,12 @@ public class CenterPanel extends JPanel {
         centerPart.addAlbum(albumTitle,albumMusicsInfo, description);
     }
 
+    /**
+     * This method create a listener to left arrow at left corner in North Part.
+     * if mouse Entered: it become brighter.
+     * if mouse exited: it turns to previous form.
+     * if mouse pressed: center part changed to previous state.
+     */
     private void createLeftArrowListener(){
         northPart.setLeftArrowListener(new MouseAdapter() {
             @Override
