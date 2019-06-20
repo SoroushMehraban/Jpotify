@@ -31,18 +31,18 @@ public class PlayPanel extends JPanel {
     private BufferedImage backwardImage;
     private BufferedImage repeatImage;
     private BufferedImage shuffleImage;
+    private BufferedImage likeImage;
     private JLabel playLabel;
     private JLabel pauseLabel;
     private JLabel forwardLabel;
     private JLabel backwardLabel;
     private JLabel repeatLabel;
     private JLabel shuffleLabel;
+    private JLabel likeLabel;
     private boolean isShuffling;
     private boolean isRepeating;
-    private boolean isPlaying;
-    private boolean firstPlaying;
+    private boolean isLiked;
     private CustomPlayer player;
-    private Thread playerThread;
     private PlayControlLinker playControlLinker;
 
     /**
@@ -52,7 +52,6 @@ public class PlayPanel extends JPanel {
     public PlayPanel() throws IOException {
         isShuffling = false;
         isRepeating = false;
-        isPlaying = false;
         //setting background color:
         this.setBackground(new Color(41,41,41));
         //setting layout:
@@ -64,6 +63,7 @@ public class PlayPanel extends JPanel {
         backwardImage = ImageIO.read(new File("Icons/Backward-no-select.png"));
         repeatImage = ImageIO.read(new File("Icons/Repeat-no-select.png"));
         shuffleImage = ImageIO.read(new File("Icons/Shuffle-no-select.png"));
+        likeImage = ImageIO.read(new File("Icons/Heart-no-selected.png"));
         //creating image labels:
         playLabel = new JLabel(new ImageIcon(playImage));
         createPlayLabelListener();//add Mouse listener to playLabel
@@ -77,6 +77,8 @@ public class PlayPanel extends JPanel {
         createRepeatLabelListener();
         shuffleLabel = new JLabel(new ImageIcon(shuffleImage));
         createShuffleLabelListener();
+        likeLabel = new JLabel(new ImageIcon(likeImage));
+        createLikeLabelListener();
         //adding labels to PlayPanel:
         this.add(shuffleLabel);
         this.add(Box.createHorizontalStrut(10));
@@ -87,6 +89,8 @@ public class PlayPanel extends JPanel {
         this.add(forwardLabel);
         this.add(Box.createHorizontalStrut(10));
         this.add(repeatLabel);
+        this.add(Box.createHorizontalStrut(10));
+        this.add(likeLabel);
     }
 
     public void setPlayControlLinker(PlayControlLinker playControlLinker) {
@@ -340,6 +344,50 @@ public class PlayPanel extends JPanel {
                     e1.printStackTrace();
                 }
                 super.mouseExited(e);
+            }
+        });
+    }
+    /**
+     * This method demonstrate what happens if mouse pressed,entered or exited from like button.
+     * when mouse pressed: it become red and adds current song to favorites songs.
+     * when mouse entered: it made that button look brighter.
+     * when mouse exited: it changes to previous form.
+     */
+    private void createLikeLabelListener(){
+        likeLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                isLiked = !isLiked;
+                try {
+                    likeImage = ImageIO.read(new File("Icons/Heart.png"));
+                    likeLabel.setIcon(new ImageIcon(likeImage));
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, "Error reading like image");
+                }
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if(!isLiked) {
+                    try {
+                        likeImage = ImageIO.read(new File("Icons/Heart-selected.png"));
+                        likeLabel.setIcon(new ImageIcon(likeImage));
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(null, "Error reading like image");
+                    }
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if(!isLiked) {
+                    try {
+                        likeImage = ImageIO.read(new File("Icons/Heart-no-selected.png"));
+                        likeLabel.setIcon(new ImageIcon(likeImage));
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(null, "Error reading like image");
+                    }
+                }
             }
         });
     }
