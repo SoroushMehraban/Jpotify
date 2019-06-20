@@ -88,6 +88,23 @@ public class GUIFrame extends JFrame {
      * @param description description to be shown.
      */
     public static void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo, String description) {
-        centerPanel.addAlbum(albumTitle,albumMusicsInfo,description);
+        centerPanel.getCenterPart().addAlbum(albumTitle,albumMusicsInfo,description);
+    }
+
+    /**
+     * Creating playlist which is implemented in center part of centerPanel(this method works as a linker)
+     * @param title title of play list.
+     * @param description description to show under the title.
+     */
+    public static void createPlayList(String title, String description){
+        centerPanel.getCenterPart().createPlayList(title,description);
+    }
+    /**
+     * this method adds a song to given playlist.(works as a linker)
+     * @param playListTitle  title of playlist as a key of HashMap.
+     * @param songDirectory directory of music to add.
+     */
+    public static void addSongToPlayList(String playListTitle, String songDirectory){
+        centerPanel.getCenterPart().addSongToPlayList(playListTitle,songDirectory);
     }
 }

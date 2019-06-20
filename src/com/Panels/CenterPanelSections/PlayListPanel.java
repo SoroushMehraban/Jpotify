@@ -1,11 +1,16 @@
 package com.Panels.CenterPanelSections;
 
 import com.Interfaces.ShowSongsLinker;
+import com.MP3.MP3Info;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,8 +62,20 @@ class PlayListPanel extends MusicPanel {
         });
     }
 
-    void addSong(SongPanel songPanel){
-        playListSongs.add(songPanel);
+    void addSong(String directory){
+        try {
+            MP3Info mp3Info = new MP3Info(directory);
+            String description = "This song belongs to "+mp3Info.getAlbum()+" album";
+            SongPanel songPanel = new SongPanel(mp3Info,description);
+            playListSongs.add(songPanel);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading mp3 file");
+        } catch (NoSuchFieldException e) {
+            JOptionPane.showMessageDialog(null, "Error find mp3 file");
+        } catch (InvalidDataException | UnsupportedTagException e) {
+            JOptionPane.showMessageDialog(null, "Error reading mp3 image");
+        }
+
     }
     void removeSong(String title){
         for(SongPanel songPanel : playListSongs)

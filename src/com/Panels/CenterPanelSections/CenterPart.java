@@ -28,6 +28,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
     private HashMap<String,PlayListPanel> playListPanels;
     private State state;
     private GridBagConstraints constraints;
+    private BufferedImage emptyPlayListImage;
 
     /**
      * Class Constructor.
@@ -43,6 +44,12 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
 
         //creating default playLists:
         createDefaultPlayLists();
+        //creating Empty play list picture:
+        try {
+            emptyPlayListImage = ImageIO.read(new File("Images/EmptyPlayList.jpg"));
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading empty playlist image");
+        }
     }
 
     /**
@@ -198,18 +205,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
 
     @Override
     public void addToFavoritePlayList(String directory) {
-        try {
-            MP3Info mp3Info = new MP3Info(directory);
-            String description = "This song belongs to "+mp3Info.getAlbum()+" album";
-            SongPanel songPanel = new SongPanel(mp3Info,description);
-            playListPanels.get("Favorite Songs").addSong(songPanel);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading mp3 file");
-        } catch (NoSuchFieldException e) {
-            JOptionPane.showMessageDialog(null, "Error find mp3 file");
-        } catch (InvalidDataException | UnsupportedTagException e) {
-            JOptionPane.showMessageDialog(null, "Error reading mp3 image");
-        }
+        playListPanels.get("Favorite Songs").addSong(directory);
     }
 
     @Override
@@ -222,5 +218,37 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
         } catch (NoSuchFieldException e) {
             JOptionPane.showMessageDialog(null, "Error find mp3 file");
         }
+    }
+
+    /**
+     * Creating playlist which shows it in center part with an image which said : Empty PlayList
+     * @param title title of play list.
+     * @param description description to show under the title.
+     */
+    public void createPlayList(String title, String description){
+        if(!playListPanels.containsKey(title)){//if this playlist doesn't exist.
+            PlayListPanel newPlayListPanel = new PlayListPanel(emptyPlayListImage,title, description,this);
+            playListPanels.put(title,newPlayListPanel);
+        }
+    }
+
+    /**
+     * this method adds a song to given playlist.
+     * @param playListTitle  title of playlist as a key of HashMap.
+     * @param songDirectory directory of music to add.
+     */
+    public void addSongToPlayList(String playListTitle, String songDirectory){
+        if(playListPanels.containsKey(playListTitle))//if playlist exists
+            playListPanels.get(playListTitle).addSong(songDirectory);
+    }
+
+    /**
+     * this method remove a song from given playlist.
+     * @param playListTitle title of playlist as a key of HashMap
+     * @param songTitle title of song we want to remove.
+     */
+    public void removeSongFromPlayList(String playListTitle, String songTitle){
+        if(playListPanels.containsKey(playListTitle))//if playlist exist
+            playListPanels.get(playListTitle).removeSong(songTitle);
     }
 }
