@@ -4,11 +4,13 @@ import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import java.util.Random;
 public class CenterPart extends JPanel {
     private HashMap<String,ArrayList<SongPanel>> songs;
     private ArrayList<AlbumPanel> albumPanels;
+    private ArrayList<PlayListPanel> playListPanels;
     private State state;
     private GridBagConstraints constraints;
 
@@ -37,6 +40,24 @@ public class CenterPart extends JPanel {
         this.setBackground(new Color(23,23,23));//setting panel background
         songs = new HashMap<>();//list of songs related with own albums.
         albumPanels = new ArrayList<>();//array list of albums panels.
+        playListPanels = new ArrayList<>();
+
+        //creating default playLists:
+        try {
+            BufferedImage favoriteSongsImage = ImageIO.read(new File("Images/FavoriteSong.png"));
+            PlayListPanel favoriteSongs = new PlayListPanel(favoriteSongsImage,"Favorite Songs","Favorite songs chosen by user");
+            playListPanels.add(favoriteSongs);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading favorite songs image");
+        }
+        try {
+            BufferedImage sharedSongImage = ImageIO.read(new File("Images/SharedSongs.jpg"));
+            PlayListPanel sharedSongs = new PlayListPanel(sharedSongImage,"Shared Songs","Shared songs between users");
+            playListPanels.add(sharedSongs);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading shared songs image");
+        }
+
     }
 
     /**
@@ -59,6 +80,26 @@ public class CenterPart extends JPanel {
             constraints.gridx = gridx;
             constraints.gridy = gridy;
             this.add(albumPanel, constraints);
+            if(gridx < 3)
+                gridx++;
+            else{
+                gridy++;
+                gridx = 0;
+            }
+        }
+        //creating playList label to show at top of playLists:
+        gridx--;
+        gridy++;
+        constraints.gridx = gridx;
+        constraints.gridy = gridy;
+        JLabel playListLabel = new JLabel("PlayLists:");
+        playListLabel.setForeground(new Color(219,219,219));
+        this.add(playListLabel, constraints);
+        gridy++;
+        for(PlayListPanel playListPanel: playListPanels){
+            constraints.gridy = gridy;
+            constraints.gridx = gridx;
+            this.add(playListPanel, constraints);
             if(gridx < 3)
                 gridx++;
             else{
