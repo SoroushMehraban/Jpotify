@@ -38,7 +38,7 @@ public class PlayPanel extends JPanel {
     private JLabel repeatLabel;
     private JLabel shuffleLabel;
     private boolean isShuffle;
-    private boolean isRepeat;
+    private boolean isRepeating;
     private boolean isPlaying;
     private boolean firstPlaying;
     private CustomPlayer player;
@@ -51,7 +51,7 @@ public class PlayPanel extends JPanel {
      */
     public PlayPanel() throws IOException {
         isShuffle = false;
-        isRepeat = false;
+        isRepeating = false;
         isPlaying = false;
         //setting background color:
         this.setBackground(new Color(41,41,41));
@@ -302,7 +302,7 @@ public class PlayPanel extends JPanel {
     }
     /**
      * This method demonstrate what happens if mouse pressed,entered or exited from repeat bottom.
-     * when mouse pressed: it repeat playing music after finished.
+     * when mouse pressed: it repeat playing music after finished or vice versa if pressed before.
      * when mouse entered: it made that bottom look brighter or vice versa if pressed before.
      * when mouse exited: it changes to previous form.
      */
@@ -311,13 +311,14 @@ public class PlayPanel extends JPanel {
         ) {
             @Override
             public void mousePressed(MouseEvent e) {
-                isRepeat = !isRepeat;
+                isRepeating = !isRepeating;
+                playControlLinker.setRepeat(isRepeating);
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 try {
-                    if(!isRepeat) {
+                    if(!isRepeating) {
                         repeatImage = ImageIO.read(new File("Icons/Repeat.png"));
                         repeatLabel.setIcon(new ImageIcon(repeatImage));
                     }
@@ -329,7 +330,7 @@ public class PlayPanel extends JPanel {
             @Override
             public void mouseExited(MouseEvent e) {
                 try {
-                    if(!isRepeat)
+                    if(!isRepeating)
                         repeatImage = ImageIO.read(new File("Icons/Repeat-no-select.png"));
                     else
                         repeatImage = ImageIO.read(new File("Icons/Repeat.png"));

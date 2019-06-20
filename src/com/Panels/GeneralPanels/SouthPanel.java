@@ -29,6 +29,7 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
     private SongPanel currentSongPanel;
     private ArrayList<SongPanel> currentAlbumSongPanels;
     private boolean newRunning;
+    private boolean isRepeating;
 
     /**
      * Class Constructor
@@ -92,6 +93,8 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
                         if(newRunning)
                             break outer;
                     }
+                    if(isRepeating)
+                        i--;
                 }
                 System.out.println("Thread Closed");
             }
@@ -101,7 +104,7 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
 
     @Override
     public void goForward() {
-        if(currentAlbumSongPanels != null) {
+        if(currentAlbumSongPanels != null) {//if music is playing
             int indexOfNextSong = (currentAlbumSongPanels.indexOf(currentSongPanel) + 1) % currentAlbumSongPanels.size() ;
             SongPanel nextSong = currentAlbumSongPanels.get(indexOfNextSong);
             play(nextSong, currentAlbumSongPanels);
@@ -110,12 +113,17 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
 
     @Override
     public void goBack() {
-        if(currentAlbumSongPanels != null) {
+        if(currentAlbumSongPanels != null) {//if music is playing
             int indexOfPreviousSong = (currentAlbumSongPanels.indexOf(currentSongPanel) - 1);
             if(indexOfPreviousSong == -1)
                 indexOfPreviousSong = currentAlbumSongPanels.size() -1;
             SongPanel previousSong = currentAlbumSongPanels.get(indexOfPreviousSong);
             play(previousSong, currentAlbumSongPanels);
         }
+    }
+
+    @Override
+    public void setRepeat(boolean isRepeating) {
+        this.isRepeating = isRepeating;
     }
 }
