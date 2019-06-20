@@ -125,6 +125,9 @@ public class CustomPlayer {
     public boolean isPlaying() {
         return isPlaying;
     }
+    public boolean isComplete(){
+        return player.isComplete();
+    }
 
     /**
      * closing player(helps us when another music is going to start in our program)

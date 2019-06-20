@@ -111,10 +111,13 @@ public class CenterPart extends JPanel {
             songs.put(albumTitle, createSongPanels(albumMusicsInfo, description));//creating Music panels belongs to one album key
             AlbumPanel albumPanel = createAlbumPanel(albumMusicsInfo,description);//creating album panel(its listener is implemented in createAlbumPanel method)
             albumPanels.add(albumPanel);//adding created
-            showHome();//showing home after created new album to show it's added.
+                showHome();//showing home after created new album to show it's added.
         }
         else//if album added before we just replace its music with new one:
             songs.replace(albumTitle, createSongPanels(albumMusicsInfo, description));
+
+        for(SongPanel songPanel : songs.get(albumTitle))//setting list of songs in every SongPanel object so it knows album belongs to
+            songPanel.setAlbumSongPanels(songs.get(albumTitle));
     }
 
     /**

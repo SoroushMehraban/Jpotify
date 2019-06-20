@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * This subclass created if the music panel we want is a song and if user click on that, it plays desired song.
@@ -16,8 +17,9 @@ import java.io.IOException;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-class SongPanel extends  MusicPanel {
+public class SongPanel extends  MusicPanel {
     private MP3Info mp3Info;
+    private ArrayList<SongPanel> albumSongPanels;
 
     /**
      * Constructor which set information need to show in super class and create a listener for song
@@ -42,7 +44,8 @@ class SongPanel extends  MusicPanel {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                GUIFrame.playClickedMusic(mp3Info.getInputFileDirectory());
+                if(albumSongPanels != null)
+                    GUIFrame.playClickedMusic((SongPanel)e.getSource(),albumSongPanels);
             }
             @Override
             public void mouseExited(MouseEvent e) {
@@ -56,5 +59,13 @@ class SongPanel extends  MusicPanel {
                 source.setBackground(new Color(41,41,41));
             }
         });
+    }
+
+    void setAlbumSongPanels(ArrayList<SongPanel> albumSongPanels) {
+        this.albumSongPanels = albumSongPanels;
+    }
+
+    public String getInputFileDirectory(){
+        return mp3Info.getInputFileDirectory();
     }
 }

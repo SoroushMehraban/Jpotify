@@ -1,6 +1,7 @@
 package com.GUIFrame;
 
 import com.MP3.MP3Info;
+import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.GeneralPanels.*;
 
 import javax.swing.*;
@@ -72,10 +73,10 @@ public class GUIFrame extends JFrame {
 
     /**
      * this method play clicked music and then can be controlled in south panel.
-     * @param directory directory of music.
+     * @param songPanel song we want to play.
      */
-    public static void playClickedMusic(String directory){
-        southPanel.play(directory);
+    public static void playClickedMusic(SongPanel songPanel,ArrayList<SongPanel> albumSongPanels){
+        southPanel.play(songPanel, albumSongPanels);
     }
 
     /**

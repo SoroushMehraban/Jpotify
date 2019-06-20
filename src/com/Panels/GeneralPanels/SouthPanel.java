@@ -1,10 +1,12 @@
 package com.Panels.GeneralPanels;
 
 import com.MP3.CustomPlayer;
+import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.SouthPanelSections.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * South Panel of program
@@ -61,14 +63,23 @@ public class SouthPanel extends JPanel{
     /**
      * this method runs when a musicPanel clicked.
      * it handle player by giving it to it's components.
-     * @param directory directory of music
+     * @param songPanel panel of song we want to play.(help us to determine what is next)
      */
-    public void play(String directory) {
+    public void play(SongPanel songPanel, ArrayList<SongPanel> albumSongPanels) {
         if(customPlayer != null)//if previous music is playing
             customPlayer.close();
-        customPlayer = new CustomPlayer(directory);
-        playPanel.playMusic(customPlayer);
-        progressPanel.controlMusic(customPlayer);
-        westPart.updateNames(directory);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = albumSongPanels.indexOf(songPanel); i < albumSongPanels.size()  ; i++) {
+                    customPlayer = new CustomPlayer(songPanel.getInputFileDirectory());
+                    playPanel.playMusic(customPlayer);
+                    progressPanel.controlMusic(customPlayer);
+                    westPart.updateNames(songPanel.getInputFileDirectory());
+                    while(!customPlayer.isComplete());
+                }
+            }
+        });
+        t.start();
     }
 }
