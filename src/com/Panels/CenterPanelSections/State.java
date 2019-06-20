@@ -1,5 +1,5 @@
 package com.Panels.CenterPanelSections;
 
 public enum State {
-    HOME,MUSIC, EQUALIZER
+    HOME, SONG, EQUALIZER
 }

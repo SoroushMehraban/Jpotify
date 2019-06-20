@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * This subclass created if the music panel we want is a song and if user click on that, it plays desired song.
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class SongPanel extends  MusicPanel {
     private MP3Info mp3Info;
-    private ArrayList<SongPanel> albumSongPanels;
+    private HashSet<SongPanel> albumSongPanels;
 
     /**
      * Constructor which set information need to show in super class and create a listener for song
@@ -61,7 +61,7 @@ public class SongPanel extends  MusicPanel {
         });
     }
 
-    void setAlbumSongPanels(ArrayList<SongPanel> albumSongPanels) {
+    void setAlbumSongPanels(HashSet<SongPanel> albumSongPanels) {
         this.albumSongPanels = albumSongPanels;
     }
 

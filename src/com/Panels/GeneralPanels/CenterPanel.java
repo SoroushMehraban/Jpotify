@@ -93,7 +93,7 @@ public class CenterPanel extends JPanel {
         northPart.setLeftArrowListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(centerPart.getState() == State.MUSIC)
+                if(centerPart.getState() == State.SONG)
                     centerPart.showHome();
             }
 

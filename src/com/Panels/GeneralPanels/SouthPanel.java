@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 /**
@@ -73,7 +74,8 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
      * it handle player by giving it to it's components.
      * @param songPanel panel of song we want to play.(help us to determine what is next)
      */
-    public void play(SongPanel songPanel, ArrayList<SongPanel> albumSongPanels) {
+    public void play(SongPanel songPanel, HashSet<SongPanel> albumSongPanelsSet) {
+        ArrayList<SongPanel> albumSongPanels = new ArrayList<>(albumSongPanelsSet);
         //setting current song and albums if we want to go forward and backward:
         currentSongPanel = songPanel;
         currentAlbumSongPanels = albumSongPanels;
@@ -117,7 +119,7 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
         if(currentAlbumSongPanels != null) {//if music is playing
             int indexOfNextSong = (currentAlbumSongPanels.indexOf(currentSongPanel) + 1) % currentAlbumSongPanels.size() ;
             SongPanel nextSong = currentAlbumSongPanels.get(indexOfNextSong);
-            play(nextSong, currentAlbumSongPanels);
+            play(nextSong, new HashSet<>(currentAlbumSongPanels));
         }
     }
 
@@ -128,7 +130,7 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
             if(indexOfPreviousSong == -1)
                 indexOfPreviousSong = currentAlbumSongPanels.size() -1;
             SongPanel previousSong = currentAlbumSongPanels.get(indexOfPreviousSong);
-            play(previousSong, currentAlbumSongPanels);
+            play(previousSong, new HashSet<>(currentAlbumSongPanels));
         }
     }
 
