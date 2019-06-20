@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * South Panel of program
@@ -30,6 +31,7 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
     private ArrayList<SongPanel> currentAlbumSongPanels;
     private boolean newRunning;
     private boolean isRepeating;
+    private boolean isShuffling;
 
     /**
      * Class Constructor
@@ -67,24 +69,26 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
     }
 
     /**
-     * this method runs when a musicPanel clicked.
+     * this method runs when a songPanel prssed.
      * it handle player by giving it to it's components.
      * @param songPanel panel of song we want to play.(help us to determine what is next)
      */
     public void play(SongPanel songPanel, ArrayList<SongPanel> albumSongPanels) {
+        //setting current song and albums if we want to go forward and backward:
         currentSongPanel = songPanel;
         currentAlbumSongPanels = albumSongPanels;
+
         if(customPlayer != null) {//if previous music is playing
             customPlayer.close();
-            newRunning = true;
+            newRunning = true;//this terminate previous thread which running a song.
         }
-        Thread t = new Thread(new Runnable() {
+        Thread t = new Thread(new Runnable() {//creating a thread to run desired song
             @Override
             public void run() {
-                newRunning = false;
+                newRunning = false;// this cause outer loop doesn't break.(if we changed newRunning above to break it)
                 outer: for (int i = albumSongPanels.indexOf(songPanel); i < albumSongPanels.size()  ; i++) {
-                    System.out.println("index played: "+i);
-                    currentSongPanel = albumSongPanels.get(i);
+                    System.out.println("index played: "+i);//temporary to show it works correctly.
+                    currentSongPanel = albumSongPanels.get(i);//changing current song panel to play next one
                     customPlayer = new CustomPlayer(currentSongPanel.getInputFileDirectory());
                     playPanel.playMusic(customPlayer);
                     progressPanel.controlMusic(customPlayer);
@@ -93,10 +97,16 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
                         if(newRunning)
                             break outer;
                     }
-                    if(isRepeating)
+                    if(isRepeating)//if isRepeating is true(its button pressed) we minus our index so next ++ is become current music
                         i--;
+                    if(isShuffling){//if IsShuffling is true(its button prssed):
+                        Random random = new Random();
+                        int randomIndex = random.nextInt(albumSongPanels.size()) % albumSongPanels.size() - 1;
+                        //random index has -1 at end of that because loop first make ++ of that and then run loops
+                        //if we didnt do that, if randomIndex become last index, after ++ in loop it ends the loop
+                        i = randomIndex;
+                    }
                 }
-                System.out.println("Thread Closed");
             }
         });
         t.start();
@@ -125,5 +135,10 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
     @Override
     public void setRepeat(boolean isRepeating) {
         this.isRepeating = isRepeating;
+    }
+
+    @Override
+    public void setShuffle(boolean isShuffling) {
+        this.isShuffling = isShuffling;
     }
 }

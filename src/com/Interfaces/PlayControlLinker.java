@@ -22,4 +22,10 @@ public interface PlayControlLinker {
      * @param isRepeating indicate that it should be repeat or not.
      */
     void setRepeat(boolean isRepeating);
+
+    /**
+     * if isShuffling is true, it shuffles between musics randomly.
+     * @param isShuffling indicate that is should be shuffle or not.
+     */
+    void setShuffle(boolean isShuffling);
 }

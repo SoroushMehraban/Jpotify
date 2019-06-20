@@ -37,7 +37,7 @@ public class PlayPanel extends JPanel {
     private JLabel backwardLabel;
     private JLabel repeatLabel;
     private JLabel shuffleLabel;
-    private boolean isShuffle;
+    private boolean isShuffling;
     private boolean isRepeating;
     private boolean isPlaying;
     private boolean firstPlaying;
@@ -50,7 +50,7 @@ public class PlayPanel extends JPanel {
      * @throws IOException when failed to open icons.
      */
     public PlayPanel() throws IOException {
-        isShuffle = false;
+        isShuffling = false;
         isRepeating = false;
         isPlaying = false;
         //setting background color:
@@ -260,9 +260,9 @@ public class PlayPanel extends JPanel {
         });
     }
     /**
-     * This method demonstrate what happens if mouse pressed,entered or exited from play bottom.
-     * when mouse pressed: it changes the bottom to pause bottom and plays the music.
-     * when mouse entered: it made that bottom look brighter.
+     * This method demonstrate what happens if mouse pressed,entered or exited from shuffle button.
+     * when mouse pressed: it shuffle next songs if it's not pressed before.
+     * when mouse entered: it made that button look brighter.
      * when mouse exited: it changes to previous form.
      */
     private void createShuffleLabelListener() {
@@ -270,13 +270,14 @@ public class PlayPanel extends JPanel {
         ) {
             @Override
             public void mousePressed(MouseEvent e) {
-                isShuffle = !isShuffle;
+                isShuffling = !isShuffling;
+                playControlLinker.setShuffle(isShuffling);
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 try {
-                    if(!isShuffle) {
+                    if(!isShuffling) {
                         shuffleImage = ImageIO.read(new File("Icons/Shuffle.png"));
                         shuffleLabel.setIcon(new ImageIcon(shuffleImage));
                     }
@@ -288,7 +289,7 @@ public class PlayPanel extends JPanel {
             @Override
             public void mouseExited(MouseEvent e) {
                 try {
-                    if(!isShuffle)
+                    if(!isShuffling)
                         shuffleImage = ImageIO.read(new File("Icons/Shuffle-no-select.png"));
                     else
                         shuffleImage = ImageIO.read(new File("Icons/Shuffle.png"));
