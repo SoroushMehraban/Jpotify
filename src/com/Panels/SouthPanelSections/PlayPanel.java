@@ -1,6 +1,7 @@
 package com.Panels.SouthPanelSections;
 
 import com.GUIFrame.GUIFrame;
+import com.Interfaces.LikeLinker;
 import com.Interfaces.PlayControlLinker;
 import com.MP3.CustomPlayer;
 
@@ -44,6 +45,7 @@ public class PlayPanel extends JPanel {
     private boolean isLiked;
     private CustomPlayer player;
     private PlayControlLinker playControlLinker;
+    private LikeLinker likeLinker;
 
     /**
      * inner class constructor.
@@ -91,6 +93,10 @@ public class PlayPanel extends JPanel {
         this.add(repeatLabel);
         this.add(Box.createHorizontalStrut(10));
         this.add(likeLabel);
+    }
+
+    public void setLikeLinker(LikeLinker likeLinker) {
+        this.likeLinker = likeLinker;
     }
 
     public void setPlayControlLinker(PlayControlLinker playControlLinker) {
@@ -189,6 +195,8 @@ public class PlayPanel extends JPanel {
         this.add(forwardLabel);
         this.add(Box.createHorizontalStrut(10));
         this.add(repeatLabel);
+        this.add(Box.createHorizontalStrut(10));
+        this.add(likeLabel);
         GUIFrame.reload();
     }
     /**
@@ -359,7 +367,14 @@ public class PlayPanel extends JPanel {
             public void mousePressed(MouseEvent e) {
                 isLiked = !isLiked;
                 try {
-                    likeImage = ImageIO.read(new File("Icons/Heart.png"));
+                    if(isLiked) {
+                        likeImage = ImageIO.read(new File("Icons/Heart.png"));
+                        likeLinker.addToFavoritePlayList(player.getDirectory());
+                    }
+                    else {
+                        likeImage = ImageIO.read(new File("Icons/Heart-selected.png"));
+                        likeLinker.removeFromFavoritePlayList(player.getDirectory());
+                    }
                     likeLabel.setIcon(new ImageIcon(likeImage));
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(null, "Error reading like image");

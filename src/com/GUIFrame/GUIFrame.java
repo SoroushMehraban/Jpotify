@@ -35,7 +35,8 @@ public class GUIFrame extends JFrame {
         southPanel = new SouthPanel();
         this.add(southPanel,BorderLayout.SOUTH);
         this.setVisible(true);
-
+        //setting like linker between playPanel in southPanel and centerPart in centerPanel:
+        southPanel.getPlayPanel().setLikeLinker(centerPanel.getCenterPart());
         //temp code to determine it can show albums and musics:
         try {
             MP3Info mp3Info = new MP3Info("Soroush Tabarsi - Grey (Ft Seventh Soul) [128].mp3");

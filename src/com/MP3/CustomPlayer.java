@@ -35,6 +35,10 @@ public class CustomPlayer {
         this.directory = directory;
     }
 
+    public String getDirectory() {
+        return directory;
+    }
+
     /**
      * this method happens if user pause playing music.
      * it store remaining bytes to stopped variable so next time if it wants to resume, it start with total - stopped bytes.

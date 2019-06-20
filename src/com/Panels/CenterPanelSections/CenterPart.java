@@ -1,5 +1,6 @@
 package com.Panels.CenterPanelSections;
 
+import com.Interfaces.LikeLinker;
 import com.Interfaces.ShowSongsLinker;
 import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -22,7 +23,7 @@ import java.util.HashSet;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class CenterPart extends JPanel implements ShowSongsLinker {
+public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
     private State state;
@@ -193,5 +194,33 @@ public class CenterPart extends JPanel implements ShowSongsLinker {
      */
     public State getState() {
         return state;
+    }
+
+    @Override
+    public void addToFavoritePlayList(String directory) {
+        try {
+            MP3Info mp3Info = new MP3Info(directory);
+            String description = "This song belongs to "+mp3Info.getAlbum()+" album";
+            SongPanel songPanel = new SongPanel(mp3Info,description);
+            playListPanels.get("Favorite Songs").addSong(songPanel);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading mp3 file");
+        } catch (NoSuchFieldException e) {
+            JOptionPane.showMessageDialog(null, "Error find mp3 file");
+        } catch (InvalidDataException | UnsupportedTagException e) {
+            JOptionPane.showMessageDialog(null, "Error reading mp3 image");
+        }
+    }
+
+    @Override
+    public void removeFromFavoritePlayList(String directory) {
+        try {
+            MP3Info mp3Info = new MP3Info(directory);
+            playListPanels.get("Favorite Songs").removeSong(mp3Info.getTitle());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading mp3 file");
+        } catch (NoSuchFieldException e) {
+            JOptionPane.showMessageDialog(null, "Error find mp3 file");
+        }
     }
 }

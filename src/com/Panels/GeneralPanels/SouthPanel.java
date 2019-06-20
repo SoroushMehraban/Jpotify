@@ -21,7 +21,6 @@ import java.util.Random;
  * @version 1.0
  */
 public class SouthPanel extends JPanel implements PlayControlLinker {
-    private JProgressBar soundBar;
     private WestPartPanel westPart;
     private EastPartPanel eastPart;
     private JPanel centerPart;
@@ -41,7 +40,6 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
     public SouthPanel() throws IOException {
         //setting South Panel layout:
         this.setLayout(new BorderLayout());
-
         //setting background color of com.Panels.GeneralPanels.SouthPanel:
         this.setBackground(new Color(41,41,41));
 
@@ -67,6 +65,10 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
 
         eastPart = new EastPartPanel();
         this.add(eastPart,BorderLayout.EAST);
+    }
+
+    public PlayPanel getPlayPanel() {
+        return playPanel;
     }
 
     /**

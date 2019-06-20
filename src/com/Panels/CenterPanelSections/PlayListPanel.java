@@ -60,4 +60,9 @@ class PlayListPanel extends MusicPanel {
     void addSong(SongPanel songPanel){
         playListSongs.add(songPanel);
     }
+    void removeSong(String title){
+        for(SongPanel songPanel : playListSongs)
+            if(songPanel.getSongTitle().equals(title))
+                playListSongs.remove(songPanel);
+    }
 }

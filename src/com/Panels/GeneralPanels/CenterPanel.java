@@ -42,6 +42,10 @@ public class CenterPanel extends JPanel {
         this.add(jScrollPane,BorderLayout.CENTER);//adding center part to center panel.
     }
 
+    public CenterPart getCenterPart() {
+        return centerPart;
+    }
+
     /**
      * this method customize JScrollPane's color to fit in center part theme.
      * @param jScrollPane our jScrollPane to to be customized.

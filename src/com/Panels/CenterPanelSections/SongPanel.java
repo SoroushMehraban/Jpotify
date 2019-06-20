@@ -20,6 +20,7 @@ import java.util.HashSet;
 public class SongPanel extends  MusicPanel {
     private MP3Info mp3Info;
     private HashSet<SongPanel> albumSongPanels;
+    private String songTitle;
 
     /**
      * Constructor which set information need to show in super class and create a listener for song
@@ -29,9 +30,14 @@ public class SongPanel extends  MusicPanel {
      */
     SongPanel(MP3Info mp3Info, String description) throws InvalidDataException, IOException, UnsupportedTagException {
         super(mp3Info.getImage(),mp3Info.getTitle(),description);
+        songTitle = mp3Info.getTitle();
         this.mp3Info = mp3Info;
 
         createSongListener();
+    }
+
+    public String getSongTitle() {
+        return songTitle;
     }
 
     /**
