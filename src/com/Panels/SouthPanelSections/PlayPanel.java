@@ -1,6 +1,7 @@
 package com.Panels.SouthPanelSections;
 
 import com.GUIFrame.GUIFrame;
+import com.Interfaces.PlayControlLinker;
 import com.MP3.CustomPlayer;
 
 import javax.imageio.ImageIO;
@@ -42,6 +43,7 @@ public class PlayPanel extends JPanel {
     private boolean firstPlaying;
     private CustomPlayer player;
     private Thread playerThread;
+    private PlayControlLinker playControlLinker;
 
     /**
      * inner class constructor.
@@ -85,6 +87,10 @@ public class PlayPanel extends JPanel {
         this.add(forwardLabel);
         this.add(Box.createHorizontalStrut(10));
         this.add(repeatLabel);
+    }
+
+    public void setPlayControlLinker(PlayControlLinker playControlLinker) {
+        this.playControlLinker = playControlLinker;
     }
 
     /**
@@ -183,17 +189,17 @@ public class PlayPanel extends JPanel {
     }
     /**
      * This method demonstrate what happens if mouse pressed,entered or exited from forward bottom.
-     * when mouse pressed: it goes to next music.
+     * when mouse pressed: it goes to next song.
      * when mouse entered: it made that bottom look brighter.
      * when mouse exited: it changes to previous form.
      */
     private void createForwardLabelListener() {
         forwardLabel.addMouseListener(new MouseAdapter(
         ) {
-                /*@Override
+                @Override
                 public void mousePressed(MouseEvent e) {
-                    changePlayLabel(pauseLabel);
-                }*/
+                    playControlLinker.goForward();
+                }
 
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -219,17 +225,17 @@ public class PlayPanel extends JPanel {
     }
     /**
      * This method demonstrate what happens if mouse pressed,entered or exited from backward bottom.
-     * when mouse pressed: it goes to previous music.
+     * when mouse pressed: it goes to previous song.
      * when mouse entered: it made that bottom look brighter.
      * when mouse exited: it changes to previous form.
      */
     private void createBackwardLabelListener() {
         backwardLabel.addMouseListener(new MouseAdapter(
         ) {
-                /*@Override
+                @Override
                 public void mousePressed(MouseEvent e) {
-                    changePlayLabel(pauseLabel);
-                }*/
+                    playControlLinker.goBack();
+                }
 
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -345,4 +351,5 @@ public class PlayPanel extends JPanel {
         changePlayLabel(pauseLabel);
         this.player.play(CustomPlayer.START_TIME);
     }
+
 }

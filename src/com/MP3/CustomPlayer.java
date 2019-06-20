@@ -126,7 +126,9 @@ public class CustomPlayer {
         return isPlaying;
     }
     public boolean isComplete(){
-        return player.isComplete();
+        if(player!= null)
+            return player.isComplete();
+        else return true;
     }
 
     /**

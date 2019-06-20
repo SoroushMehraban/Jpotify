@@ -1,5 +1,6 @@
 package com.Panels.GeneralPanels;
 
+import com.Interfaces.PlayControlLinker;
 import com.MP3.CustomPlayer;
 import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.SouthPanelSections.*;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class SouthPanel extends JPanel{
+public class SouthPanel extends JPanel implements PlayControlLinker {
     private JProgressBar soundBar;
     private WestPartPanel westPart;
     private EastPartPanel eastPart;
@@ -25,6 +26,9 @@ public class SouthPanel extends JPanel{
     private ProgressPanel progressPanel;
     private PlayPanel playPanel;
     private CustomPlayer customPlayer;
+    private SongPanel currentSongPanel;
+    private ArrayList<SongPanel> currentAlbumSongPanels;
+    private boolean newRunning;
 
     /**
      * Class Constructor
@@ -46,6 +50,7 @@ public class SouthPanel extends JPanel{
 
         centerPart.add(Box.createVerticalStrut(5));
         playPanel = new PlayPanel();//creating new PlayPanel
+        playPanel.setPlayControlLinker(this);
         centerPart.add(playPanel);//adding playPanel to center part of south panel
 
         progressPanel = new ProgressPanel();
@@ -66,20 +71,51 @@ public class SouthPanel extends JPanel{
      * @param songPanel panel of song we want to play.(help us to determine what is next)
      */
     public void play(SongPanel songPanel, ArrayList<SongPanel> albumSongPanels) {
-        if(customPlayer != null)//if previous music is playing
+        currentSongPanel = songPanel;
+        currentAlbumSongPanels = albumSongPanels;
+        if(customPlayer != null) {//if previous music is playing
             customPlayer.close();
+            newRunning = true;
+        }
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = albumSongPanels.indexOf(songPanel); i < albumSongPanels.size()  ; i++) {
-                    customPlayer = new CustomPlayer(songPanel.getInputFileDirectory());
+                newRunning = false;
+                outer: for (int i = albumSongPanels.indexOf(songPanel); i < albumSongPanels.size()  ; i++) {
+                    System.out.println("index played: "+i);
+                    currentSongPanel = albumSongPanels.get(i);
+                    customPlayer = new CustomPlayer(currentSongPanel.getInputFileDirectory());
                     playPanel.playMusic(customPlayer);
                     progressPanel.controlMusic(customPlayer);
                     westPart.updateNames(songPanel.getInputFileDirectory());
-                    while(!customPlayer.isComplete());
+                    while(!customPlayer.isComplete()) {//wait until song finish playing(end of playing).
+                        if(newRunning)
+                            break outer;
+                    }
                 }
+                System.out.println("Thread Closed");
             }
         });
         t.start();
+    }
+
+    @Override
+    public void goForward() {
+        if(currentAlbumSongPanels != null) {
+            int indexOfNextSong = (currentAlbumSongPanels.indexOf(currentSongPanel) + 1) % currentAlbumSongPanels.size() ;
+            SongPanel nextSong = currentAlbumSongPanels.get(indexOfNextSong);
+            play(nextSong, currentAlbumSongPanels);
+        }
+    }
+
+    @Override
+    public void goBack() {
+        if(currentAlbumSongPanels != null) {
+            int indexOfPreviousSong = (currentAlbumSongPanels.indexOf(currentSongPanel) - 1);
+            if(indexOfPreviousSong == -1)
+                indexOfPreviousSong = currentAlbumSongPanels.size() -1;
+            SongPanel previousSong = currentAlbumSongPanels.get(indexOfPreviousSong);
+            play(previousSong, currentAlbumSongPanels);
+        }
     }
 }
