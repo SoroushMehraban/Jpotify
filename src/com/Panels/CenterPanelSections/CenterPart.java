@@ -24,7 +24,7 @@ import java.util.HashSet;
  */
 public class CenterPart extends JPanel implements ShowSongsLinker {
     private HashMap<String,AlbumPanel> albumPanels;
-    private ArrayList<PlayListPanel> playListPanels;
+    private HashMap<String,PlayListPanel> playListPanels;
     private State state;
     private GridBagConstraints constraints;
 
@@ -38,24 +38,10 @@ public class CenterPart extends JPanel implements ShowSongsLinker {
         this.setBackground(new Color(23,23,23));//setting panel background
 
         albumPanels = new HashMap<>();//list of albumPanels.
-        playListPanels = new ArrayList<>();
+        playListPanels = new HashMap<>();
 
         //creating default playLists:
-        try {
-            BufferedImage favoriteSongsImage = ImageIO.read(new File("Images/FavoriteSong.png"));
-            PlayListPanel favoriteSongs = new PlayListPanel(favoriteSongsImage,"Favorite Songs","Favorite albumSongs chosen by user");
-            playListPanels.add(favoriteSongs);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading favorite albumSongs image");
-        }
-        try {
-            BufferedImage sharedSongImage = ImageIO.read(new File("Images/SharedSongs.jpg"));
-            PlayListPanel sharedSongs = new PlayListPanel(sharedSongImage,"Shared Songs","Shared albumSongs between users");
-            playListPanels.add(sharedSongs);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading shared albumSongs image");
-        }
-
+        createDefaultPlayLists();
     }
 
     /**
@@ -94,7 +80,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker {
         playListLabel.setForeground(new Color(219,219,219));
         this.add(playListLabel, constraints);
         gridy++;
-        for(PlayListPanel playListPanel: playListPanels){
+        for(PlayListPanel playListPanel: playListPanels.values()){
             constraints.gridy = gridy;
             constraints.gridx = gridx;
             this.add(playListPanel, constraints);
@@ -179,6 +165,26 @@ public class CenterPart extends JPanel implements ShowSongsLinker {
             JOptionPane.showMessageDialog(null, "Error reading mp3 file image");
         }
         return album;
+    }
+
+    /**
+     * this method creates default play lists which must to exist at first playing of program.(only be called at class constructor).
+     */
+    private void createDefaultPlayLists(){
+        try {
+            BufferedImage favoriteSongsImage = ImageIO.read(new File("Images/FavoriteSong.png"));
+            PlayListPanel favoriteSongs = new PlayListPanel(favoriteSongsImage,"Favorite Songs","Favorite albumSongs chosen by user",this);
+            playListPanels.put("Favorite Songs",favoriteSongs);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading favorite albumSongs image");
+        }
+        try {
+            BufferedImage sharedSongImage = ImageIO.read(new File("Images/SharedSongs.jpg"));
+            PlayListPanel sharedSongs = new PlayListPanel(sharedSongImage,"Shared Songs","Shared albumSongs between users",this);
+            playListPanels.put("Shared Songs",sharedSongs);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading shared albumSongs image");
+        }
     }
 
     /**

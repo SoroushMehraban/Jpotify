@@ -1,10 +1,14 @@
 package com.Panels.CenterPanelSections;
 
+import com.Interfaces.ShowSongsLinker;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Album panel which contains list of music which is chosen by user.
@@ -13,7 +17,9 @@ import java.util.ArrayList;
  * @version 1.0
  */
 class PlayListPanel extends MusicPanel {
-    private ArrayList<SongPanel> playListSongs;
+    private HashSet<SongPanel> playListSongs;
+    private ShowSongsLinker showSongsLinker;
+
     /**
      * Constructor which set information need to show in super class.
      *
@@ -21,9 +27,10 @@ class PlayListPanel extends MusicPanel {
      * @param title         title to show under the image.
      * @param description   description to show under the title.
      */
-    PlayListPanel(BufferedImage image, String title, String description) {
+    PlayListPanel(BufferedImage image, String title, String description, ShowSongsLinker showSongsLinker) {
         super(image, title, description);
-        playListSongs = new ArrayList<>();
+        playListSongs = new HashSet<>();
+        this.showSongsLinker = showSongsLinker;
         createPlayListListener();
     }
 
@@ -35,11 +42,12 @@ class PlayListPanel extends MusicPanel {
                 source.setBackground(new Color(23,23,23));
             }
 
-            /*@Override
+            @Override
             public void mousePressed(MouseEvent e) {
-                AlbumPanel source = (AlbumPanel)e.getSource();
+                showSongsLinker.showSongs(playListSongs);
+                PlayListPanel source = (PlayListPanel) e.getSource();
                 source.setBackground(new Color(23,23,23));
-            }*/
+            }
 
             @Override
             public void mouseEntered(MouseEvent e) {
