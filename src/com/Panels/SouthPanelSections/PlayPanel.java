@@ -415,6 +415,24 @@ public class PlayPanel extends JPanel {
         this.player = player;
         changePlayLabel(pauseLabel);
         this.player.play(CustomPlayer.START_TIME);
+        if(likeLinker.isSongLiked(player.getDirectory())) {
+            isLiked = true;
+            try {
+                likeImage = ImageIO.read(new File("Icons/Heart.png"));
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error reading like image");
+            }
+            likeLabel.setIcon(new ImageIcon(likeImage));
+        }
+        else{
+            isLiked = false;
+            try {
+                likeImage = ImageIO.read(new File("Icons/Heart-no-selected.png"));
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error reading like image");
+            }
+            likeLabel.setIcon(new ImageIcon(likeImage));
+        }
     }
 
 }

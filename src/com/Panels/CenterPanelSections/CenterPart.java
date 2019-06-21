@@ -220,6 +220,24 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
         }
     }
 
+    @Override
+    public boolean isSongLiked(String directory) {
+        PlayListPanel favoriteSongsPlayLists = playListPanels.get("Favorite Songs");
+        HashSet<SongPanel> favoriteSongPanels = favoriteSongsPlayLists.getPlayListSongs();
+        try {
+            MP3Info mp3Info = new MP3Info(directory);
+            for(SongPanel songPanel : favoriteSongPanels){
+                if(songPanel.getSongTitle().equals(mp3Info.getTitle()));
+                return true;
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading mp3 file");
+        } catch (NoSuchFieldException e) {
+            JOptionPane.showMessageDialog(null, "Error find mp3 file");
+        }
+        return false;
+    }
+
     /**
      * Creating playlist which shows it in center part with an image which said : Empty PlayList
      * @param title title of play list.

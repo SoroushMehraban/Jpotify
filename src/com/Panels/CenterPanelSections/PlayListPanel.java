@@ -11,9 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * Album panel which contains list of music which is chosen by user.
@@ -78,8 +76,17 @@ class PlayListPanel extends MusicPanel {
 
     }
     void removeSong(String title){
-        for(SongPanel songPanel : playListSongs)
+        Set<SongPanel> tempSynchronized = Collections.synchronizedSet(playListSongs);
+        Iterator<SongPanel> it = tempSynchronized.iterator();
+        while(it.hasNext()){
+            SongPanel songPanel = it.next();
             if(songPanel.getSongTitle().equals(title))
-                playListSongs.remove(songPanel);
+                it.remove();
+        }
+        playListSongs = new HashSet<>(tempSynchronized);
+    }
+
+    HashSet<SongPanel> getPlayListSongs() {
+        return playListSongs;
     }
 }
