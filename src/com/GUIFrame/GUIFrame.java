@@ -55,7 +55,7 @@ public class GUIFrame extends JFrame {
             mp3Infos.add(mp3Info);
             mp3Infos.add(mp3Info);
             mp3Infos.add(mp3Info);
-            addAlbum(mp3Info.getAlbum(),mp3Infos,"Sample text to show");
+            addAlbum(mp3Info.getAlbum(),mp3Infos);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -65,9 +65,14 @@ public class GUIFrame extends JFrame {
      * getting instance of class.
      * @return a unique com.GUIFrame.GUIFrame object.
      */
-    public static GUIFrame getInstance() throws IOException {
-        if(guiFrame == null)
-            guiFrame = new GUIFrame();
+    public static GUIFrame getInstance() {
+        if(guiFrame == null) {
+            try {
+                guiFrame = new GUIFrame();
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error creating GUIFrame");
+            }
+        }
         return guiFrame;
     }
 
@@ -83,18 +88,17 @@ public class GUIFrame extends JFrame {
      * this method play clicked music and then can be controlled in south panel.
      * @param songPanel song we want to play.
      */
-    public static void playClickedMusic(SongPanel songPanel, HashSet<SongPanel> albumSongPanels){
-        southPanel.play(songPanel, albumSongPanels);
+    public static void playClickedMusic(SongPanel songPanel){
+        southPanel.play(songPanel, centerPanel.getCenterPart().getCurrentPlaying());
     }
 
     /**
      * this method add an album which is selected in library.
      * @param albumTitle title of album to be shown.
      * @param albumMusicsInfo list of all musics info which related to a album.
-     * @param description description to be shown.
      */
-    public static void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo, String description) {
-        centerPanel.getCenterPart().addAlbum(albumTitle,albumMusicsInfo,description);
+    public static void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo) {
+        centerPanel.getCenterPart().addAlbum(albumTitle,albumMusicsInfo);
     }
 
     /**
@@ -112,5 +116,27 @@ public class GUIFrame extends JFrame {
      */
     public static void addSongToPlayList(String playListTitle, String songDirectory){
         centerPanel.getCenterPart().addSongToPlayList(playListTitle,songDirectory);
+    }
+
+    /**
+     * This method works as a linker between west panel and center panel and shows all songs existing in library.
+     */
+    public static void showAllSongs(){
+        centerPanel.getCenterPart().showAllSongs();
+    }
+
+    /**
+     * this method works as a linker between west part panel and center panel and shows all songs related to an album
+     * @param albumTitle album title as a key.
+     */
+    public static void showAlbumSongs(String albumTitle){
+        centerPanel.getCenterPart().showAlbumSongs(albumTitle);
+    }
+    /**
+     * this method works as a linker between west part panel and center panel and shows all songs related to a playList
+     * @param playlistTitle playlist title as a key.
+     */
+    public static void showPlaylistSongs(String playlistTitle){
+        centerPanel.getCenterPart().showPlayListSongs(playlistTitle);
     }
 }

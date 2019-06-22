@@ -1,5 +1,6 @@
 package com.Panels.CenterPanelSections;
 
+import com.Interfaces.LyricsLinker;
 import com.Interfaces.ShowSongsLinker;
 import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -28,15 +29,16 @@ class AlbumPanel extends MusicPanel {
      * Constructor which set information need to show in super class.
      * it also set a showSongLinker which helps us to show album Songs in center panel.
      *
-     * @param image         image of panel to show at first in above.
-     * @param title         title to show under the image.
-     * @param description   description to show under the title.
+     * @param image           image of panel to show at first in above.
+     * @param title           title to show under the image.
+     * @param description     description to show under the title.
      * @param albumMusicsInfo information about songs belongs to this album.
      * @param showSongsLinker a linker which helps us to show songs in center panel.
+     * @param lyricsLinker    a linker which helps us to show lyrics of song.
      */
-    AlbumPanel(BufferedImage image, String title, String description, ArrayList<MP3Info> albumMusicsInfo, ShowSongsLinker showSongsLinker) {
+    AlbumPanel(BufferedImage image, String title, String description, ArrayList<MP3Info> albumMusicsInfo, ShowSongsLinker showSongsLinker, LyricsLinker lyricsLinker) {
         super(image, title, description);
-        songPanels = createSongPanels(albumMusicsInfo,description);
+        songPanels = createSongPanels(albumMusicsInfo,lyricsLinker);
         createAlbumListener();
         this.showSongsLinker = showSongsLinker;
     }
@@ -77,14 +79,13 @@ class AlbumPanel extends MusicPanel {
     /**
      * this method gives list of mp3infos and return set of song panels.
      * @param mp3Infos list of song infos.
-     * @param description description to be show under each music.
      * @return set of song panels.
      */
-    private HashSet<SongPanel> createSongPanels(ArrayList<MP3Info> mp3Infos, String description){
+    private HashSet<SongPanel> createSongPanels(ArrayList<MP3Info> mp3Infos, LyricsLinker lyricsLinker){
         HashSet<SongPanel> songPanels = new HashSet<>();
         for(MP3Info mp3Info: mp3Infos ) {
             try {
-                songPanels.add(new SongPanel(mp3Info, description));
+                songPanels.add(new SongPanel(mp3Info, mp3Info.getArtist(),lyricsLinker));
             } catch (InvalidDataException | IOException | UnsupportedTagException e) {
                 JOptionPane.showMessageDialog(null, "Error reading mp3 file image");
             }
@@ -96,10 +97,9 @@ class AlbumPanel extends MusicPanel {
      * this method called if new songs related to album added, so it added all of them to songPanels
      * we use HashSet for songPanels to avoid song duplication.
      * @param albumMusicsInfo  new songs info added by user.
-     * @param description description to show in song panels.
      */
-    void addNewSongs(ArrayList<MP3Info> albumMusicsInfo, String description){
-        HashSet<SongPanel> newSongs = createSongPanels(albumMusicsInfo,description);
+    void addNewSongs(ArrayList<MP3Info> albumMusicsInfo,LyricsLinker lyricsLinker){
+        HashSet<SongPanel> newSongs = createSongPanels(albumMusicsInfo,lyricsLinker);
         songPanels.addAll(newSongs);
     }
 }

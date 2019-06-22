@@ -1,6 +1,7 @@
 package com.Panels.CenterPanelSections;
 
 import com.Interfaces.LikeLinker;
+import com.Interfaces.LyricsLinker;
 import com.Interfaces.ShowSongsLinker;
 import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -23,10 +24,10 @@ import java.util.HashSet;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
+public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker {
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
-    private State state;
+    private HashSet<SongPanel> currentPlaying;
     private GridBagConstraints constraints;
     private BufferedImage emptyPlayListImage;
 
@@ -50,6 +51,10 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading empty playlist image");
         }
+    }
+
+    public HashSet<SongPanel> getCurrentPlaying() {
+        return currentPlaying;
     }
 
     /**
@@ -99,7 +104,6 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
                 gridx = 0;
             }
         }
-        state = State.HOME;
         //updating center part of center panel:
         this.repaint();
         this.revalidate();
@@ -112,6 +116,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
      */
     @Override
     public void showSongs(HashSet<SongPanel> songPanels){
+        this.currentPlaying = songPanels;
         this.removeAll();//removing all components.
         //initializing grids:
         int gridx = 0;
@@ -129,7 +134,48 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
                 gridy++;
             }
         }
-        state = State.SONG;
+        //updating center part of center panel:
+        this.repaint();
+        this.revalidate();
+    }
+
+    /**
+     * This method only shows song panels related to an album.
+     * @param albumTitle title of album as a key
+     */
+    public void showAlbumSongs(String albumTitle){
+        showSongs(albumPanels.get(albumTitle).getSongPanels());
+    }
+    /**
+     * This method only shows song panels related to a album.
+     * @param playListTitle title of playlist as a key
+     */
+    public void showPlayListSongs(String playListTitle){
+        showSongs(playListPanels.get(playListTitle).getPlayListSongs());
+    }
+
+    /**
+     * This method is called when user press Songs in West panel, it shows all songs which exists in library.
+     */
+    public void showAllSongs(){
+        this.removeAll();//removing all components.
+        //initializing grids:
+        int gridx = 0;
+        int gridy = 0;
+        //showing all songs:
+        for (AlbumPanel albumPanel : albumPanels.values())
+            for(SongPanel songPanel : albumPanel.getSongPanels()){
+                constraints.gridy = gridy;
+                constraints.gridx = gridx;
+                this.add(songPanel, constraints);
+                if(gridx < 3) {
+                    gridx++;
+                }
+                else{
+                    gridx = 0;
+                    gridy++;
+                }
+            }
         //updating center part of center panel:
         this.repaint();
         this.revalidate();
@@ -141,19 +187,16 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
      *
      * @param albumTitle title of album which is a key of HashMap
      * @param albumMusicsInfo list of albumSongs info which has similar albums.
-     * @param description description to be shown
      */
-    public void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo, String description){
+    public void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo){
         if(!albumPanels.containsKey(albumTitle)) {//if album is a new album
-            AlbumPanel albumPanel = createAlbumPanel(albumMusicsInfo,description);
+            AlbumPanel albumPanel = createAlbumPanel(albumMusicsInfo);
             albumPanels.put(albumTitle, albumPanel);
             showHome();//showing home after created new album to show it's added.
         }
         else//if album added before we just add new songs
-            albumPanels.get(albumTitle).addNewSongs(albumMusicsInfo,description);
+            albumPanels.get(albumTitle).addNewSongs(albumMusicsInfo,this);
 
-        for(SongPanel songPanel : albumPanels.get(albumTitle).getSongPanels())//setting list of albumSongs in every SongPanel object so it knows album belongs to
-            songPanel.setAlbumSongPanels(albumPanels.get(albumTitle).getSongPanels());//this helps us to know what we should play next.
     }
 
     /**
@@ -161,14 +204,14 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
      * it gives image and title from first mp3info in given ArrayList.
      *
      * @param albumMusicsInfo list of music infos has similar album name
-     * @param description description to be show in album panel.
      * @return an album panel
      */
-    private AlbumPanel createAlbumPanel(ArrayList<MP3Info> albumMusicsInfo,String description){
+    private AlbumPanel createAlbumPanel(ArrayList<MP3Info> albumMusicsInfo){
         MP3Info firstMP3Info = albumMusicsInfo.get(0);
         AlbumPanel album = null;
+        String description = "Album contains "+albumMusicsInfo.size()+" songs";
         try {//creating an album panel with its listener
-            album = new AlbumPanel(firstMP3Info.getImage(),firstMP3Info.getTitle(),description,albumMusicsInfo,this);
+            album = new AlbumPanel(firstMP3Info.getImage(),firstMP3Info.getTitle(),description,albumMusicsInfo,this,this);
         } catch (InvalidDataException | IOException | UnsupportedTagException e) {
             JOptionPane.showMessageDialog(null, "Error reading mp3 file image");
         }
@@ -195,17 +238,9 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
         }
     }
 
-    /**
-     * getting state to indicate which state we are if we want to change that.
-     * @return present state
-     */
-    public State getState() {
-        return state;
-    }
-
     @Override
     public void addToFavoritePlayList(String directory) {
-        playListPanels.get("Favorite Songs").addSong(directory);
+        playListPanels.get("Favorite Songs").addSong(directory,this);
     }
 
     @Override
@@ -227,8 +262,8 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
         try {
             MP3Info mp3Info = new MP3Info(directory);
             for(SongPanel songPanel : favoriteSongPanels){
-                if(songPanel.getSongTitle().equals(mp3Info.getTitle()));
-                return true;
+                if(songPanel.getSongTitle().equals(mp3Info.getTitle()))
+                 return true;
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading mp3 file");
@@ -257,7 +292,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
      */
     public void addSongToPlayList(String playListTitle, String songDirectory){
         if(playListPanels.containsKey(playListTitle))//if playlist exists
-            playListPanels.get(playListTitle).addSong(songDirectory);
+            playListPanels.get(playListTitle).addSong(songDirectory,this);
     }
 
     /**
@@ -268,5 +303,19 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
     public void removeSongFromPlayList(String playListTitle, String songTitle){
         if(playListPanels.containsKey(playListTitle))//if playlist exist
             playListPanels.get(playListTitle).removeSong(songTitle);
+    }
+
+    @Override
+    public void showLyrics(ArrayList<String> lyricsLines) {
+        this.removeAll();//removing all components in center part
+        //initializing grids:
+        constraints.gridy = 0;
+        constraints.gridx = 0;
+        for(String lyricsLine : lyricsLines){
+            JLabel lineLabel = new JLabel(lyricsLine);
+            lineLabel.setForeground(new Color(219,219,219));//setting label color
+            this.add(lineLabel,constraints);
+            constraints.gridy++;
+        }
     }
 }

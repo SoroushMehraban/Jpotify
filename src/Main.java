@@ -9,10 +9,6 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args){
-        try {
-            GUIFrame frame = GUIFrame.getInstance();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        GUIFrame frame = GUIFrame.getInstance();
     }
 }

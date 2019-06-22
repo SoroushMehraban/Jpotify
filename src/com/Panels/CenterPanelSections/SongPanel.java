@@ -1,6 +1,7 @@
 package com.Panels.CenterPanelSections;
 
 import com.GUIFrame.GUIFrame;
+import com.Interfaces.LyricsLinker;
 import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
@@ -19,24 +20,26 @@ import java.util.HashSet;
  */
 public class SongPanel extends  MusicPanel {
     private MP3Info mp3Info;
-    private HashSet<SongPanel> albumSongPanels;
     private String songTitle;
+    private LyricsLinker lyricsLinker;
 
     /**
      * Constructor which set information need to show in super class and create a listener for song
      *
      * @param mp3Info information about mp3 we want to play
      * @param description description to show under the title.
+     * @param lyricsLinker a linker to show lyrics in center panel.
      */
-    SongPanel(MP3Info mp3Info, String description) throws InvalidDataException, IOException, UnsupportedTagException {
+    SongPanel(MP3Info mp3Info, String description, LyricsLinker lyricsLinker) throws InvalidDataException, IOException, UnsupportedTagException {
         super(mp3Info.getImage(),mp3Info.getTitle(),description);
         songTitle = mp3Info.getTitle();
         this.mp3Info = mp3Info;
+        this.lyricsLinker = lyricsLinker;
 
         createSongListener();
     }
 
-    public String getSongTitle() {
+    String getSongTitle() {
         return songTitle;
     }
 
@@ -45,13 +48,14 @@ public class SongPanel extends  MusicPanel {
      * it does two things:
      * -when mouse entered: it changes to a brighter color.
      * -when mouse exited: it backs to previous color it had.
+     * -when mouse pressed: it shows lyrics of song if exists and play given song.
      */
     private void createSongListener(){
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(albumSongPanels != null)
-                    GUIFrame.playClickedMusic((SongPanel)e.getSource(),albumSongPanels);
+                GUIFrame.playClickedMusic((SongPanel) e.getSource());
+                lyricsLinker.showLyrics(mp3Info.getLyrics());
             }
             @Override
             public void mouseExited(MouseEvent e) {
@@ -65,10 +69,6 @@ public class SongPanel extends  MusicPanel {
                 source.setBackground(new Color(41,41,41));
             }
         });
-    }
-
-    void setAlbumSongPanels(HashSet<SongPanel> albumSongPanels) {
-        this.albumSongPanels = albumSongPanels;
     }
 
     public String getInputFileDirectory(){
