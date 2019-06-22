@@ -6,8 +6,6 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -34,7 +32,6 @@ public class CenterPanel extends JPanel {
 
         northPart = new NorthPart();//creating north part of panel
         this.add(northPart,BorderLayout.NORTH);//adding north part of panel to center panel
-        createLeftArrowListener();
 
         centerPart = new CenterPart();//creating center part panel
         JScrollPane jScrollPane = new JScrollPane(centerPart);//creating JScrollPane to cover center part with scrollbar
@@ -85,31 +82,5 @@ public class CenterPanel extends JPanel {
      */
     public void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo, String description){
         centerPart.addAlbum(albumTitle,albumMusicsInfo, description);
-    }
-
-    /**
-     * This method create a listener to left arrow at left corner in North Part.
-     * if mouse Entered: it become brighter.
-     * if mouse exited: it turns to previous form.
-     * if mouse pressed: center part changed to previous state.
-     */
-    private void createLeftArrowListener(){
-        northPart.setLeftArrowListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(centerPart.getState() == State.SONG)
-                    centerPart.showHome();
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                northPart.setLeftArrowIcon(northPart.getLeftArrowImage());
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                northPart.setLeftArrowIcon(northPart.getLeftArrowNoSelectedImage());
-            }
-        });
     }
 }

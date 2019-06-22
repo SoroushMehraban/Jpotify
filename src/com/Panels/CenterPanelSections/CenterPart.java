@@ -27,7 +27,6 @@ import java.util.HashSet;
 public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker {
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
-    private State state;
     private GridBagConstraints constraints;
     private BufferedImage emptyPlayListImage;
 
@@ -100,7 +99,6 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                 gridx = 0;
             }
         }
-        state = State.HOME;
         //updating center part of center panel:
         this.repaint();
         this.revalidate();
@@ -130,7 +128,6 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                 gridy++;
             }
         }
-        state = State.SONG;
         //updating center part of center panel:
         this.repaint();
         this.revalidate();
@@ -173,7 +170,6 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                     gridy++;
                 }
             }
-        state = State.SONG;
         //updating center part of center panel:
         this.repaint();
         this.revalidate();
@@ -237,14 +233,6 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading shared albumSongs image");
         }
-    }
-
-    /**
-     * getting state to indicate which state we are if we want to change that.
-     * @return present state
-     */
-    public State getState() {
-        return state;
     }
 
     @Override
