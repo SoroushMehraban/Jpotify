@@ -136,6 +136,21 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
     }
 
     /**
+     * This method only shows song panels related to an album.
+     * @param albumTitle title of album as a key
+     */
+    public void showAlbumSongs(String albumTitle){
+        showSongs(albumPanels.get(albumTitle).getSongPanels());
+    }
+    /**
+     * This method only shows song panels related to a album.
+     * @param playListTitle title of playlist as a key
+     */
+    public void showPlayListSongs(String playListTitle){
+        showSongs(playListPanels.get(playListTitle).getPlayListSongs());
+    }
+
+    /**
      * This method is called when user press Songs in West panel, it shows all songs which exists in library.
      */
     public void showAllSongs(){
@@ -162,6 +177,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
         this.repaint();
         this.revalidate();
     }
+
     /**
      * this method add an album to albumSongs HashMap if it's not exist
      * or add new songs to existing album if given songs are new.

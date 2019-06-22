@@ -114,4 +114,19 @@ public class GUIFrame extends JFrame {
     public static void showAllSongs(){
         centerPanel.getCenterPart().showAllSongs();
     }
+
+    /**
+     * this method works as a linker between west part panel and center panel and shows all songs related to an album
+     * @param albumTitle album title as a key.
+     */
+    public static void showAlbumSongs(String albumTitle){
+        centerPanel.getCenterPart().showAlbumSongs(albumTitle);
+    }
+    /**
+     * this method works as a linker between west part panel and center panel and shows all songs related to a playList
+     * @param playlistTitle playlist title as a key.
+     */
+    public static void showPlaylistSongs(String playlistTitle){
+        centerPanel.getCenterPart().showPlayListSongs(playlistTitle);
+    }
 }
