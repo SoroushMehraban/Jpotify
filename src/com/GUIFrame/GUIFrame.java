@@ -59,9 +59,14 @@ public class GUIFrame extends JFrame {
      * getting instance of class.
      * @return a unique com.GUIFrame.GUIFrame object.
      */
-    public static GUIFrame getInstance() throws IOException {
-        if(guiFrame == null)
-            guiFrame = new GUIFrame();
+    public static GUIFrame getInstance() {
+        if(guiFrame == null) {
+            try {
+                guiFrame = new GUIFrame();
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error creating GUIFrame");
+            }
+        }
         return guiFrame;
     }
 
