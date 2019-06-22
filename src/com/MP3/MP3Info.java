@@ -77,17 +77,21 @@ public class MP3Info {
     }
 
     /**
-     * @return title of mp3 file.
+     * @return title of mp3 file. if any [tag] exists. it doesn't consider it.
      */
     public String getTitle() {
-        return title;
+        if(title.split("[\\[]")[0].length() > 1)
+            return title.split("[\\[]")[0].trim();
+        else return title;
     }
 
     /**
-     * @return artist of mp3 file.
+     * @return artist of mp3 file. if any [tag] exists. it doesn't consider it.
      */
     public String getArtist() {
-        return artist;
+        if(artist.split("[\\[]")[0].length() > 1)
+            return artist.split("[\\[]")[0];
+        else return artist;
     }
 
     /**

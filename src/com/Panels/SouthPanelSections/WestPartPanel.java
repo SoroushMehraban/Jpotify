@@ -43,11 +43,17 @@ public class WestPartPanel extends JPanel {
         songFullName = "Song Name";
         songName = new JLabel(songFullName);
         songName.setForeground(new Color(179,179,179));
+        songName.setMaximumSize(new Dimension(72,16));
+        songName.setMinimumSize(new Dimension(72,16));
+        songName.setPreferredSize(new Dimension(72,16));
         createSongNameAction();
         //creating artist name label:
         artistFullName = "Artist Name";
         artistName = new JLabel(artistFullName);
         artistName.setForeground(new Color(92,84,84));
+        artistName.setMaximumSize(new Dimension(72,16));
+        artistName.setMinimumSize(new Dimension(72,16));
+        artistName.setPreferredSize(new Dimension(72,16));
         createArtistNameAction();
         //creating plus label with icon:
         plusIcon = ImageIO.read(new File("Icons/Plus-no-select.png"));
@@ -113,13 +119,13 @@ public class WestPartPanel extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 isArtistEntered = true;//this variable indicated when should thread in below terminate.
-                if(artistFullName.length() > 15){//if it's size is more than 15 character and doesn't fit
+                if(artistFullName.length() > 12){//if it's size is more than 15 character and doesn't fit
                     Thread artistNameThread = new Thread(new Runnable() {//creating thread to move the text
                         @Override
                         public void run() {
                             while(isArtistEntered)//while mouse is Entered
-                                for (int i = 0; i <artistFullName.length() - 15 && isArtistEntered ; i++) {
-                                    artistName.setText(artistFullName.substring(i,i+12));
+                                for (int i = 0; i <artistFullName.length() - 9 && isArtistEntered ; i++) {
+                                    artistName.setText(artistFullName.substring(i,i+9)+"  ");
                                     try {
                                         Thread.sleep(500);
                                     } catch (InterruptedException e1) {
@@ -149,13 +155,13 @@ public class WestPartPanel extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 isSongEntered = true;//this variable indicated when should thread in below terminate.
-                if(songFullName.length() > 15){//if it's size is more than 15 character and doesn't fit
+                if(songFullName.length() > 12){//if it's size is more than 15 character and doesn't fit
                     Thread songNameThread = new Thread(new Runnable() {//creating thread to move the text
                         @Override
                         public void run() {
                             while(isSongEntered)//while mouse is Entered
-                                for (int i = 0; i <songFullName.length() - 15 && isSongEntered ; i++) {
-                                    songName.setText(songFullName.substring(i,i+12));
+                                for (int i = 0; i <songFullName.length() - 9 && isSongEntered ; i++) {
+                                    songName.setText(songFullName.substring(i,i+9));
                                     try {
                                         Thread.sleep(500);
                                     } catch (InterruptedException e1) {
@@ -191,9 +197,9 @@ public class WestPartPanel extends JPanel {
         }
     }
     private String createShortenedText(String text){
-        if(text.length() <= 15)
+        if(text.length() <= 12)
             return text;
         else
-            return text.substring(0,12) + "...";
+            return text.substring(0,9) + "...";
     }
 }
