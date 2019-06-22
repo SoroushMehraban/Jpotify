@@ -78,9 +78,8 @@ public class CenterPanel extends JPanel {
      * this method simply calls addAlbum method in centerPart object.
      * @param albumTitle title of album
      * @param albumMusicsInfo list of musics info related to album
-     * @param description description to be shown in album panel
      */
-    public void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo, String description){
-        centerPart.addAlbum(albumTitle,albumMusicsInfo, description);
+    public void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo){
+        centerPart.addAlbum(albumTitle,albumMusicsInfo);
     }
 }

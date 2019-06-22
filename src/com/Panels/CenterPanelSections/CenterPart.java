@@ -187,16 +187,15 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      *
      * @param albumTitle title of album which is a key of HashMap
      * @param albumMusicsInfo list of albumSongs info which has similar albums.
-     * @param description description to be shown
      */
-    public void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo, String description){
+    public void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo){
         if(!albumPanels.containsKey(albumTitle)) {//if album is a new album
-            AlbumPanel albumPanel = createAlbumPanel(albumMusicsInfo,description);
+            AlbumPanel albumPanel = createAlbumPanel(albumMusicsInfo);
             albumPanels.put(albumTitle, albumPanel);
             showHome();//showing home after created new album to show it's added.
         }
         else//if album added before we just add new songs
-            albumPanels.get(albumTitle).addNewSongs(albumMusicsInfo,description,this);
+            albumPanels.get(albumTitle).addNewSongs(albumMusicsInfo,this);
 
     }
 
@@ -205,12 +204,12 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      * it gives image and title from first mp3info in given ArrayList.
      *
      * @param albumMusicsInfo list of music infos has similar album name
-     * @param description description to be show in album panel.
      * @return an album panel
      */
-    private AlbumPanel createAlbumPanel(ArrayList<MP3Info> albumMusicsInfo,String description){
+    private AlbumPanel createAlbumPanel(ArrayList<MP3Info> albumMusicsInfo){
         MP3Info firstMP3Info = albumMusicsInfo.get(0);
         AlbumPanel album = null;
+        String description = "Album contains "+albumMusicsInfo.size()+" songs";
         try {//creating an album panel with its listener
             album = new AlbumPanel(firstMP3Info.getImage(),firstMP3Info.getTitle(),description,albumMusicsInfo,this,this);
         } catch (InvalidDataException | IOException | UnsupportedTagException e) {

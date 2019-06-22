@@ -38,7 +38,7 @@ class AlbumPanel extends MusicPanel {
      */
     AlbumPanel(BufferedImage image, String title, String description, ArrayList<MP3Info> albumMusicsInfo, ShowSongsLinker showSongsLinker, LyricsLinker lyricsLinker) {
         super(image, title, description);
-        songPanels = createSongPanels(albumMusicsInfo,description,lyricsLinker);
+        songPanels = createSongPanels(albumMusicsInfo,lyricsLinker);
         createAlbumListener();
         this.showSongsLinker = showSongsLinker;
     }
@@ -79,14 +79,13 @@ class AlbumPanel extends MusicPanel {
     /**
      * this method gives list of mp3infos and return set of song panels.
      * @param mp3Infos list of song infos.
-     * @param description description to be show under each music.
      * @return set of song panels.
      */
-    private HashSet<SongPanel> createSongPanels(ArrayList<MP3Info> mp3Infos, String description,LyricsLinker lyricsLinker){
+    private HashSet<SongPanel> createSongPanels(ArrayList<MP3Info> mp3Infos, LyricsLinker lyricsLinker){
         HashSet<SongPanel> songPanels = new HashSet<>();
         for(MP3Info mp3Info: mp3Infos ) {
             try {
-                songPanels.add(new SongPanel(mp3Info, description,lyricsLinker));
+                songPanels.add(new SongPanel(mp3Info, mp3Info.getArtist(),lyricsLinker));
             } catch (InvalidDataException | IOException | UnsupportedTagException e) {
                 JOptionPane.showMessageDialog(null, "Error reading mp3 file image");
             }
@@ -98,10 +97,9 @@ class AlbumPanel extends MusicPanel {
      * this method called if new songs related to album added, so it added all of them to songPanels
      * we use HashSet for songPanels to avoid song duplication.
      * @param albumMusicsInfo  new songs info added by user.
-     * @param description description to show in song panels.
      */
-    void addNewSongs(ArrayList<MP3Info> albumMusicsInfo, String description,LyricsLinker lyricsLinker){
-        HashSet<SongPanel> newSongs = createSongPanels(albumMusicsInfo,description,lyricsLinker);
+    void addNewSongs(ArrayList<MP3Info> albumMusicsInfo,LyricsLinker lyricsLinker){
+        HashSet<SongPanel> newSongs = createSongPanels(albumMusicsInfo,lyricsLinker);
         songPanels.addAll(newSongs);
     }
 }

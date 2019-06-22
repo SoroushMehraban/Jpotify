@@ -49,7 +49,7 @@ public class GUIFrame extends JFrame {
             mp3Infos.add(mp3Info);
             mp3Infos.add(mp3Info);
             mp3Infos.add(mp3Info);
-            addAlbum(mp3Info.getAlbum(),mp3Infos,"Sample text to show");
+            addAlbum(mp3Info.getAlbum(),mp3Infos);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -90,10 +90,9 @@ public class GUIFrame extends JFrame {
      * this method add an album which is selected in library.
      * @param albumTitle title of album to be shown.
      * @param albumMusicsInfo list of all musics info which related to a album.
-     * @param description description to be shown.
      */
-    public static void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo, String description) {
-        centerPanel.getCenterPart().addAlbum(albumTitle,albumMusicsInfo,description);
+    public static void addAlbum(String albumTitle, ArrayList<MP3Info> albumMusicsInfo) {
+        centerPanel.getCenterPart().addAlbum(albumTitle,albumMusicsInfo);
     }
 
     /**
