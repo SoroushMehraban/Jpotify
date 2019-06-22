@@ -50,7 +50,7 @@ public class CenterPanel extends JPanel {
      * this method customize JScrollPane's color to fit in center part theme.
      * @param jScrollPane our jScrollPane to to be customized.
      */
-    private static void customizeJScrollPane(JScrollPane jScrollPane){
+    public static void customizeJScrollPane(JScrollPane jScrollPane){
         jScrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
             @Override
             protected void configureScrollBarColors(){

@@ -21,6 +21,7 @@ public class GUIFrame extends JFrame {
     private static GUIFrame guiFrame;
     private static SouthPanel southPanel;
     private static CenterPanel centerPanel;
+    private static WestPanel westPanel;
     /**
      * Class Constructor
      */
@@ -34,6 +35,11 @@ public class GUIFrame extends JFrame {
         this.add(centerPanel,BorderLayout.CENTER);
         southPanel = new SouthPanel();
         this.add(southPanel,BorderLayout.SOUTH);
+        westPanel=new WestPanel();
+        JScrollPane leftJScrollPane=new JScrollPane(westPanel);
+        leftJScrollPane.setPreferredSize(new Dimension(150,600));
+        CenterPanel.customizeJScrollPane(leftJScrollPane);
+        this.add(leftJScrollPane,BorderLayout.WEST);
         this.setVisible(true);
         //setting like linker between playPanel in southPanel and centerPart in centerPanel:
         southPanel.getPlayPanel().setLikeLinker(centerPanel.getCenterPart());
