@@ -365,15 +365,18 @@ public class PlayPanel extends JPanel {
         likeLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                isLiked = !isLiked;
+                if(player != null &&player.isPlaying())
+                    isLiked = !isLiked;
                 try {
                     if(isLiked) {
                         likeImage = ImageIO.read(new File("Icons/Heart.png"));
-                        likeLinker.addToFavoritePlayList(player.getDirectory());
+                        if(player != null &&player.isPlaying())
+                            likeLinker.addToFavoritePlayList(player.getDirectory());
                     }
                     else {
                         likeImage = ImageIO.read(new File("Icons/Heart-selected.png"));
-                        likeLinker.removeFromFavoritePlayList(player.getDirectory());
+                        if(player != null && player.isPlaying())
+                            likeLinker.removeFromFavoritePlayList(player.getDirectory());
                     }
                     likeLabel.setIcon(new ImageIcon(likeImage));
                 } catch (IOException e1) {
