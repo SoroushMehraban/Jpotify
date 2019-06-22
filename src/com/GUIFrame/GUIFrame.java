@@ -107,4 +107,11 @@ public class GUIFrame extends JFrame {
     public static void addSongToPlayList(String playListTitle, String songDirectory){
         centerPanel.getCenterPart().addSongToPlayList(playListTitle,songDirectory);
     }
+
+    /**
+     * This method works as a linker between west panel and center panel and shows all songs existing in library.
+     */
+    public static void showAllSongs(){
+        centerPanel.getCenterPart().showAllSongs();
+    }
 }

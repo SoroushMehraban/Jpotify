@@ -136,6 +136,33 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
     }
 
     /**
+     * This method is called when user press Songs in West panel, it shows all songs which exists in library.
+     */
+    public void showAllSongs(){
+        this.removeAll();//removing all components.
+        //initializing grids:
+        int gridx = 0;
+        int gridy = 0;
+        //showing all songs:
+        for (AlbumPanel albumPanel : albumPanels.values())
+            for(SongPanel songPanel : albumPanel.getSongPanels()){
+                constraints.gridy = gridy;
+                constraints.gridx = gridx;
+                this.add(songPanel, constraints);
+                if(gridx < 3) {
+                    gridx++;
+                }
+                else{
+                    gridx = 0;
+                    gridy++;
+                }
+            }
+        state = State.SONG;
+        //updating center part of center panel:
+        this.repaint();
+        this.revalidate();
+    }
+    /**
      * this method add an album to albumSongs HashMap if it's not exist
      * or add new songs to existing album if given songs are new.
      *
@@ -227,8 +254,8 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
         try {
             MP3Info mp3Info = new MP3Info(directory);
             for(SongPanel songPanel : favoriteSongPanels){
-                if(songPanel.getSongTitle().equals(mp3Info.getTitle()));
-                return true;
+                if(songPanel.getSongTitle().equals(mp3Info.getTitle()))
+                 return true;
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading mp3 file");
