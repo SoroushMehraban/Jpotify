@@ -82,8 +82,8 @@ public class GUIFrame extends JFrame {
      * this method play clicked music and then can be controlled in south panel.
      * @param songPanel song we want to play.
      */
-    public static void playClickedMusic(SongPanel songPanel, HashSet<SongPanel> albumSongPanels){
-        southPanel.play(songPanel, albumSongPanels);
+    public static void playClickedMusic(SongPanel songPanel){
+        southPanel.play(songPanel, centerPanel.getCenterPart().getCurrentPlaying());
     }
 
     /**

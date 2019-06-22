@@ -20,7 +20,6 @@ import java.util.HashSet;
  */
 public class SongPanel extends  MusicPanel {
     private MP3Info mp3Info;
-    private HashSet<SongPanel> albumSongPanels;
     private String songTitle;
     private LyricsLinker lyricsLinker;
 
@@ -55,10 +54,8 @@ public class SongPanel extends  MusicPanel {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(albumSongPanels != null) {
-                    GUIFrame.playClickedMusic((SongPanel) e.getSource(), albumSongPanels);
-                    lyricsLinker.showLyrics(mp3Info.getLyrics());
-                }
+                GUIFrame.playClickedMusic((SongPanel) e.getSource());
+                lyricsLinker.showLyrics(mp3Info.getLyrics());
             }
             @Override
             public void mouseExited(MouseEvent e) {
@@ -72,10 +69,6 @@ public class SongPanel extends  MusicPanel {
                 source.setBackground(new Color(41,41,41));
             }
         });
-    }
-
-    void setAlbumSongPanels(HashSet<SongPanel> albumSongPanels) {
-        this.albumSongPanels = albumSongPanels;
     }
 
     public String getInputFileDirectory(){

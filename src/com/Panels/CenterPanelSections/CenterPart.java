@@ -27,6 +27,7 @@ import java.util.HashSet;
 public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker {
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
+    private HashSet<SongPanel> currentPlaying;
     private GridBagConstraints constraints;
     private BufferedImage emptyPlayListImage;
 
@@ -50,6 +51,10 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading empty playlist image");
         }
+    }
+
+    public HashSet<SongPanel> getCurrentPlaying() {
+        return currentPlaying;
     }
 
     /**
@@ -111,6 +116,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      */
     @Override
     public void showSongs(HashSet<SongPanel> songPanels){
+        this.currentPlaying = songPanels;
         this.removeAll();//removing all components.
         //initializing grids:
         int gridx = 0;
@@ -192,8 +198,6 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         else//if album added before we just add new songs
             albumPanels.get(albumTitle).addNewSongs(albumMusicsInfo,description,this);
 
-        for(SongPanel songPanel : albumPanels.get(albumTitle).getSongPanels())//setting list of albumSongs in every SongPanel object so it knows album belongs to
-            songPanel.setAlbumSongPanels(albumPanels.get(albumTitle).getSongPanels());//this helps us to know what we should play next.
     }
 
     /**
