@@ -4,6 +4,9 @@ import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -109,5 +112,50 @@ public class MP3Info {
         byte[] imageData = id3v2Tag.getAlbumImage();//getting bytes of our image.
         ByteArrayInputStream bis = new ByteArrayInputStream(imageData);//converting bytes to ByteArrayInputStream so it can be read by ImageIO
         return ImageIO.read(bis);//desired image
+    }
+
+    /**
+     * This method searches given song in google and retrieves lyrics of that if no issues happens at the middle of that.
+     * For doing this, a URL which is a default search pattern of google is created and search message is given to it.
+     * Due to the google search pattern, every spaces in search message replaced with '+' character.
+     * after running the page up with helps of JSoup library, we looking for div.Oh5wg in that page(which is found by google chrome inspect element)
+     * then we search every span tag and extract the text out of tag.
+     * google puts every line in a pair of span tag. so we made a firstSpan boolean to extract only one of those pairs.
+     * due to additional words between and at the end of lines. we use 2 if condition to remove additional words.
+     *
+     * @see Element
+     * @see Document
+     * @return ArrayList of lyrics lines.
+     */
+    public ArrayList<String> getLyrics(){
+        ArrayList<String> lyricsLines = new ArrayList<>();
+        boolean firstSpan = true;
+        String searchMessage = (getArtist() + getTitle() + "+lyrics").replace(" ","+");
+        String URL ="https://www.google.com/search?ei=6d0NXareDdKegQaEqJjgDg&q="+searchMessage+"&oq="+searchMessage+"&gs_l=psy-ab.3..0.2699.2699..2999...0.0..0.217.217.2-1......0....1..gws-wiz.wFnbg5G6yho";
+        try {
+            Document doc = Jsoup.connect(URL).get();
+            Element lyrics = doc.select("div.Oh5wg").get(0);
+            for(Element line : lyrics.getElementsByTag("span")) {
+                if(line.text().contains("Lyrics weren't translated."))//removing additional text at the end of search query.
+                    break;
+                if(line.text().equals("…")){//removing additional words between lines.
+                    lyricsLines.remove(lyricsLines.size() - 1);
+                    continue;
+                }
+                if(firstSpan){
+                    lyricsLines.add(line.text());
+                }
+                firstSpan = !firstSpan;
+            }
+            return  lyricsLines;
+        } catch (IOException e) {//if process didn't succeed:
+            lyricsLines.add("Sorry, We couldn't find any lyrics for this music.");
+            lyricsLines.add("Reason(s)");
+            lyricsLines.add("1- Internet connection");
+            lyricsLines.add("2- There is a additional tag besides title or artist name");
+            lyricsLines.add("3- Your song is not famous enough");
+            lyricsLines.add("3- Your artist does not sing anything at all");
+            return  lyricsLines;
+        }
     }
 }
