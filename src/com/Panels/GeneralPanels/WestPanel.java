@@ -1,5 +1,7 @@
 
 package com.Panels.GeneralPanels;
+import com.Panels.WestPanelSections.WestPanelListeners.AlbumsPanelListener;
+import com.Panels.WestPanelSections.WestPanelListeners.HomePanelListener;
 import com.Panels.WestPanelSections.WestPanelListeners.LibraryPanelListener;
 import com.Panels.WestPanelSections.WestPanelListeners.SongsPanelListener;
 
@@ -35,6 +37,8 @@ public class WestPanel extends JPanel
         ImageIcon homeImage=new ImageIcon("Icons/Home-no-select.png");
         homeIcon.setIcon(homeImage);
         homeLabel=new JLabel(" HOME");
+        homeIcon.addMouseListener(new HomePanelListener(homeIcon,homeLabel));
+        homeLabel.addMouseListener(new HomePanelListener(homeIcon,homeLabel));
         homeLabel.setForeground(Color.WHITE);
         homePanel.add(homeIcon);
         homePanel.add(homeLabel);
@@ -83,6 +87,8 @@ public class WestPanel extends JPanel
         albumsIcon.setIcon(albumsImage);
         albumsPanel.add(albumsIcon);
         albumsLabel=new JLabel(" Albums");
+        albumsIcon.addMouseListener(new AlbumsPanelListener(albumsIcon,albumsLabel));
+        albumsLabel.addMouseListener(new AlbumsPanelListener(albumsIcon,albumsLabel));
         albumsLabel.setForeground(Color.WHITE);
         albumsPanel.add(albumsLabel);
         this.add(albumsPanel);
