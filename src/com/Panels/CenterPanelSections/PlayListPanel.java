@@ -1,5 +1,6 @@
 package com.Panels.CenterPanelSections;
 
+import com.Interfaces.LyricsLinker;
 import com.Interfaces.ShowSongsLinker;
 import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -60,11 +61,11 @@ class PlayListPanel extends MusicPanel {
         });
     }
 
-    void addSong(String directory){
+    void addSong(String directory, LyricsLinker lyricsLinker){
         try {
             MP3Info mp3Info = new MP3Info(directory);
             String description = "This song belongs to "+mp3Info.getAlbum()+" album";
-            SongPanel songPanel = new SongPanel(mp3Info,description);
+            SongPanel songPanel = new SongPanel(mp3Info,description,lyricsLinker);
             playListSongs.add(songPanel);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading mp3 file");

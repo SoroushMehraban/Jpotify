@@ -148,7 +148,7 @@ public class MP3Info {
                 firstSpan = !firstSpan;
             }
             return  lyricsLines;
-        } catch (IOException e) {//if process didn't succeed:
+        } catch (IOException | IndexOutOfBoundsException e) {//if process didn't succeed:
             lyricsLines.add("Sorry, We couldn't find any lyrics for this music.");
             lyricsLines.add("Reason(s)");
             lyricsLines.add("1- Internet connection");

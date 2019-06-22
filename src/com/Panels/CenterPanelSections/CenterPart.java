@@ -1,6 +1,7 @@
 package com.Panels.CenterPanelSections;
 
 import com.Interfaces.LikeLinker;
+import com.Interfaces.LyricsLinker;
 import com.Interfaces.ShowSongsLinker;
 import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -23,7 +24,7 @@ import java.util.HashSet;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
+public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker {
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
     private State state;
@@ -193,7 +194,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
             showHome();//showing home after created new album to show it's added.
         }
         else//if album added before we just add new songs
-            albumPanels.get(albumTitle).addNewSongs(albumMusicsInfo,description);
+            albumPanels.get(albumTitle).addNewSongs(albumMusicsInfo,description,this);
 
         for(SongPanel songPanel : albumPanels.get(albumTitle).getSongPanels())//setting list of albumSongs in every SongPanel object so it knows album belongs to
             songPanel.setAlbumSongPanels(albumPanels.get(albumTitle).getSongPanels());//this helps us to know what we should play next.
@@ -211,7 +212,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
         MP3Info firstMP3Info = albumMusicsInfo.get(0);
         AlbumPanel album = null;
         try {//creating an album panel with its listener
-            album = new AlbumPanel(firstMP3Info.getImage(),firstMP3Info.getTitle(),description,albumMusicsInfo,this);
+            album = new AlbumPanel(firstMP3Info.getImage(),firstMP3Info.getTitle(),description,albumMusicsInfo,this,this);
         } catch (InvalidDataException | IOException | UnsupportedTagException e) {
             JOptionPane.showMessageDialog(null, "Error reading mp3 file image");
         }
@@ -248,7 +249,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
 
     @Override
     public void addToFavoritePlayList(String directory) {
-        playListPanels.get("Favorite Songs").addSong(directory);
+        playListPanels.get("Favorite Songs").addSong(directory,this);
     }
 
     @Override
@@ -300,7 +301,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
      */
     public void addSongToPlayList(String playListTitle, String songDirectory){
         if(playListPanels.containsKey(playListTitle))//if playlist exists
-            playListPanels.get(playListTitle).addSong(songDirectory);
+            playListPanels.get(playListTitle).addSong(songDirectory,this);
     }
 
     /**
@@ -311,5 +312,19 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker {
     public void removeSongFromPlayList(String playListTitle, String songTitle){
         if(playListPanels.containsKey(playListTitle))//if playlist exist
             playListPanels.get(playListTitle).removeSong(songTitle);
+    }
+
+    @Override
+    public void showLyrics(ArrayList<String> lyricsLines) {
+        this.removeAll();//removing all components in center part
+        //initializing grids:
+        constraints.gridy = 0;
+        constraints.gridx = 0;
+        for(String lyricsLine : lyricsLines){
+            JLabel lineLabel = new JLabel(lyricsLine);
+            lineLabel.setForeground(new Color(219,219,219));//setting label color
+            this.add(lineLabel,constraints);
+            constraints.gridy++;
+        }
     }
 }
