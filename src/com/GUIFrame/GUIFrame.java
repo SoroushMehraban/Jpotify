@@ -1,15 +1,14 @@
 package com.GUIFrame;
 
+import com.Interfaces.PlaylistOptionLinker;
 import com.MP3.MP3Info;
 import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.GeneralPanels.*;
-import com.Interfaces.AddingSongLinker;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * the window GUI where User can play a music.
@@ -47,16 +46,15 @@ public class GUIFrame extends JFrame {
         //temp code to determine it can show albums and musics:
         try {
             MP3Info mp3Info = new MP3Info("Soroush Tabarsi - Grey (Ft Seventh Soul) [128].mp3");
+            MP3Info mp3Info2 = new MP3Info("Mohsen Namjoo - Toranj.mp3");
             ArrayList<MP3Info> mp3Infos = new ArrayList<>();
             mp3Infos.add(mp3Info);
             mp3Infos.add(mp3Info);
             mp3Infos.add(mp3Info);
-            mp3Infos.add(mp3Info);
-            mp3Infos.add(mp3Info);
-            mp3Infos.add(mp3Info);
-            mp3Infos.add(mp3Info);
-            mp3Infos.add(mp3Info);
-            addAlbum(mp3Info.getAlbum(),mp3Infos);
+            mp3Infos.add(mp3Info2);
+            mp3Infos.add(mp3Info2);
+            mp3Infos.add(mp3Info2);
+            addAlbum(mp3Info2.getAlbum(),mp3Infos);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -162,7 +160,7 @@ public class GUIFrame extends JFrame {
     public static ArrayList<String> getAlbumTitles(){
         return centerPanel.getCenterPart().getAlbumTitles();
     }
-    public static AddingSongLinker getAddingSongLinker(){
+    public static PlaylistOptionLinker getAddingAndRemovingSongLinker(){
         return centerPanel.getCenterPart();
     }
 

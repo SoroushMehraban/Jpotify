@@ -1,7 +1,7 @@
 package com.Panels.CenterPanelSections;
 
 import com.GUIFrame.GUIFrame;
-import com.Interfaces.AddingSongLinker;
+import com.Interfaces.PlaylistOptionLinker;
 import com.Interfaces.LyricsLinker;
 import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.HashSet;
 
 /**
  * This subclass created if the music panel we want is a song and if user click on that, it plays desired song.
@@ -23,7 +22,7 @@ public class SongPanel extends  MusicPanel {
     private MP3Info mp3Info;
     private String songTitle;
     private LyricsLinker lyricsLinker;
-    private AddingSongLinker addingSongLinker;
+    private PlaylistOptionLinker playlistOptionLinker;
     private boolean selected;//helps for adding song to playlist.
 
     /**
@@ -39,7 +38,7 @@ public class SongPanel extends  MusicPanel {
         this.mp3Info = mp3Info;
         this.lyricsLinker = lyricsLinker;
 
-        addingSongLinker = GUIFrame.getAddingSongLinker();
+        playlistOptionLinker = GUIFrame.getAddingAndRemovingSongLinker();
         createSongListener();
     }
 
@@ -65,27 +64,58 @@ public class SongPanel extends  MusicPanel {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                SongPanel source = (SongPanel)e.getSource();
-                if(!addingSongLinker.isAddingSongToPlaylist()) {
-                    GUIFrame.playClickedMusic((SongPanel) e.getSource());
-                    lyricsLinker.showLyrics(mp3Info.getLyrics());
-                }
-                else{
-                    if(!selected){
+                SongPanel source = (SongPanel)e.getSource();//source is a song panel which mouse clicked on it.
+                if(playlistOptionLinker.isAddingSongToPlaylist()){//if clicked in order to add song to playlist
+                    if(!selected){//if it's not selected before, we add it to addingSongPanel and make it look brighter
                         selected = true;
                         source.setBackground(new Color(41,41,41));
-                        addingSongLinker.getAddingSongPanel().add(source);
+                        playlistOptionLinker.getAddingSongPanel().add(source);//(it changes playlist after done button clicked!)
                     }
-                    else{
+                    else{//else we make look like previous form and remove from addingSongPanel
                         selected = false;
                         source.setBackground(new Color(23,23,23));
-                        addingSongLinker.getAddingSongPanel().remove(source);
+                        playlistOptionLinker.getAddingSongPanel().remove(source);
                     }
+                }
+                else if(playlistOptionLinker.isRemoveSongFromPlaylist()) {//if clicked in order to remove song from playylist.
+                    if(!selected){//if it's not selected we add it to removingSongPanels and make it  look brighter.
+                        selected = true;
+                        playlistOptionLinker.getRemovingSongPanels().add(source);
+                        source.setBackground(new Color(41,41,41));
+                    }
+                    else{//else we make look like previous form and removing from removingSongPanels
+                        selected = false;
+                        source.setBackground(new Color(23,23,23));
+                        playlistOptionLinker.getRemovingSongPanels().add(source);// it changes playlist after clicking Done!
+                    }
+                }
+                else if(playlistOptionLinker.isSwaping()){//in case if we want to swap:
+                    if(!selected){//if this song panel is not selected before
+                        selected = true;//changing state to select
+                        if(playlistOptionLinker.getFirstSelectedSwaping() == null)//if we didn't select anything
+                            playlistOptionLinker.setFirstSelectedSwaping(source);//set this panel as first panel to swap
+                        else {//if we choose a song panel to swap with before
+                            playlistOptionLinker.setSecondSelectedSwaping(source);//set this panel as second panel to swap
+                            playlistOptionLinker.swapPlayList();//swap them!
+                        }
+                        source.setBackground(new Color(41,41,41));
+                    }
+                    else{// if this song panel is selected before
+                        selected = false;//changing state to unselect
+                        if(playlistOptionLinker.getFirstSelectedSwaping() == source)//if it's first panel to swap
+                            playlistOptionLinker.setFirstSelectedSwaping(null);//we unselect this as a first one
+                        else//it's never gonna happen(due to swapping after second one selected)
+                            playlistOptionLinker.setSecondSelectedSwaping(null);
+                    }
+                }
+                else{//if clicked in order to play song
+                    GUIFrame.playClickedMusic(source);//playing music
+                    lyricsLinker.showLyrics(mp3Info.getLyrics());//trying to find lyrics in the internet.
                 }
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                if(!selected || !addingSongLinker.isAddingSongToPlaylist()) {
+                if(!selected || (!playlistOptionLinker.isAddingSongToPlaylist() && !playlistOptionLinker.isRemoveSongFromPlaylist() && !playlistOptionLinker.isSwaping())) {
                     MusicPanel source = (MusicPanel) e.getSource();
                     source.setBackground(new Color(23, 23, 23));
                 }

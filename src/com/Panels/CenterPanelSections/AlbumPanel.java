@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 
 /**
  * Album panel which contains list of music with similar album names.
@@ -22,7 +22,7 @@ import java.util.HashSet;
  * @version 1.0
  */
 class AlbumPanel extends MusicPanel {
-    private HashSet<SongPanel> songPanels;
+    private HashMap<String,SongPanel> songPanels;
     private ShowSongsLinker showSongsLinker;
 
     /**
@@ -43,8 +43,8 @@ class AlbumPanel extends MusicPanel {
         this.showSongsLinker = showSongsLinker;
     }
 
-    HashSet<SongPanel> getSongPanels() {
-        return songPanels;
+    ArrayList<SongPanel> getSongPanels() {
+        return new ArrayList<>(songPanels.values());
     }
 
     /**
@@ -63,7 +63,7 @@ class AlbumPanel extends MusicPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                showSongsLinker.showSongs(songPanels);
+                showSongsLinker.showSongs(new ArrayList<>(songPanels.values()));
                 AlbumPanel source = (AlbumPanel)e.getSource();
                 source.setBackground(new Color(23,23,23));
             }
@@ -77,15 +77,15 @@ class AlbumPanel extends MusicPanel {
     }
 
     /**
-     * this method gives list of mp3infos and return set of song panels.
+     * this method gives list of mp3infos and return Hash Map which keys are song title and values are song panels.
      * @param mp3Infos list of song infos.
-     * @return set of song panels.
+     * @return list of song panels.
      */
-    private HashSet<SongPanel> createSongPanels(ArrayList<MP3Info> mp3Infos, LyricsLinker lyricsLinker){
-        HashSet<SongPanel> songPanels = new HashSet<>();
+    private HashMap<String,SongPanel> createSongPanels(ArrayList<MP3Info> mp3Infos, LyricsLinker lyricsLinker){
+        HashMap<String,SongPanel> songPanels = new HashMap<>();
         for(MP3Info mp3Info: mp3Infos ) {
             try {
-                songPanels.add(new SongPanel(mp3Info, mp3Info.getArtist(),lyricsLinker));
+                songPanels.put(mp3Info.getTitle(),new SongPanel(mp3Info, mp3Info.getArtist(),lyricsLinker));
             } catch (InvalidDataException | IOException | UnsupportedTagException e) {
                 JOptionPane.showMessageDialog(null, "Error reading mp3 file image");
             }
@@ -94,12 +94,14 @@ class AlbumPanel extends MusicPanel {
     }
 
     /**
-     * this method called if new songs related to album added, so it added all of them to songPanels
-     * we use HashSet for songPanels to avoid song duplication.
+     * this method called if new songs related to album added, so it add new ones in our album.
      * @param albumMusicsInfo  new songs info added by user.
+     * @param lyricsLinker a linker helps to show lyrics.
      */
     void addNewSongs(ArrayList<MP3Info> albumMusicsInfo,LyricsLinker lyricsLinker){
-        HashSet<SongPanel> newSongs = createSongPanels(albumMusicsInfo,lyricsLinker);
-        songPanels.addAll(newSongs);
+        HashMap<String,SongPanel> newSongs = createSongPanels(albumMusicsInfo,lyricsLinker);//creating hashmap of new songs
+        for(String songTitle : newSongs.keySet())//adding songs which our album doesn't has
+            if(!songPanels.containsKey(songTitle))
+                songPanels.put(songTitle,newSongs.get(songTitle));
     }
 }
