@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class HomePanelListener extends MouseAdapter
 {
@@ -23,8 +22,10 @@ public class HomePanelListener extends MouseAdapter
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        GUIFrame.showHome();
+
+
     }
+
 
     @Override
     public void mouseEntered(MouseEvent e) {
