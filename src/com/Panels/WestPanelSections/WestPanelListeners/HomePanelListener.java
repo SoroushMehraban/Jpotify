@@ -1,6 +1,7 @@
 package com.Panels.WestPanelSections.WestPanelListeners;
 
 import com.GUIFrame.GUIFrame;
+import com.Panels.GeneralPanels.WestPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,16 +30,14 @@ public class HomePanelListener extends MouseAdapter
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        ImageIcon selectedIcon=new ImageIcon("Icons/Home.png");
-        icon.setIcon(selectedIcon);
+        icon.setIcon(WestPanel.setIconSize("Icons/Home.png"));
         label.setFont(new Font("Serif", Font.BOLD, 16));
 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        ImageIcon noSelectedIcon=new ImageIcon("Icons/Home-no-select.png");
-        icon.setIcon(noSelectedIcon);
+        icon.setIcon(WestPanel.setIconSize("Icons/Home-no-select.png"));
         label.setFont(font);
 
     }

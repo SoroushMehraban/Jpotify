@@ -1,5 +1,7 @@
 package com.Panels.WestPanelSections.WestPanelListeners;
 
+import com.Panels.GeneralPanels.WestPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -29,16 +31,14 @@ public class AlbumsPanelListener extends MouseAdapter
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        ImageIcon selectedIcon=new ImageIcon("Icons/Album-selected.png");
-        icon.setIcon(selectedIcon);
+        icon.setIcon(WestPanel.setIconSize("Icons/Album-selected.png"));
         label.setFont(new Font("Serif", Font.BOLD, 16));
 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        ImageIcon noSelectedIcon=new ImageIcon("Icons/Album-no-selected.png");
-        icon.setIcon(noSelectedIcon);
+        icon.setIcon(WestPanel.setIconSize("Icons/Album-no-selected.png"));
         label.setFont(font);
 
     }

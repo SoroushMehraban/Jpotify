@@ -34,8 +34,7 @@ public class WestPanel extends JPanel
         homePanel.setBackground(new Color(23,23,23));
         homePanel.setLayout(new BoxLayout(homePanel,BoxLayout.LINE_AXIS));
         homeIcon=new JLabel();
-        ImageIcon homeImage=new ImageIcon("Icons/Home-no-select.png");
-        homeIcon.setIcon(homeImage);
+        homeIcon.setIcon(setIconSize("Icons/Home-no-select.png"));
         homeLabel=new JLabel(" HOME");
         homeIcon.addMouseListener(new HomePanelListener(homeIcon,homeLabel));
         homeLabel.addMouseListener(new HomePanelListener(homeIcon,homeLabel));
@@ -52,11 +51,9 @@ public class WestPanel extends JPanel
         libraryLabel=new JLabel(" Library  ");
         libraryLabel.setForeground(Color.WHITE);
         libraryIcon=new JLabel();
-        ImageIcon libraryImage=new ImageIcon("Icons/Library-no-select.PNG");
-        libraryIcon.setIcon(libraryImage);
+        libraryIcon.setIcon(setIconSize("Icons/Library-no-select.PNG"));
         addToLibraryIcon=new JLabel();
-        ImageIcon addToLibraryImage=new ImageIcon("Icons/Plus-no-select.PNG");
-        addToLibraryIcon.setIcon(addToLibraryImage);
+        addToLibraryIcon.setIcon(setPlusIconSize("Icons/Plus-no-select.PNG"));
         libraryLabel.addMouseListener(new LibraryPanelListener(libraryIcon,libraryLabel,addToLibraryIcon));
         libraryIcon.addMouseListener(new LibraryPanelListener(libraryIcon,libraryLabel,addToLibraryIcon));
         addToLibraryIcon.addMouseListener(new LibraryPanelListener(libraryIcon,libraryLabel,addToLibraryIcon));
@@ -69,8 +66,7 @@ public class WestPanel extends JPanel
         songsPanel.setBackground(new Color(23,23,23));
         songsPanel.setLayout(new BoxLayout(songsPanel,BoxLayout.LINE_AXIS));
         songsIcon=new JLabel();
-        ImageIcon songsImage=new ImageIcon("Icons/Song-no-selected.png");
-        songsIcon.setIcon(songsImage);
+        songsIcon.setIcon(setIconSize("Icons/Song-no-selected.png"));
         songsPanel.add(songsIcon);
         songsLabel=new JLabel(" Songs");
         songsIcon.addMouseListener(new SongsPanelListener(songsIcon,songsLabel));
@@ -83,8 +79,8 @@ public class WestPanel extends JPanel
         albumsPanel.setBackground(new Color(23,23,23));
         albumsPanel.setLayout(new BoxLayout(albumsPanel,BoxLayout.LINE_AXIS));
         albumsIcon=new JLabel();
-        ImageIcon albumsImage=new ImageIcon("Icons/Album-no-selected.png");
-        albumsIcon.setIcon(albumsImage);
+        //ImageIcon albumsImage=new ImageIcon("Icons/Album-no-selected.png");
+        albumsIcon.setIcon(setIconSize("Icons/Album-no-selected.png"));
         albumsPanel.add(albumsIcon);
         albumsLabel=new JLabel(" Albums");
         albumsIcon.addMouseListener(new AlbumsPanelListener(albumsIcon,albumsLabel));
@@ -97,14 +93,13 @@ public class WestPanel extends JPanel
         playListsPanel.setBackground(new Color(23,23,23));
         playListsPanel.setLayout(new BoxLayout(playListsPanel,BoxLayout.LINE_AXIS));
         playListsIcon=new JLabel();
-        ImageIcon playListsImage=new ImageIcon("Icons/p-no-selected.png");
-        playListsIcon.setIcon(playListsImage);
+        playListsIcon.setIcon(setIconSize("Icons/p-no-selected.png"));
         playListsPanel.add(playListsIcon);
         playListsLabel=new JLabel(" Playlists  ");
         playListsLabel.setForeground(Color.WHITE);
         playListsPanel.add(playListsLabel);
         addToPlaylistsIcon=new JLabel();
-        addToPlaylistsIcon.setIcon(addToLibraryImage);
+        addToPlaylistsIcon.setIcon(setPlusIconSize("Icons/Plus-no-select.PNG"));
         playListsPanel.add(addToPlaylistsIcon);
         this.add(playListsPanel);
 
@@ -116,7 +111,20 @@ public class WestPanel extends JPanel
 
 
     }
-
+    public static ImageIcon setIconSize(String name) {
+        ImageIcon output = new ImageIcon(name);
+        Image newImage = output.getImage();
+        Image newimg = newImage.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        output = new ImageIcon(newimg);
+        return output;
+    }
+    public static ImageIcon setPlusIconSize(String name) {
+        ImageIcon output = new ImageIcon(name);
+        Image newImage = output.getImage();
+        Image newimg = newImage.getScaledInstance(10, 10, Image.SCALE_SMOOTH);
+        output = new ImageIcon(newimg);
+        return output;
+    }
     /*public JButton getLibraryButton()
     {
         return libraryButton;

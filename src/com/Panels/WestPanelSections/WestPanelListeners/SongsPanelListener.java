@@ -1,5 +1,7 @@
 package com.Panels.WestPanelSections.WestPanelListeners;
 
+import com.Panels.GeneralPanels.WestPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -27,16 +29,14 @@ public class SongsPanelListener extends MouseAdapter
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        ImageIcon selectedIcon=new ImageIcon("Icons/Song-selected.png");
-        icon.setIcon(selectedIcon);
+        icon.setIcon(WestPanel.setIconSize("Icons/Song-selected.png"));
         label.setFont(new Font("Serif", Font.BOLD, 16));
 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        ImageIcon noSelectedIcon=new ImageIcon("Icons/Song-no-selected.png");
-        icon.setIcon(noSelectedIcon);
+        icon.setIcon(WestPanel.setIconSize("Icons/Song-no-selected.png"));
         label.setFont(font);
 
     }
