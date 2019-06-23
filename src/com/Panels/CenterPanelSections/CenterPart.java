@@ -10,6 +10,8 @@ import com.mpatric.mp3agic.UnsupportedTagException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +32,10 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     private HashSet<SongPanel> currentPlaying;
     private GridBagConstraints constraints;
     private BufferedImage emptyPlayListImage;
+    private BufferedImage plusImage;
+    private JLabel plusLabel;
+    private JLabel addSongToPlayListLabel;
+    private boolean playlistIsRunning;
 
     /**
      * Class Constructor.
@@ -43,13 +49,24 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         albumPanels = new HashMap<>();//list of albumPanels.
         playListPanels = new HashMap<>();
 
+        //creating add song to play list option:
+        try {
+            plusImage = ImageIO.read(new File("Icons/PlusSong-no-select.png"));
+            plusLabel = new JLabel(new ImageIcon(plusImage));
+            addSongToPlayListLabel = new JLabel("Add Song to Playlist");
+            addSongToPlayListLabel.setForeground(new Color(120,120,120));
+            createAddSongToPlayListListener();
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading plus song image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+        }
         //creating default playLists:
         createDefaultPlayLists();
         //creating Empty play list picture:
         try {
             emptyPlayListImage = ImageIO.read(new File("Images/EmptyPlayList.jpg"));
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading empty playlist image");
+            JOptionPane.showMessageDialog(null, "Error reading empty playlist image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -134,9 +151,21 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                 gridy++;
             }
         }
+        if(playlistIsRunning){//showing add song to playlist option
+            constraints.gridy = gridy + 1;
+            constraints.gridx = 0;
+            this.add(plusLabel,constraints);
+            constraints.gridx = 1;
+            this.add(addSongToPlayListLabel,constraints);
+        }
         //updating center part of center panel:
         this.repaint();
         this.revalidate();
+    }
+
+    @Override
+    public void setPlaylistIsRunning(boolean value) {
+        playlistIsRunning = value;
     }
 
     /**
@@ -213,7 +242,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         try {//creating an album panel with its listener
             album = new AlbumPanel(firstMP3Info.getImage(),firstMP3Info.getTitle(),description,albumMusicsInfo,this,this);
         } catch (InvalidDataException | IOException | UnsupportedTagException e) {
-            JOptionPane.showMessageDialog(null, "Error reading mp3 file image");
+            JOptionPane.showMessageDialog(null, "Error reading mp3 file image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
         return album;
     }
@@ -227,14 +256,14 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
             PlayListPanel favoriteSongs = new PlayListPanel(favoriteSongsImage,"Favorite Songs","Favorite albumSongs chosen by user",this);
             playListPanels.put("Favorite Songs",favoriteSongs);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading favorite albumSongs image");
+            JOptionPane.showMessageDialog(null, "Error reading favorite albumSongs image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
         try {
             BufferedImage sharedSongImage = ImageIO.read(new File("Images/SharedSongs.jpg"));
             PlayListPanel sharedSongs = new PlayListPanel(sharedSongImage,"Shared Songs","Shared albumSongs between users",this);
             playListPanels.put("Shared Songs",sharedSongs);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading shared albumSongs image");
+            JOptionPane.showMessageDialog(null, "Error reading shared albumSongs image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -249,9 +278,9 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
             MP3Info mp3Info = new MP3Info(directory);
             playListPanels.get("Favorite Songs").removeSong(mp3Info.getTitle());
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading mp3 file");
+            JOptionPane.showMessageDialog(null, "Error reading mp3 file","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         } catch (NoSuchFieldException e) {
-            JOptionPane.showMessageDialog(null, "Error find mp3 file");
+            JOptionPane.showMessageDialog(null, "Error finding mp3 file","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -266,9 +295,9 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                  return true;
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading mp3 file");
+            JOptionPane.showMessageDialog(null, "Error reading mp3 file","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         } catch (NoSuchFieldException e) {
-            JOptionPane.showMessageDialog(null, "Error find mp3 file");
+            JOptionPane.showMessageDialog(null, "Error finding mp3 file","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
         return false;
     }
@@ -331,5 +360,32 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      */
     public ArrayList<String> getAlbumTitles(){
         return new ArrayList<>(albumPanels.keySet());
+    }
+    private void createAddSongToPlayListListener(){
+        MouseAdapter enterAndExit = new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    plusImage = ImageIO.read(new File("Icons/PlusSong.png"));
+                    plusLabel.setIcon(new ImageIcon(plusImage));
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, "Error reading plus song image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+                }
+                addSongToPlayListLabel.setForeground(new Color(179,179,179));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                try {
+                    plusImage = ImageIO.read(new File("Icons/PlusSong-no-select.png"));
+                    plusLabel.setIcon(new ImageIcon(plusImage));
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, "Error reading plus song image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+                }
+                addSongToPlayListLabel.setForeground(new Color(120,120,120));
+            }
+        };
+        plusLabel.addMouseListener(enterAndExit);
+        addSongToPlayListLabel.addMouseListener(enterAndExit);
     }
 }

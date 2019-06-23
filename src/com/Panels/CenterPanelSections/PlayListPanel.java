@@ -48,6 +48,7 @@ class PlayListPanel extends MusicPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
+                showSongsLinker.setPlaylistIsRunning(true);
                 showSongsLinker.showSongs(playListSongs);
                 PlayListPanel source = (PlayListPanel) e.getSource();
                 source.setBackground(new Color(23,23,23));
