@@ -1,7 +1,7 @@
 package com.Panels.CenterPanelSections;
 
 import com.GUIFrame.GUIFrame;
-import com.Interfaces.AddingSongLinker;
+import com.Interfaces.AddingAndRemovingSongLinker;
 import com.Interfaces.LyricsLinker;
 import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.HashSet;
 
 /**
  * This subclass created if the music panel we want is a song and if user click on that, it plays desired song.
@@ -23,7 +22,7 @@ public class SongPanel extends  MusicPanel {
     private MP3Info mp3Info;
     private String songTitle;
     private LyricsLinker lyricsLinker;
-    private AddingSongLinker addingSongLinker;
+    private AddingAndRemovingSongLinker addingAndRemovingSongLinker;
     private boolean selected;//helps for adding song to playlist.
 
     /**
@@ -39,7 +38,7 @@ public class SongPanel extends  MusicPanel {
         this.mp3Info = mp3Info;
         this.lyricsLinker = lyricsLinker;
 
-        addingSongLinker = GUIFrame.getAddingSongLinker();
+        addingAndRemovingSongLinker = GUIFrame.getAddingAndRemovingSongLinker();
         createSongListener();
     }
 
@@ -66,26 +65,38 @@ public class SongPanel extends  MusicPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 SongPanel source = (SongPanel)e.getSource();
-                if(!addingSongLinker.isAddingSongToPlaylist()) {
-                    GUIFrame.playClickedMusic((SongPanel) e.getSource());
-                    lyricsLinker.showLyrics(mp3Info.getLyrics());
-                }
-                else{
+                if(addingAndRemovingSongLinker.isAddingSongToPlaylist()){//if clicked in order to add song to playlist
                     if(!selected){
                         selected = true;
                         source.setBackground(new Color(41,41,41));
-                        addingSongLinker.getAddingSongPanel().add(source);
+                        addingAndRemovingSongLinker.getAddingSongPanel().add(source);
                     }
                     else{
                         selected = false;
                         source.setBackground(new Color(23,23,23));
-                        addingSongLinker.getAddingSongPanel().remove(source);
+                        addingAndRemovingSongLinker.getAddingSongPanel().remove(source);
                     }
+                }
+                else if(addingAndRemovingSongLinker.isRemoveSongFromPlaylist()) {//if clicked in order to remove song from playylist.
+                    if(!selected){
+                        selected = true;
+                        addingAndRemovingSongLinker.getRemovingSongPanels().add(source);
+                        source.setBackground(new Color(41,41,41));
+                    }
+                    else{
+                        selected = false;
+                        source.setBackground(new Color(23,23,23));
+                        addingAndRemovingSongLinker.getRemovingSongPanels().add(source);
+                    }
+                }
+                else{//if clicked in order to play song
+                    GUIFrame.playClickedMusic((SongPanel) e.getSource());
+                    lyricsLinker.showLyrics(mp3Info.getLyrics());
                 }
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                if(!selected || !addingSongLinker.isAddingSongToPlaylist()) {
+                if(!selected || (!addingAndRemovingSongLinker.isAddingSongToPlaylist() && !addingAndRemovingSongLinker.isRemoveSongFromPlaylist())) {
                     MusicPanel source = (MusicPanel) e.getSource();
                     source.setBackground(new Color(23, 23, 23));
                 }

@@ -1,15 +1,14 @@
 package com.GUIFrame;
 
+import com.Interfaces.AddingAndRemovingSongLinker;
 import com.MP3.MP3Info;
 import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.GeneralPanels.*;
-import com.Interfaces.AddingSongLinker;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * the window GUI where User can play a music.
@@ -161,7 +160,7 @@ public class GUIFrame extends JFrame {
     public static ArrayList<String> getAlbumTitles(){
         return centerPanel.getCenterPart().getAlbumTitles();
     }
-    public static AddingSongLinker getAddingSongLinker(){
+    public static AddingAndRemovingSongLinker getAddingAndRemovingSongLinker(){
         return centerPanel.getCenterPart();
     }
 

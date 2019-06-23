@@ -1,6 +1,6 @@
 package com.Panels.CenterPanelSections;
 
-import com.Interfaces.AddingSongLinker;
+import com.Interfaces.AddingAndRemovingSongLinker;
 import com.Interfaces.LikeLinker;
 import com.Interfaces.LyricsLinker;
 import com.Interfaces.ShowSongsLinker;
@@ -27,21 +27,26 @@ import java.util.HashSet;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, AddingSongLinker {
+public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, AddingAndRemovingSongLinker {
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
-    private PlayListPanel currentPlaylistPanel;//helps for adding song to playlist.
+    private PlayListPanel currentPlaylistPanel;//helps for adding  and removing song to playlist.
     private HashSet<SongPanel> addingSongPanels; //helps for adding song to playlist.
+    private HashSet<SongPanel> removingSongPanels; //helps for removing song from playlist.
     private HashSet<SongPanel> currentPlaying;
     private GridBagConstraints constraints;
     private BufferedImage emptyPlayListImage;
     private BufferedImage plusImage;
     private BufferedImage tickImage;
+    private BufferedImage minusImage;
     private JLabel plusLabel;
     private JLabel tickLabel;
+    private JLabel minusLabel;
     private JLabel addSongToPlayListLabel;
     private JLabel doneLabel;
-    private boolean addingSongToPlaylist;
+    private JLabel removeSongFromPlaylistLabel;
+    private boolean addingSongToPlaylist;//helps for adding song to playlist
+    private boolean removeSongFromPlaylist;//helps for removing song from playlist.
 
     /**
      * Class Constructor.
@@ -55,6 +60,16 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         albumPanels = new HashMap<>();//list of albumPanels.
         playListPanels = new HashMap<>();
 
+        //creating remove song from playlist option:
+        try {
+            minusImage = ImageIO.read(new File("Icons/Minus-no-select.png"));
+            minusLabel = new JLabel(new ImageIcon(minusImage));
+            removeSongFromPlaylistLabel = new JLabel("Remove song from playlist");
+            removeSongFromPlaylistLabel.setForeground(new Color(120,120,120));
+            createRemoveSongFromPlaylistListener();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading minus image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+        }
         //creating add song to play list option:
         try {
             plusImage = ImageIO.read(new File("Icons/PlusSong-no-select.png"));
@@ -64,7 +79,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
             createAddSongToPlayListListener();
 
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading plus song image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error reading plus image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
         //creating done option:
         try {
@@ -92,8 +107,18 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     }
 
     @Override
+    public boolean isRemoveSongFromPlaylist() {
+        return removeSongFromPlaylist;
+    }
+
+    @Override
     public HashSet<SongPanel> getAddingSongPanel(){
         return addingSongPanels;
+    }
+
+    @Override
+    public HashSet<SongPanel> getRemovingSongPanels() {
+        return removingSongPanels;
     }
 
     public HashSet<SongPanel> getCurrentPlaying() {
@@ -106,6 +131,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     public void showHome(){
         this.removeAll();//removing all components in center part
         addingSongToPlaylist = false;
+        removeSongFromPlaylist = false;
         //initializing grids:
         int gridx = 0;
         int gridy = 0;
@@ -169,6 +195,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         //showing music panels:
         for(SongPanel songPanel: songPanels){
             songPanel.setBackground(new Color(23, 23, 23));//setting default background in case it doesn't
+            songPanel.unSelect();//unSelecting if it's selected on previous adding panel.
             constraints.gridx = gridx;
             constraints.gridy = gridy;
             this.add(songPanel, constraints);
@@ -179,6 +206,12 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                 gridx = 0;
                 gridy++;
             }
+        }
+        if(removeSongFromPlaylist){//if we show this songs to remove, we need done button at the end.
+            JPanel doneContainer = createDoneOptionContainer();
+            constraints.gridx = 0;
+            constraints.gridy++;
+            this.add(doneContainer,constraints);
         }
         //updating center part of center panel:
         this.repaint();
@@ -198,18 +231,17 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     public void showPlayListSongs(String playListTitle){
         currentPlaylistPanel = playListPanels.get(playListTitle);//getting current song where user see.
         showSongs(playListPanels.get(playListTitle).getPlayListSongs());//show all songs related to playlist
-        //creating a add song container to cover add song to playlist option:
-        JPanel addSongContainer = new JPanel();
-        addSongContainer.setOpaque(false);//removing its background
-        addSongContainer.setLayout(new BoxLayout(addSongContainer,BoxLayout.LINE_AXIS));
-        //adding features:
-        addSongContainer.add(plusLabel);
-        addSongContainer.add(Box.createHorizontalStrut(5));//adding spaces between components.
-        addSongContainer.add(addSongToPlayListLabel);
+        //creating playlist options containers:
+        JPanel addSongContainer = createAddOrRemoveSongContainer(plusLabel,addSongToPlayListLabel);
+        JPanel removeSongContainer = createAddOrRemoveSongContainer(minusLabel,removeSongFromPlaylistLabel);
         //adding container at the end:
         constraints.gridy++;
         constraints.gridx = 0;
         this.add(addSongContainer,constraints);
+        if(currentPlaylistPanel.getPlayListSongs().size() > 0) {//if song exists in playlist
+            constraints.gridy++;
+            this.add(removeSongContainer,constraints);
+        }
 
     }
     /**
@@ -217,6 +249,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      */
     public void showAllSongs(){
         this.removeAll();//removing all components.
+        removeSongFromPlaylist = false;
         HashSet<SongPanel> allSongs = new HashSet<>();//this helps us to play ordered song in south panel.
         //initializing grids:
         int gridx = 0;
@@ -241,13 +274,8 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                     }
                 }
             }
-        if(addingSongToPlaylist){
-            JPanel doneContainer = new JPanel();
-            doneContainer.setLayout(new BoxLayout(doneContainer,BoxLayout.LINE_AXIS));
-            doneContainer.setOpaque(false);
-            doneContainer.add(tickLabel);
-            doneContainer.add(Box.createHorizontalStrut(5));//adding spaces between components.
-            doneContainer.add(doneLabel);
+        if(addingSongToPlaylist){//if we show this songs to add, we need done button at the end.
+            JPanel doneContainer = createDoneOptionContainer();
             constraints.gridx = 0;
             constraints.gridy++;
             this.add(doneContainer,constraints);
@@ -438,6 +466,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                 addingSongToPlaylist = true;//this cause showAllSong method doesn't consider existing song and add a option at the end.
                 addingSongPanels = new HashSet<>();//this creates a temporary memory space which hold adding song panels.
                 showAllSongs();//show all songs without songs that playlist already has.
+                mouseExited(e);//turn its gui like mouse exited.
             }
 
             @Override
@@ -476,9 +505,17 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                currentPlaylistPanel.getPlayListSongs().addAll(addingSongPanels);//adding selected songs to playlist.
-                addingSongPanels = null;//we don't need to this anymore, let garbage collector delete that!
+                if(addingSongToPlaylist) {
+                    currentPlaylistPanel.getPlayListSongs().addAll(addingSongPanels);//adding selected songs to playlist.
+                    addingSongPanels = null;//we don't need to this anymore, let garbage collector delete that!
+                }
+                else if(removeSongFromPlaylist){
+                    currentPlaylistPanel.getPlayListSongs().removeAll(removingSongPanels);//removing selected songs from playlist
+                    removingSongPanels = null;//we don't need to this anymore, let garbage collector delete that!
+                    removeSongFromPlaylist = false;
+                }
                 showPlayListSongs(currentPlaylistPanel.getTitle());//coming back to current playlist.
+                mouseExited(e);//turn its gui like mouse exited.
             }
 
             @Override
@@ -505,5 +542,73 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         };
         tickLabel.addMouseListener(mouseAdapter);
         doneLabel.addMouseListener(mouseAdapter);
+    }
+
+    /**
+     * this method adds a listener to remove song from playlist option:
+     * when mouse entered: it become brighter.
+     * when mouse exited: it turn to previous form.
+     * when mouse clicked: it show songs in playlist to remove.
+     */
+    private void createRemoveSongFromPlaylistListener(){
+        MouseAdapter mouseAdapter = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                removeSongFromPlaylist = true;//this cause showSong method show done at the end
+                removingSongPanels = new HashSet<>();//this creates a temporary memory space which hold removing song panels.
+                showSongs(currentPlaylistPanel.getPlayListSongs());//show existing song in playlist to remove.
+                mouseExited(e);//turn its gui like mouse exited.
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    minusImage = ImageIO.read(new File("Icons/Minus.png"));
+                    minusLabel.setIcon(new ImageIcon(minusImage));
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, "Error reading minus image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+                }
+                removeSongFromPlaylistLabel.setForeground(new Color(179,179,179));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                try {
+                    minusImage = ImageIO.read(new File("Icons/Minus-no-select.png"));
+                    minusLabel.setIcon(new ImageIcon(minusImage));
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, "Error reading plus song image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+                }
+               removeSongFromPlaylistLabel.setForeground(new Color(120,120,120));
+            }
+        };
+        minusLabel.addMouseListener(mouseAdapter);
+        removeSongFromPlaylistLabel.addMouseListener(mouseAdapter);
+    }
+
+    /**
+     * this method creates a container which holds 2 labels: tickLabel and doneLabel.
+     *
+     * @return desired JPanel.
+     */
+    private JPanel createDoneOptionContainer(){
+        JPanel doneContainer = new JPanel();
+        doneContainer.setLayout(new BoxLayout(doneContainer,BoxLayout.LINE_AXIS));
+        doneContainer.setOpaque(false);
+        doneContainer.add(tickLabel);
+        doneContainer.add(Box.createHorizontalStrut(5));//adding spaces between components.
+        doneContainer.add(doneLabel);
+        return doneContainer;
+    }
+    private JPanel createAddOrRemoveSongContainer(JLabel imageLabel, JLabel descriptionLabel){
+        //creating a container to cover given labels:
+        JPanel coveringContainer = new JPanel();
+        coveringContainer.setOpaque(false);//removing its background
+        coveringContainer.setLayout(new BoxLayout(coveringContainer,BoxLayout.LINE_AXIS));
+        //adding features:
+        coveringContainer.add(imageLabel);
+        coveringContainer.add(Box.createHorizontalStrut(5));//adding spaces between components.
+        coveringContainer.add(descriptionLabel);
+        return coveringContainer;
     }
 }
