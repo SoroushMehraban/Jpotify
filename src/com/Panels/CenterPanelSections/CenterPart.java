@@ -35,9 +35,12 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     private GridBagConstraints constraints;
     private BufferedImage emptyPlayListImage;
     private BufferedImage plusImage;
+    private BufferedImage tickImage;
     private JLabel plusLabel;
+    private JLabel tickLabel;
     private JLabel addSongToPlayListLabel;
-    private boolean AddingSongToPlaylist;
+    private JLabel doneLabel;
+    private boolean addingSongToPlaylist;
 
     /**
      * Class Constructor.
@@ -62,6 +65,16 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading plus song image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
+        //creating done option:
+        try {
+            tickImage =ImageIO.read(new File("Icons/Tick-no-select.png"));
+            tickLabel = new JLabel(new ImageIcon(tickImage));
+            doneLabel = new JLabel("Done");
+            doneLabel.setForeground(new Color(120,120,120));
+            createDoneListener();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading tick image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+        }
         //creating default playLists:
         createDefaultPlayLists();
         //creating Empty play list picture:
@@ -74,7 +87,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
 
     @Override
     public boolean isAddingSongToPlaylist() {
-        return AddingSongToPlaylist;
+        return addingSongToPlaylist;
     }
 
     @Override
@@ -91,7 +104,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      */
     public void showHome(){
         this.removeAll();//removing all components in center part
-        AddingSongToPlaylist = false;
+        addingSongToPlaylist = false;
         //initializing grids:
         int gridx = 0;
         int gridy = 0;
@@ -147,13 +160,14 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     @Override
     public void showSongs(HashSet<SongPanel> songPanels){
         this.currentPlaying = songPanels;
-        AddingSongToPlaylist = false;
+        addingSongToPlaylist = false;
         this.removeAll();//removing all components.
         //initializing grids:
         int gridx = 0;
         int gridy = 0;
         //showing music panels:
         for(SongPanel songPanel: songPanels){
+            songPanel.setBackground(new Color(23, 23, 23));//setting default background in case it doesn't
             constraints.gridx = gridx;
             constraints.gridy = gridy;
             this.add(songPanel, constraints);
@@ -183,18 +197,18 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     public void showPlayListSongs(String playListTitle){
         currentPlaylistPanel = playListPanels.get(playListTitle);//getting current song where user see.
         showSongs(playListPanels.get(playListTitle).getPlayListSongs());//show all songs related to playlist
-        //creating a container to cover add song to playlist option:
-        JPanel container = new JPanel();
-        container.setOpaque(false);//removing its background
-        container.setLayout(new BoxLayout(container,BoxLayout.LINE_AXIS));
+        //creating a add song container to cover add song to playlist option:
+        JPanel addSongContainer = new JPanel();
+        addSongContainer.setOpaque(false);//removing its background
+        addSongContainer.setLayout(new BoxLayout(addSongContainer,BoxLayout.LINE_AXIS));
         //adding features:
-        container.add(plusLabel);
-        container.add(Box.createHorizontalStrut(5));//adding spaces between components.
-        container.add(addSongToPlayListLabel);
+        addSongContainer.add(plusLabel);
+        addSongContainer.add(Box.createHorizontalStrut(5));//adding spaces between components.
+        addSongContainer.add(addSongToPlayListLabel);
         //adding container at the end:
         constraints.gridy++;
         constraints.gridx = 0;
-        this.add(container,constraints);
+        this.add(addSongContainer,constraints);
 
     }
     /**
@@ -210,9 +224,10 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         for (AlbumPanel albumPanel : albumPanels.values())
             for(SongPanel songPanel : albumPanel.getSongPanels()){
                 //this boolean check in case if we show all songs for adding to playlist, it doesn't show song that playlist already has:
-                boolean canAdd = !AddingSongToPlaylist || !currentPlaylistPanel.getPlayListSongs().contains(songPanel);
+                boolean canAdd = !addingSongToPlaylist || !currentPlaylistPanel.getPlayListSongs().contains(songPanel);
                 if(canAdd) {
                     allSongs.add(songPanel);
+                    songPanel.setBackground(new Color(23, 23, 23));//setting default background in case it doesn't
                     constraints.gridy = gridy;
                     constraints.gridx = gridx;
                     this.add(songPanel, constraints);
@@ -224,6 +239,17 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                     }
                 }
             }
+        if(addingSongToPlaylist){
+            JPanel doneContainer = new JPanel();
+            doneContainer.setLayout(new BoxLayout(doneContainer,BoxLayout.LINE_AXIS));
+            doneContainer.setOpaque(false);
+            doneContainer.add(tickLabel);
+            doneContainer.add(Box.createHorizontalStrut(5));//adding spaces between components.
+            doneContainer.add(doneLabel);
+            constraints.gridx = 0;
+            constraints.gridy++;
+            this.add(doneContainer,constraints);
+        }
         currentPlaying = allSongs;
         //updating center part of center panel:
         this.repaint();
@@ -366,6 +392,9 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
             this.add(lineLabel,constraints);
             constraints.gridy++;
         }
+        //updating page:
+        this.repaint();
+        this.revalidate();
     }
 
     /**
@@ -381,11 +410,18 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     public ArrayList<String> getAlbumTitles(){
         return new ArrayList<>(albumPanels.keySet());
     }
+
+    /**
+     * this method adds a listener to add song to playlist option:
+     * when mouse entered: it become brighter.
+     * when mouse exited: it turn to previous form.
+     * when mouse clicked: it show all songs which are not in playlist to add.
+     */
     private void createAddSongToPlayListListener(){
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                AddingSongToPlaylist = true;
+                addingSongToPlaylist = true;
                 showAllSongs();//show all songs without songs that playlist already has.
             }
 
@@ -413,5 +449,44 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         };
         plusLabel.addMouseListener(mouseAdapter);
         addSongToPlayListLabel.addMouseListener(mouseAdapter);
+    }
+
+    /**
+     * this method adds a listener to done option:
+     * when mouse entered: it become brighter.
+     * when mouse exited: it turn to previous form.
+     * when mouse clicked: it add all selected music to playlist and return back.
+     */
+    private void createDoneListener() {
+        MouseAdapter mouseAdapter = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    tickImage = ImageIO.read(new File("Icons/Tick.png"));
+                    tickLabel.setIcon(new ImageIcon(tickImage));
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, "Error reading tick image", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
+                }
+                doneLabel.setForeground(new Color(179, 179, 179));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                try {
+                    tickImage = ImageIO.read(new File("Icons/Tick-no-select.png"));
+                    tickLabel.setIcon(new ImageIcon(tickImage));
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, "Error reading tick image", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
+                }
+                doneLabel.setForeground(new Color(120, 120, 120));
+            }
+        };
+        tickLabel.addMouseListener(mouseAdapter);
+        doneLabel.addMouseListener(mouseAdapter);
     }
 }

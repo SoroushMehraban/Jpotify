@@ -86,8 +86,10 @@ public class SongPanel extends  MusicPanel {
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                MusicPanel source = (MusicPanel)e.getSource();
-                source.setBackground(new Color(23,23,23));
+                if(!selected || !addingSongLinker.isAddingSongToPlaylist()) {
+                    MusicPanel source = (MusicPanel) e.getSource();
+                    source.setBackground(new Color(23, 23, 23));
+                }
             }
 
             @Override
