@@ -223,7 +223,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
             }
         }
         //creating playList label to show at top of playLists:
-        gridx--;
+        gridx = 0;
         gridy++;
         constraints.gridx = gridx;
         constraints.gridy = gridy;
