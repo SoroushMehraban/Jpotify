@@ -229,6 +229,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                 if(canAdd) {
                     allSongs.add(songPanel);
                     songPanel.setBackground(new Color(23, 23, 23));//setting default background in case it doesn't
+                    songPanel.unSelect();//unSelecting if it's selected on previous adding panel.
                     constraints.gridy = gridy;
                     constraints.gridx = gridx;
                     this.add(songPanel, constraints);

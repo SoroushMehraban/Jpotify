@@ -43,12 +43,11 @@ public class SongPanel extends  MusicPanel {
         createSongListener();
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
-    public boolean isSelected() {
-        return selected;
+    /**
+     * This method only calls if new adding panel appears and unselect song panel if it's selected in previous panel.
+     */
+    void unSelect() {
+        this.selected = false;
     }
 
     String getSongTitle() {
