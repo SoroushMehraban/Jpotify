@@ -37,7 +37,7 @@ public class GUIFrame extends JFrame {
         this.add(southPanel,BorderLayout.SOUTH);
         westPanel=new WestPanel();
         JScrollPane leftJScrollPane=new JScrollPane(westPanel);
-        leftJScrollPane.setPreferredSize(new Dimension(150,600));
+        leftJScrollPane.setPreferredSize(new Dimension(120,600));
         CenterPanel.customizeJScrollPane(leftJScrollPane);
         this.add(leftJScrollPane,BorderLayout.WEST);
         this.setVisible(true);
