@@ -318,4 +318,18 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
             constraints.gridy++;
         }
     }
+
+    /**
+     * @return title of play lists, to show as a JLabel in west panel.
+     */
+    public ArrayList<String> getPlayistTitles(){
+        return new ArrayList<>(playListPanels.keySet());
+    }
+
+    /**
+     * @return title of albums to show as a JLabel in west panel.
+     */
+    public ArrayList<String> getAlbumTitles(){
+        return new ArrayList<>(albumPanels.keySet());
+    }
 }

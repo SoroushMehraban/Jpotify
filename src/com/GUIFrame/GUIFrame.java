@@ -139,4 +139,20 @@ public class GUIFrame extends JFrame {
     public static void showPlaylistSongs(String playlistTitle){
         centerPanel.getCenterPart().showPlayListSongs(playlistTitle);
     }
-}
+
+    /**
+     * This method work as a linker.
+     * @return list of playlist titles.
+     */
+    public static ArrayList<String> getPlayistTitles(){
+        return centerPanel.getCenterPart().getPlayistTitles();
+    }
+
+    /**
+     * this method work as a linker
+     * @return list of album titles.
+     */
+    public ArrayList<String> getAlbumTitles(){
+        return centerPanel.getCenterPart().getAlbumTitles();
+    }
+    }
