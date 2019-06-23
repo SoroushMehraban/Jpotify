@@ -1,5 +1,7 @@
 package com.Panels.WestPanelSections.WestPanelListeners;
 
+import com.Panels.GeneralPanels.WestPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -30,20 +32,16 @@ public class LibraryPanelListener extends MouseAdapter
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        ImageIcon selectedIcon=new ImageIcon("Icons/Library.PNG");
-        icon.setIcon(selectedIcon);
+        icon.setIcon(WestPanel.setIconSize("Icons/Library.PNG"));
         label.setFont(new Font("Serif", Font.BOLD, 16));
-        ImageIcon selectedPlusIcon=new ImageIcon("Icons/Plus.png");
-        plusIcon.setIcon(selectedPlusIcon);
+        plusIcon.setIcon(WestPanel.setPlusIconSize("Icons/Plus.png"));
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        ImageIcon noSelectedIcon=new ImageIcon("Icons/Library-no-select.PNG");
-        icon.setIcon(noSelectedIcon);
+        icon.setIcon(WestPanel.setIconSize("Icons/Library-no-select.PNG"));
         label.setFont(font);
-        ImageIcon noSelectedPlusIcon=new ImageIcon("Icons/Plus-no-select.png");
-        plusIcon.setIcon(noSelectedPlusIcon);
+        plusIcon.setIcon(WestPanel.setPlusIconSize("Icons/Plus-no-select.png"));
 
     }
 }
