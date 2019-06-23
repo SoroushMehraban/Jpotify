@@ -43,8 +43,8 @@ public class GUIFrame extends JFrame {
         this.setVisible(true);
         //setting like linker between playPanel in southPanel and centerPart in centerPanel:
         southPanel.getPlayPanel().setLikeLinker(centerPanel.getCenterPart());
-        //temp code to determine it can show albums and musics:
 
+        showHome();//showing home by default
     }
 
     /**
