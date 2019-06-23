@@ -1,5 +1,6 @@
 package com.Panels.WestPanelSections.WestPanelListeners;
 
+import com.GUIFrame.GUIFrame;
 import com.Panels.GeneralPanels.WestPanel;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class SongsPanelListener extends MouseAdapter
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        GUIFrame.showAllSongs();
 
     }
 
