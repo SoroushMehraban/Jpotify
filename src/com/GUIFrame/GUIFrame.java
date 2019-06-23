@@ -154,6 +154,10 @@ public class GUIFrame extends JFrame {
     {
         westPanel=changedWestPane;
     }
+    public static WestPanel getWestPanel()
+    {
+        return westPanel;
 
+    }
 
 }

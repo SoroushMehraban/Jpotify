@@ -50,8 +50,7 @@ public class WestPanel extends JPanel
         homePanel.add(homeLabel);
         this.add(Box.createVerticalStrut(20));
         this.add(homePanel);
-        this.add(Box.createVerticalStrut(20));
-        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalStrut(50));
         libraryPanel=new JPanel();
         libraryPanel.setBackground(new Color(23,23,23));
         libraryPanel.setLayout(new BoxLayout(libraryPanel,BoxLayout.LINE_AXIS));
@@ -68,7 +67,7 @@ public class WestPanel extends JPanel
         libraryPanel.add(libraryLabel);
         libraryPanel.add(addToLibraryIcon);
         this.add(libraryPanel);
-        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalStrut(30));
         songsPanel=new JPanel();
         songsPanel.setBackground(new Color(23,23,23));
         songsPanel.setLayout(new BoxLayout(songsPanel,BoxLayout.LINE_AXIS));
@@ -81,7 +80,7 @@ public class WestPanel extends JPanel
         songsLabel.setForeground(Color.WHITE);
         songsPanel.add(songsLabel);
         this.add(songsPanel);
-        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalStrut(30));
         albumsPanel=new JPanel();
         albumsPanel.setBackground(new Color(23,23,23));
         albumsPanel.setLayout(new BoxLayout(albumsPanel,BoxLayout.LINE_AXIS));
@@ -94,7 +93,7 @@ public class WestPanel extends JPanel
         albumsLabel.setForeground(Color.WHITE);
         albumsPanel.add(albumsLabel);
         this.add(albumsPanel);
-        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalStrut(30));
         playListsPanel=new JPanel();
         playListsPanel.setBackground(new Color(23,23,23));
         playListsPanel.setLayout(new BoxLayout(playListsPanel,BoxLayout.LINE_AXIS));
@@ -135,7 +134,7 @@ public class WestPanel extends JPanel
     {
         return albumsPanel;
     }
-    public static JPanel getWestPanel()
+    public static WestPanel getWestPanel()
     {
         return westPanel;
     }
