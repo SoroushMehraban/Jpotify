@@ -47,16 +47,15 @@ public class GUIFrame extends JFrame {
         //temp code to determine it can show albums and musics:
         try {
             MP3Info mp3Info = new MP3Info("Soroush Tabarsi - Grey (Ft Seventh Soul) [128].mp3");
+            MP3Info mp3Info2 = new MP3Info("Mohsen Namjoo - Toranj.mp3");
             ArrayList<MP3Info> mp3Infos = new ArrayList<>();
             mp3Infos.add(mp3Info);
             mp3Infos.add(mp3Info);
             mp3Infos.add(mp3Info);
-            mp3Infos.add(mp3Info);
-            mp3Infos.add(mp3Info);
-            mp3Infos.add(mp3Info);
-            mp3Infos.add(mp3Info);
-            mp3Infos.add(mp3Info);
-            addAlbum(mp3Info.getAlbum(),mp3Infos);
+            mp3Infos.add(mp3Info2);
+            mp3Infos.add(mp3Info2);
+            mp3Infos.add(mp3Info2);
+            addAlbum(mp3Info2.getAlbum(),mp3Infos);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }

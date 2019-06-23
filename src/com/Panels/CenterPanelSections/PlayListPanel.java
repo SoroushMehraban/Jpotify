@@ -67,21 +67,10 @@ public class PlayListPanel extends MusicPanel {
         });
     }
 
-    void addSong(String directory, LyricsLinker lyricsLinker){
-        try {
-            MP3Info mp3Info = new MP3Info(directory);
-            String description = "This song belongs to "+mp3Info.getAlbum()+" album";
-            SongPanel songPanel = new SongPanel(mp3Info,description,lyricsLinker);
-            playListSongs.add(songPanel);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading mp3 file");
-        } catch (NoSuchFieldException e) {
-            JOptionPane.showMessageDialog(null, "Error find mp3 file");
-        } catch (InvalidDataException | UnsupportedTagException e) {
-            JOptionPane.showMessageDialog(null, "Error reading mp3 image");
-        }
-
+    void addSong(SongPanel songPanel){
+        playListSongs.add(songPanel);
     }
+
     void removeSong(String title){
         Set<SongPanel> tempSynchronized = Collections.synchronizedSet(playListSongs);
         Iterator<SongPanel> it = tempSynchronized.iterator();

@@ -317,7 +317,20 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
 
     @Override
     public void addToFavoritePlayList(String directory) {
-        playListPanels.get("Favorite Songs").addSong(directory,this);
+        try {
+            MP3Info mp3Info = new MP3Info(directory);
+            if(albumPanels.get(mp3Info.getAlbum()) != null){
+                for( SongPanel songPanel : albumPanels.get(mp3Info.getAlbum()).getSongPanels())
+                    if(songPanel.getSongTitle().equals(mp3Info.getTitle())) {
+                        playListPanels.get("Favorite Songs").addSong(songPanel);
+                        break;
+                    }
+            }
+            else
+                JOptionPane.showMessageDialog(null, "This song doesn't belong to any album!","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+        } catch (IOException | NoSuchFieldException e) {
+            JOptionPane.showMessageDialog(null, "Error reading mp3 file","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @Override
@@ -368,8 +381,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      * @param songDirectory directory of music to add.
      */
     public void addSongToPlayList(String playListTitle, String songDirectory){
-        if(playListPanels.containsKey(playListTitle))//if playlist exists
-            playListPanels.get(playListTitle).addSong(songDirectory,this);
+        //should be implement later
     }
 
     /**
