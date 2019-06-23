@@ -23,7 +23,7 @@ public class HomePanelListener extends MouseAdapter
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        GUIFrame.showHome();
 
     }
 
