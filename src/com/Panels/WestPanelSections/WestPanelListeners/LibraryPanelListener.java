@@ -2,11 +2,13 @@ package com.Panels.WestPanelSections.WestPanelListeners;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public class LibraryPanelListener implements MouseListener
+
+public class LibraryPanelListener extends MouseAdapter
 {
+
     private JLabel icon;
     private JLabel label;
     private JLabel plusIcon;
@@ -25,15 +27,6 @@ public class LibraryPanelListener implements MouseListener
 
     }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
 
     @Override
     public void mouseEntered(MouseEvent e) {
