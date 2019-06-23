@@ -1,6 +1,6 @@
 package com.Panels.CenterPanelSections;
 
-import com.Interfaces.AddingAndRemovingSongLinker;
+import com.Interfaces.PlaylistOptionLinker;
 import com.Interfaces.LikeLinker;
 import com.Interfaces.LyricsLinker;
 import com.Interfaces.ShowSongsLinker;
@@ -17,8 +17,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * Center part of CenterPanel.
@@ -27,26 +27,32 @@ import java.util.HashSet;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, AddingAndRemovingSongLinker {
+public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, PlaylistOptionLinker {
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
-    private PlayListPanel currentPlaylistPanel;//helps for adding  and removing song to playlist.
+    private PlayListPanel currentPlaylistPanel;//helps for adding, removing and swapping in playlist song.
     private ArrayList<SongPanel> addingSongPanels; //helps for adding song to playlist.
     private ArrayList<SongPanel> removingSongPanels; //helps for removing song from playlist.
+    private SongPanel firstSelectedSwaping;//helps for swapping
+    private SongPanel secondSelectedSwaping;//helps for swaping
     private ArrayList<SongPanel> currentPlaying;
     private GridBagConstraints constraints;
     private BufferedImage emptyPlayListImage;
     private BufferedImage plusImage;
     private BufferedImage tickImage;
     private BufferedImage minusImage;
+    private BufferedImage swapImage;
     private JLabel plusLabel;
     private JLabel tickLabel;
     private JLabel minusLabel;
-    private JLabel addSongToPlayListLabel;
     private JLabel doneLabel;
+    private JLabel swapLabel;
     private JLabel removeSongFromPlaylistLabel;
+    private JLabel addSongToPlayListLabel;
+    private JLabel swapTextLabel;
     private boolean addingSongToPlaylist;//helps for adding song to playlist
     private boolean removeSongFromPlaylist;//helps for removing song from playlist.
+    private boolean isSwaping;//helps for swap between playlist songs.
 
     /**
      * Class Constructor.
@@ -60,7 +66,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         albumPanels = new HashMap<>();//list of albumPanels.
         playListPanels = new HashMap<>();
 
-        //creating remove song from playlist option:
+        //creating remove song from playlist label:
         try {
             minusImage = ImageIO.read(new File("Icons/Minus-no-select.png"));
             minusLabel = new JLabel(new ImageIcon(minusImage));
@@ -70,7 +76,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading minus image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
-        //creating add song to play list option:
+        //creating add song to playlist label:
         try {
             plusImage = ImageIO.read(new File("Icons/PlusSong-no-select.png"));
             plusLabel = new JLabel(new ImageIcon(plusImage));
@@ -81,7 +87,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading plus image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
-        //creating done option:
+        //creating done label:
         try {
             tickImage =ImageIO.read(new File("Icons/Tick-no-select.png"));
             tickLabel = new JLabel(new ImageIcon(tickImage));
@@ -91,7 +97,17 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading tick image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
-        //creating default playLists:
+        //creating swap label:
+        try {
+            swapImage =ImageIO.read(new File("Icons/Swap-no-select.png"));
+            swapLabel = new JLabel(new ImageIcon(swapImage));
+            swapTextLabel = new JLabel("Swap");
+            swapTextLabel.setForeground(new Color(120,120,120));
+            createSwapListener();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading swap image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+        }
+        //creating default playLists(Shared Songs and Favorite Songs):
         createDefaultPlayLists();
         //creating Empty play list picture:
         try {
@@ -121,6 +137,58 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         return removingSongPanels;
     }
 
+    @Override
+    public boolean isSwaping() {
+        return isSwaping;
+    }
+
+    @Override
+    public SongPanel getFirstSelectedSwaping() {
+        return firstSelectedSwaping;
+    }
+
+    @Override
+    public SongPanel getSecondSelectedSwaping() {
+        return secondSelectedSwaping;
+    }
+
+    @Override
+    public void setFirstSelectedSwaping(SongPanel firstSelectedSwaping) {
+        this.firstSelectedSwaping = firstSelectedSwaping;
+    }
+
+    @Override
+    public void setSecondSelectedSwaping(SongPanel secondSelectedSwaping) {
+        this.secondSelectedSwaping = secondSelectedSwaping;
+    }
+
+    public void swapPlayList(){
+        if(firstSelectedSwaping != null && secondSelectedSwaping != null){
+            int firstIndex = currentPlaylistPanel.getPlayListSongs().indexOf(firstSelectedSwaping);//first index to swap
+            int secondIndex = currentPlaylistPanel.getPlayListSongs().indexOf(secondSelectedSwaping);//second index to swap
+            Collections.swap(currentPlaylistPanel.getPlayListSongs(),firstIndex,secondIndex);//swapping!
+            //changing changes to default:
+            firstSelectedSwaping = null;
+            secondSelectedSwaping = null;
+            isSwaping = false;
+
+            //making swap button look unselected:
+            swapTextLabel.setForeground(new Color(120, 120, 120));
+            try {
+                swapImage = ImageIO.read(new File("Icons/Swap-no-select.png"));
+                swapLabel.setIcon(new ImageIcon(swapImage));
+            } catch (IOException e1) {
+                JOptionPane.showMessageDialog(null, "Error reloading swap image", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
+            }
+
+            showPlayListSongs(currentPlaylistPanel.getTitle());//reloading playlist songs to user see they swapped
+        }
+    }
+
+    /**
+     * this method help us to control musics in south panel.
+     * @return an ArrayList of song panels.
+     */
     public ArrayList<SongPanel> getCurrentPlaying() {
         return currentPlaying;
     }
@@ -208,7 +276,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
             }
         }
         if(removeSongFromPlaylist){//if we show this songs to remove, we need done button at the end.
-            JPanel doneContainer = createDoneOptionContainer();
+            JPanel doneContainer = createOptionContainer(tickLabel,doneLabel);
             constraints.gridx = 0;
             constraints.gridy++;
             this.add(doneContainer,constraints);
@@ -232,11 +300,16 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         currentPlaylistPanel = playListPanels.get(playListTitle);//getting current song where user see.
         showSongs(playListPanels.get(playListTitle).getPlayListSongs());//show all songs related to playlist
         //creating playlist options containers:
-        JPanel addSongContainer = createAddOrRemoveSongContainer(plusLabel,addSongToPlayListLabel);
-        JPanel removeSongContainer = createAddOrRemoveSongContainer(minusLabel,removeSongFromPlaylistLabel);
+        JPanel swapContainer = createOptionContainer(swapLabel,swapTextLabel);
+        JPanel addSongContainer = createOptionContainer(plusLabel,addSongToPlayListLabel);
+        JPanel removeSongContainer = createOptionContainer(minusLabel,removeSongFromPlaylistLabel);
         //adding container at the end:
-        constraints.gridy++;
         constraints.gridx = 0;
+        if(currentPlaylistPanel.getPlayListSongs().size() >= 2) {
+            constraints.gridy++;
+            this.add(swapContainer, constraints);
+        }
+        constraints.gridy++;
         this.add(addSongContainer,constraints);
         if(currentPlaylistPanel.getPlayListSongs().size() > 0) {//if song exists in playlist
             constraints.gridy++;
@@ -275,7 +348,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                 }
             }
         if(addingSongToPlaylist){//if we show this songs to add, we need done button at the end.
-            JPanel doneContainer = createDoneOptionContainer();
+            JPanel doneContainer = createOptionContainer(tickLabel,doneLabel);
             constraints.gridx = 0;
             constraints.gridy++;
             this.add(doneContainer,constraints);
@@ -546,7 +619,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
 
     /**
      * this method adds a listener to remove song from playlist option:
-     * when mouse entered: it become brighter.
+     * when mouse entered: it become brighter and red!
      * when mouse exited: it turn to previous form.
      * when mouse clicked: it show songs in playlist to remove.
      */
@@ -587,20 +660,60 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     }
 
     /**
-     * this method creates a container which holds 2 labels: tickLabel and doneLabel.
+     * this method adds a listener to swap option:
+     * when mouse entered: it become brighter and blue!
+     * when mouse exited: it turn to previous form.
+     * when mouse clicked: it select song panel to swap. after second time it swap!
+     */
+    private void createSwapListener(){
+        MouseAdapter mouseAdapter = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                isSwaping = !isSwaping;
+                try {
+                    swapImage = ImageIO.read(new File("Icons/Swap-selected.png"));
+                    swapLabel.setIcon(new ImageIcon(swapImage));
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, "Error reading swap image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if(!isSwaping) {
+                    try {
+                        swapImage = ImageIO.read(new File("Icons/Swap.png"));
+                        swapLabel.setIcon(new ImageIcon(swapImage));
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(null, "Error reading swap image", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
+                    }
+                    swapTextLabel.setForeground(new Color(179, 179, 179));
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (!isSwaping) {
+                    try {
+                        swapImage = ImageIO.read(new File("Icons/Swap-no-select.png"));
+                        swapLabel.setIcon(new ImageIcon(swapImage));
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(null, "Error reading swap image", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
+                    }
+                    swapTextLabel.setForeground(new Color(120, 120, 120));
+                }
+            }
+        };
+        swapLabel.addMouseListener(mouseAdapter);
+        swapTextLabel.addMouseListener(mouseAdapter);
+    }
+    /**
+     * this method creates a container which holds 2 labels: image label and description label.
      *
      * @return desired JPanel.
      */
-    private JPanel createDoneOptionContainer(){
-        JPanel doneContainer = new JPanel();
-        doneContainer.setLayout(new BoxLayout(doneContainer,BoxLayout.LINE_AXIS));
-        doneContainer.setOpaque(false);
-        doneContainer.add(tickLabel);
-        doneContainer.add(Box.createHorizontalStrut(5));//adding spaces between components.
-        doneContainer.add(doneLabel);
-        return doneContainer;
-    }
-    private JPanel createAddOrRemoveSongContainer(JLabel imageLabel, JLabel descriptionLabel){
+    private JPanel createOptionContainer(JLabel imageLabel, JLabel descriptionLabel){
         //creating a container to cover given labels:
         JPanel coveringContainer = new JPanel();
         coveringContainer.setOpaque(false);//removing its background
