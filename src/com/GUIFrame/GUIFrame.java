@@ -3,6 +3,7 @@ package com.GUIFrame;
 import com.MP3.MP3Info;
 import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.GeneralPanels.*;
+import com.Interfaces.AddingSongLinker;
 
 import javax.swing.*;
 import java.awt.*;
@@ -85,6 +86,12 @@ public class GUIFrame extends JFrame {
     }
 
     /**
+     * This method works as a linker and show home after Home clicked in west panel.
+     */
+    public static void showHome(){
+        centerPanel.getCenterPart().showHome();
+    }
+    /**
      * this method play clicked music and then can be controlled in south panel.
      * @param songPanel song we want to play.
      */
@@ -152,7 +159,11 @@ public class GUIFrame extends JFrame {
      * this method work as a linker
      * @return list of album titles.
      */
-    public ArrayList<String> getAlbumTitles(){
+    public static ArrayList<String> getAlbumTitles(){
         return centerPanel.getCenterPart().getAlbumTitles();
     }
+    public static AddingSongLinker getAddingSongLinker(){
+        return centerPanel.getCenterPart();
     }
+
+}

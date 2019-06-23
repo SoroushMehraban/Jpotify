@@ -1,5 +1,6 @@
 package com.Panels.CenterPanelSections;
 
+import com.Interfaces.AddingSongLinker;
 import com.Interfaces.LikeLinker;
 import com.Interfaces.LyricsLinker;
 import com.Interfaces.ShowSongsLinker;
@@ -26,16 +27,17 @@ import java.util.HashSet;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker {
+public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, AddingSongLinker {
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
+    private PlayListPanel currentPlaylistPanel;
     private HashSet<SongPanel> currentPlaying;
     private GridBagConstraints constraints;
     private BufferedImage emptyPlayListImage;
     private BufferedImage plusImage;
     private JLabel plusLabel;
     private JLabel addSongToPlayListLabel;
-    private boolean playlistIsRunning;
+    private boolean AddingSongToPlaylist;
 
     /**
      * Class Constructor.
@@ -70,6 +72,16 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         }
     }
 
+    @Override
+    public boolean isAddingSongToPlaylist() {
+        return AddingSongToPlaylist;
+    }
+
+    @Override
+    public PlayListPanel getCurrentPlaylistPanel() {
+        return currentPlaylistPanel;
+    }
+
     public HashSet<SongPanel> getCurrentPlaying() {
         return currentPlaying;
     }
@@ -79,6 +91,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      */
     public void showHome(){
         this.removeAll();//removing all components in center part
+        AddingSongToPlaylist = false;
         //initializing grids:
         int gridx = 0;
         int gridy = 0;
@@ -134,6 +147,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     @Override
     public void showSongs(HashSet<SongPanel> songPanels){
         this.currentPlaying = songPanels;
+        AddingSongToPlaylist = false;
         this.removeAll();//removing all components.
         //initializing grids:
         int gridx = 0;
@@ -151,21 +165,9 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                 gridy++;
             }
         }
-        if(playlistIsRunning){//showing add song to playlist option
-            constraints.gridy = gridy + 1;
-            constraints.gridx = 0;
-            this.add(plusLabel,constraints);
-            constraints.gridx = 1;
-            this.add(addSongToPlayListLabel,constraints);
-        }
         //updating center part of center panel:
         this.repaint();
         this.revalidate();
-    }
-
-    @Override
-    public void setPlaylistIsRunning(boolean value) {
-        playlistIsRunning = value;
     }
 
     /**
@@ -175,36 +177,54 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     public void showAlbumSongs(String albumTitle){
         showSongs(albumPanels.get(albumTitle).getSongPanels());
     }
-    /**
-     * This method only shows song panels related to a album.
-     * @param playListTitle title of playlist as a key
-     */
-    public void showPlayListSongs(String playListTitle){
-        showSongs(playListPanels.get(playListTitle).getPlayListSongs());
-    }
 
+
+    @Override
+    public void showPlayListSongs(String playListTitle){
+        currentPlaylistPanel = playListPanels.get(playListTitle);//getting current song where user see.
+        showSongs(playListPanels.get(playListTitle).getPlayListSongs());//show all songs related to playlist
+        //creating a container to cover add song to playlist option:
+        JPanel container = new JPanel();
+        container.setOpaque(false);//removing its background
+        container.setLayout(new BoxLayout(container,BoxLayout.LINE_AXIS));
+        //adding features:
+        container.add(plusLabel);
+        container.add(Box.createHorizontalStrut(5));//adding spaces between components.
+        container.add(addSongToPlayListLabel);
+        //adding container at the end:
+        constraints.gridy++;
+        constraints.gridx = 0;
+        this.add(container,constraints);
+
+    }
     /**
      * This method is called when user press Songs in West panel, it shows all songs which exists in library.
      */
     public void showAllSongs(){
         this.removeAll();//removing all components.
+        HashSet<SongPanel> allSongs = new HashSet<>();//this helps us to play ordered song in south panel.
         //initializing grids:
         int gridx = 0;
         int gridy = 0;
         //showing all songs:
         for (AlbumPanel albumPanel : albumPanels.values())
             for(SongPanel songPanel : albumPanel.getSongPanels()){
-                constraints.gridy = gridy;
-                constraints.gridx = gridx;
-                this.add(songPanel, constraints);
-                if(gridx < 3) {
-                    gridx++;
-                }
-                else{
-                    gridx = 0;
-                    gridy++;
+                //this boolean check in case if we show all songs for adding to playlist, it doesn't show song that playlist already has:
+                boolean canAdd = !AddingSongToPlaylist || !currentPlaylistPanel.getPlayListSongs().contains(songPanel);
+                if(canAdd) {
+                    allSongs.add(songPanel);
+                    constraints.gridy = gridy;
+                    constraints.gridx = gridx;
+                    this.add(songPanel, constraints);
+                    if (gridx < 3) {
+                        gridx++;
+                    } else {
+                        gridx = 0;
+                        gridy++;
+                    }
                 }
             }
+        currentPlaying = allSongs;
         //updating center part of center panel:
         this.repaint();
         this.revalidate();
@@ -362,7 +382,13 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         return new ArrayList<>(albumPanels.keySet());
     }
     private void createAddSongToPlayListListener(){
-        MouseAdapter enterAndExit = new MouseAdapter() {
+        MouseAdapter mouseAdapter = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                AddingSongToPlaylist = true;
+                showAllSongs();//show all songs without songs that playlist already has.
+            }
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 try {
@@ -385,7 +411,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                 addSongToPlayListLabel.setForeground(new Color(120,120,120));
             }
         };
-        plusLabel.addMouseListener(enterAndExit);
-        addSongToPlayListLabel.addMouseListener(enterAndExit);
+        plusLabel.addMouseListener(mouseAdapter);
+        addSongToPlayListLabel.addMouseListener(mouseAdapter);
     }
 }
