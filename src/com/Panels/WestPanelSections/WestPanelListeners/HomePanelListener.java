@@ -1,11 +1,14 @@
 package com.Panels.WestPanelSections.WestPanelListeners;
 
+import com.GUIFrame.GUIFrame;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class HomePanelListener implements MouseListener
+public class HomePanelListener extends MouseAdapter
 {
     private JLabel icon;
     private JLabel label;
@@ -20,17 +23,7 @@ public class HomePanelListener implements MouseListener
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
+        GUIFrame.showHome();
     }
 
     @Override
