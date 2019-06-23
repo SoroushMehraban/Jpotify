@@ -1,6 +1,7 @@
 package com.Panels.CenterPanelSections;
 
 import com.GUIFrame.GUIFrame;
+import com.Interfaces.AddingSongLinker;
 import com.Interfaces.LyricsLinker;
 import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -22,6 +23,8 @@ public class SongPanel extends  MusicPanel {
     private MP3Info mp3Info;
     private String songTitle;
     private LyricsLinker lyricsLinker;
+    private AddingSongLinker addingSongLinker;
+    private boolean selected;//helps for adding song to playlist.
 
     /**
      * Constructor which set information need to show in super class and create a listener for song
@@ -36,7 +39,15 @@ public class SongPanel extends  MusicPanel {
         this.mp3Info = mp3Info;
         this.lyricsLinker = lyricsLinker;
 
+        addingSongLinker = GUIFrame.getAddingSongLinker();
         createSongListener();
+    }
+
+    /**
+     * This method only calls if new adding panel appears and unselect song panel if it's selected in previous panel.
+     */
+    void unSelect() {
+        this.selected = false;
     }
 
     String getSongTitle() {
@@ -53,14 +64,31 @@ public class SongPanel extends  MusicPanel {
     private void createSongListener(){
         this.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
-                GUIFrame.playClickedMusic((SongPanel) e.getSource());
-                lyricsLinker.showLyrics(mp3Info.getLyrics());
+            public void mouseClicked(MouseEvent e) {
+                SongPanel source = (SongPanel)e.getSource();
+                if(!addingSongLinker.isAddingSongToPlaylist()) {
+                    GUIFrame.playClickedMusic((SongPanel) e.getSource());
+                    lyricsLinker.showLyrics(mp3Info.getLyrics());
+                }
+                else{
+                    if(!selected){
+                        selected = true;
+                        source.setBackground(new Color(41,41,41));
+                        addingSongLinker.getAddingSongPanel().add(source);
+                    }
+                    else{
+                        selected = false;
+                        source.setBackground(new Color(23,23,23));
+                        addingSongLinker.getAddingSongPanel().remove(source);
+                    }
+                }
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                MusicPanel source = (MusicPanel)e.getSource();
-                source.setBackground(new Color(23,23,23));
+                if(!selected || !addingSongLinker.isAddingSongToPlaylist()) {
+                    MusicPanel source = (MusicPanel) e.getSource();
+                    source.setBackground(new Color(23, 23, 23));
+                }
             }
 
             @Override

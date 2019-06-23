@@ -20,9 +20,10 @@ import java.util.*;
  * @author Soroush Mehraban
  * @version 1.0
  */
-class PlayListPanel extends MusicPanel {
+public class PlayListPanel extends MusicPanel {
     private HashSet<SongPanel> playListSongs;
     private ShowSongsLinker showSongsLinker;
+    private String title;
 
     /**
      * Constructor which set information need to show in super class.
@@ -33,9 +34,14 @@ class PlayListPanel extends MusicPanel {
      */
     PlayListPanel(BufferedImage image, String title, String description, ShowSongsLinker showSongsLinker) {
         super(image, title, description);
+        this.title = title;
         playListSongs = new HashSet<>();
         this.showSongsLinker = showSongsLinker;
         createPlayListListener();
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     private void createPlayListListener(){
@@ -48,8 +54,7 @@ class PlayListPanel extends MusicPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                showSongsLinker.setPlaylistIsRunning(true);
-                showSongsLinker.showSongs(playListSongs);
+                showSongsLinker.showPlayListSongs(title);
                 PlayListPanel source = (PlayListPanel) e.getSource();
                 source.setBackground(new Color(23,23,23));
             }

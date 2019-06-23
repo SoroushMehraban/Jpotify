@@ -63,7 +63,6 @@ class AlbumPanel extends MusicPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                showSongsLinker.setPlaylistIsRunning(false);
                 showSongsLinker.showSongs(songPanels);
                 AlbumPanel source = (AlbumPanel)e.getSource();
                 source.setBackground(new Color(23,23,23));
