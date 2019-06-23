@@ -30,7 +30,8 @@ import java.util.HashSet;
 public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, AddingSongLinker {
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
-    private PlayListPanel currentPlaylistPanel;
+    private PlayListPanel currentPlaylistPanel;//helps for adding song to playlist.
+    private HashSet<SongPanel> addingSongPanels; //helps for adding song to playlist.
     private HashSet<SongPanel> currentPlaying;
     private GridBagConstraints constraints;
     private BufferedImage emptyPlayListImage;
@@ -91,8 +92,8 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     }
 
     @Override
-    public PlayListPanel getCurrentPlaylistPanel() {
-        return currentPlaylistPanel;
+    public HashSet<SongPanel> getAddingSongPanel(){
+        return addingSongPanels;
     }
 
     public HashSet<SongPanel> getCurrentPlaying() {
@@ -421,7 +422,8 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                addingSongToPlaylist = true;
+                addingSongToPlaylist = true;//this cause showAllSong method doesn't consider existing song and add a option at the end.
+                addingSongPanels = new HashSet<>();//this creates a temporary memory space which hold adding song panels.
                 showAllSongs();//show all songs without songs that playlist already has.
             }
 
@@ -461,7 +463,9 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+                currentPlaylistPanel.getPlayListSongs().addAll(addingSongPanels);//adding selected songs to playlist.
+                addingSongPanels = null;//we don't need to this anymore, let garbage collector delete that!
+                showPlayListSongs(currentPlaylistPanel.getTitle());//coming back to current playlist.
             }
 
             @Override

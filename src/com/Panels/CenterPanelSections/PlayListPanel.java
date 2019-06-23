@@ -40,6 +40,10 @@ public class PlayListPanel extends MusicPanel {
         createPlayListListener();
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     private void createPlayListListener(){
         this.addMouseListener(new MouseAdapter() {
             @Override

@@ -75,12 +75,12 @@ public class SongPanel extends  MusicPanel {
                     if(!selected){
                         selected = true;
                         source.setBackground(new Color(41,41,41));
-                        addingSongLinker.getCurrentPlaylistPanel().getPlayListSongs().add(source);
+                        addingSongLinker.getAddingSongPanel().add(source);
                     }
                     else{
                         selected = false;
                         source.setBackground(new Color(23,23,23));
-                        addingSongLinker.getCurrentPlaylistPanel().getPlayListSongs().remove(source);
+                        addingSongLinker.getAddingSongPanel().remove(source);
                     }
                 }
             }
