@@ -11,8 +11,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 /**
  * Album panel which contains list of music which is chosen by user.
@@ -21,7 +21,7 @@ import java.util.*;
  * @version 1.0
  */
 public class PlayListPanel extends MusicPanel {
-    private HashSet<SongPanel> playListSongs;
+    private ArrayList<SongPanel> playListSongs;
     private ShowSongsLinker showSongsLinker;
     private String title;
 
@@ -35,7 +35,7 @@ public class PlayListPanel extends MusicPanel {
     PlayListPanel(BufferedImage image, String title, String description, ShowSongsLinker showSongsLinker) {
         super(image, title, description);
         this.title = title;
-        playListSongs = new HashSet<>();
+        playListSongs = new ArrayList<>();
         this.showSongsLinker = showSongsLinker;
         createPlayListListener();
     }
@@ -72,17 +72,17 @@ public class PlayListPanel extends MusicPanel {
     }
 
     void removeSong(String title){
-        Set<SongPanel> tempSynchronized = Collections.synchronizedSet(playListSongs);
+        List<SongPanel> tempSynchronized = Collections.synchronizedList(playListSongs);
         Iterator<SongPanel> it = tempSynchronized.iterator();
         while(it.hasNext()){
             SongPanel songPanel = it.next();
             if(songPanel.getSongTitle().equals(title))
                 it.remove();
         }
-        playListSongs = new HashSet<>(tempSynchronized);
+        playListSongs = new ArrayList<>(tempSynchronized);
     }
 
-    HashSet<SongPanel> getPlayListSongs() {
+    ArrayList<SongPanel> getPlayListSongs() {
         return playListSongs;
     }
 }

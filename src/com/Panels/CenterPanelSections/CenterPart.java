@@ -31,9 +31,9 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
     private PlayListPanel currentPlaylistPanel;//helps for adding  and removing song to playlist.
-    private HashSet<SongPanel> addingSongPanels; //helps for adding song to playlist.
-    private HashSet<SongPanel> removingSongPanels; //helps for removing song from playlist.
-    private HashSet<SongPanel> currentPlaying;
+    private ArrayList<SongPanel> addingSongPanels; //helps for adding song to playlist.
+    private ArrayList<SongPanel> removingSongPanels; //helps for removing song from playlist.
+    private ArrayList<SongPanel> currentPlaying;
     private GridBagConstraints constraints;
     private BufferedImage emptyPlayListImage;
     private BufferedImage plusImage;
@@ -112,16 +112,16 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     }
 
     @Override
-    public HashSet<SongPanel> getAddingSongPanel(){
+    public ArrayList<SongPanel> getAddingSongPanel(){
         return addingSongPanels;
     }
 
     @Override
-    public HashSet<SongPanel> getRemovingSongPanels() {
+    public ArrayList<SongPanel> getRemovingSongPanels() {
         return removingSongPanels;
     }
 
-    public HashSet<SongPanel> getCurrentPlaying() {
+    public ArrayList<SongPanel> getCurrentPlaying() {
         return currentPlaying;
     }
 
@@ -185,7 +185,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      * @param songPanels desired song panel to show.
      */
     @Override
-    public void showSongs(HashSet<SongPanel> songPanels){
+    public void showSongs(ArrayList<SongPanel> songPanels){
         this.currentPlaying = songPanels;
         addingSongToPlaylist = false;
         this.removeAll();//removing all components.
@@ -250,7 +250,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     public void showAllSongs(){
         this.removeAll();//removing all components.
         removeSongFromPlaylist = false;
-        HashSet<SongPanel> allSongs = new HashSet<>();//this helps us to play ordered song in south panel.
+        ArrayList<SongPanel> allSongs = new ArrayList<>();//this helps us to play ordered song in south panel.
         //initializing grids:
         int gridx = 0;
         int gridy = 0;
@@ -376,7 +376,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     @Override
     public boolean isSongLiked(String directory) {
         PlayListPanel favoriteSongsPlayLists = playListPanels.get("Favorite Songs");
-        HashSet<SongPanel> favoriteSongPanels = favoriteSongsPlayLists.getPlayListSongs();
+        ArrayList<SongPanel> favoriteSongPanels = favoriteSongsPlayLists.getPlayListSongs();
         try {
             MP3Info mp3Info = new MP3Info(directory);
             for(SongPanel songPanel : favoriteSongPanels){
@@ -464,7 +464,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
             @Override
             public void mouseClicked(MouseEvent e) {
                 addingSongToPlaylist = true;//this cause showAllSong method doesn't consider existing song and add a option at the end.
-                addingSongPanels = new HashSet<>();//this creates a temporary memory space which hold adding song panels.
+                addingSongPanels = new ArrayList<>();//this creates a temporary memory space which hold adding song panels.
                 showAllSongs();//show all songs without songs that playlist already has.
                 mouseExited(e);//turn its gui like mouse exited.
             }
@@ -555,7 +555,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
             @Override
             public void mouseClicked(MouseEvent e) {
                 removeSongFromPlaylist = true;//this cause showSong method show done at the end
-                removingSongPanels = new HashSet<>();//this creates a temporary memory space which hold removing song panels.
+                removingSongPanels = new ArrayList<>();//this creates a temporary memory space which hold removing song panels.
                 showSongs(currentPlaylistPanel.getPlayListSongs());//show existing song in playlist to remove.
                 mouseExited(e);//turn its gui like mouse exited.
             }

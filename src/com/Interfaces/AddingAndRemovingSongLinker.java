@@ -3,6 +3,7 @@ package com.Interfaces;
 import com.Panels.CenterPanelSections.PlayListPanel;
 import com.Panels.CenterPanelSections.SongPanel;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -35,11 +36,11 @@ public interface AddingAndRemovingSongLinker {
      *
      * @return a temporary space for adding panels we want to add.
      */
-    HashSet<SongPanel> getAddingSongPanel();
+    ArrayList<SongPanel> getAddingSongPanel();
     /**
      * if we are aiming to remove song from playlist, this method help us to remove before pressing done.
      *
      * @return a temporary space for removing panels we want to add.
      */
-    HashSet<SongPanel> getRemovingSongPanels();
+    ArrayList<SongPanel> getRemovingSongPanels();
 }
