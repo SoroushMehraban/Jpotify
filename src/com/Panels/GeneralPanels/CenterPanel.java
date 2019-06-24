@@ -1,5 +1,6 @@
 package com.Panels.GeneralPanels;
 
+import com.GUIFrame.GUIFrame;
 import com.Panels.CenterPanelSections.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
@@ -30,7 +31,7 @@ public class CenterPanel extends JPanel {
 
         centerPart = new CenterPart();//creating center part panel
         JScrollPane jScrollPane = new JScrollPane(centerPart);//creating JScrollPane to cover center part with scrollbar
-        customizeJScrollPane(jScrollPane);//customizing jScrollPane's colors
+        GUIFrame.customizeJScrollPane(jScrollPane);//customizing jScrollPane's colors
         this.add(jScrollPane,BorderLayout.CENTER);//adding center part to center panel.
 
         northPart = new NorthPart(centerPart);//creating north part of panel
@@ -40,36 +41,5 @@ public class CenterPanel extends JPanel {
 
     public CenterPart getCenterPart() {
         return centerPart;
-    }
-
-    /**
-     * this method customize JScrollPane's color to fit in center part theme.
-     * @param jScrollPane our jScrollPane to to be customized.
-     */
-    public static void customizeJScrollPane(JScrollPane jScrollPane){
-        jScrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-            @Override
-            protected void configureScrollBarColors(){
-                this.thumbColor = new Color(84,84,84);
-                this.trackColor = new Color(23,23,23);
-            }
-
-            @Override
-            protected JButton createIncreaseButton(int orientation) {
-                return new BasicArrowButton(orientation,
-                        new Color(23,23,23),
-                        new Color(23,23,23),
-                        new Color(84,84,84),
-                        new Color(23,23,23));
-            }
-
-            protected JButton createDecreaseButton(int orientation)  {
-                return new BasicArrowButton(orientation,
-                        new Color(23,23,23),
-                        new Color(23,23,23),
-                        new Color(84,84,84),
-                        new Color(23,23,23));
-            }
-        });
     }
 }

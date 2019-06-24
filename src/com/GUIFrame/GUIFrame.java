@@ -8,6 +8,8 @@ import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -42,7 +44,7 @@ public class GUIFrame extends JFrame {
         westPanel=new WestPanel();
         JScrollPane leftJScrollPane=new JScrollPane(westPanel);
         leftJScrollPane.setPreferredSize(new Dimension(120,600));
-        CenterPanel.customizeJScrollPane(leftJScrollPane);
+        customizeJScrollPane(leftJScrollPane);
         this.add(leftJScrollPane,BorderLayout.WEST);
         this.setVisible(true);
         //setting like linker between playPanel in southPanel and centerPart in centerPanel:
@@ -90,12 +92,8 @@ public class GUIFrame extends JFrame {
             WestPanel.getArtworkLabel().setIcon(WestPanel.setImageSize(test));
             reload();
             southPanel.play(songPanel, centerPanel.getCenterPart().getCurrentPlaying());
-        } catch (InvalidDataException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedTagException e) {
-            e.printStackTrace();
+        } catch (InvalidDataException | IOException | UnsupportedTagException e) {
+            JOptionPane.showMessageDialog(null, "Error reading artwork image for showing in west panel","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
 
     }
@@ -172,4 +170,46 @@ public class GUIFrame extends JFrame {
 
     }
 
+
+    /**
+     * this method customize JScrollPane's color to fit in center part theme.
+     * @param jScrollPane our jScrollPane to to be customized.
+     */
+    public static void customizeJScrollPane(JScrollPane jScrollPane){
+        jScrollPane.getHorizontalScrollBar().setUI(createBasicScrollBarUI());
+        jScrollPane.getVerticalScrollBar().setUI(createBasicScrollBarUI());
+        jScrollPane.setBackground(new Color(23,23,23));
+    }
+
+    /**
+     * This method create Basic Scroll Bar UI which sets color of JScroll bar.
+     * @return desired basic scroll bar UI.
+     */
+    private static BasicScrollBarUI createBasicScrollBarUI(){
+        return new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors(){
+                this.thumbColor = new Color(84,84,84);
+                this.trackColor = new Color(23,23,23);
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return new BasicArrowButton(orientation,
+                        new Color(23,23,23),
+                        new Color(23,23,23),
+                        new Color(84,84,84),
+                        new Color(23,23,23));
+            }
+
+            protected JButton createDecreaseButton(int orientation)  {
+                return new BasicArrowButton(orientation,
+                        new Color(23,23,23),
+                        new Color(23,23,23),
+                        new Color(84,84,84),
+                        new Color(23,23,23));
+            }
+
+        };
+    }
 }
