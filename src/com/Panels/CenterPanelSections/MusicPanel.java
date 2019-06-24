@@ -16,7 +16,7 @@ import java.awt.image.BufferedImage;
  * @version 1.0
  */
 abstract class MusicPanel extends JPanel{
-
+    private JLabel descriptionLabel;
     /**
      * a constructor to create a desired panel.
      *
@@ -36,7 +36,7 @@ abstract class MusicPanel extends JPanel{
         titleLabel.setText(title);//setting title text
         titleLabel.setForeground(new Color(219,219,219));//setting title color
 
-        JLabel descriptionLabel = new JLabel();//creating description label
+        descriptionLabel = new JLabel();//creating description label
         String stringModified = description.replace("\n","<br/>");//fixing all \n with <br/> as a line breaker.
         description ="<html><p style=\"width:155px\">"+stringModified+"</p></html>";//creating a paragraph width which line breaks after that.
         descriptionLabel.setText(description);//setting description text
@@ -47,5 +47,9 @@ abstract class MusicPanel extends JPanel{
         this.add(titleLabel);
         this.add(descriptionLabel);
 
+    }
+
+    protected JLabel getDescriptionLabel() {
+        return descriptionLabel;
     }
 }
