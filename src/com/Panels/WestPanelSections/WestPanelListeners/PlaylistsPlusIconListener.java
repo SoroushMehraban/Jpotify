@@ -18,7 +18,28 @@ public class PlaylistsPlusIconListener extends MouseAdapter
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //GUIFrame.addSongToPlayList();
+        JTextField titleField = new JTextField(10);
+        JTextField descriptionField = new JTextField(10);
+
+        JPanel myPanel = new JPanel();
+        myPanel.add(new JLabel("Title:"));
+        myPanel.add(titleField);
+        myPanel.add(Box.createHorizontalStrut(50));
+        myPanel.add(Box.createVerticalStrut(100));
+        myPanel.add(new JLabel("Description:"));
+        myPanel.add(descriptionField);
+
+        int result = JOptionPane.showConfirmDialog(null, myPanel,
+                "Please Enter Title and Description", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            GUIFrame.createPlayList(titleField.getText(),descriptionField.getText());
+            GUIFrame.reload();
+            }
+
+
+
+
+
 
     }
 
