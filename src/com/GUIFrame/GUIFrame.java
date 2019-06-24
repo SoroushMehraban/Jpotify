@@ -4,9 +4,12 @@ import com.Interfaces.PlaylistOptionLinker;
 import com.MP3.MP3Info;
 import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.GeneralPanels.*;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -81,8 +84,21 @@ public class GUIFrame extends JFrame {
      * this method play clicked music and then can be controlled in south panel.
      * @param songPanel song we want to play.
      */
+
     public static void playClickedMusic(SongPanel songPanel){
-        southPanel.play(songPanel, centerPanel.getCenterPart().getCurrentPlaying());
+        try {
+            Image test=songPanel.getMp3Info().getImage();
+            WestPanel.getArtworkLabel().setIcon(WestPanel.setImageSize(test));
+            reload();
+            southPanel.play(songPanel, centerPanel.getCenterPart().getCurrentPlaying());
+        } catch (InvalidDataException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedTagException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**

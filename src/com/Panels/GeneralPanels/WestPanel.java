@@ -15,6 +15,8 @@ public class WestPanel extends JPanel
     private static JPanel songsPanel;
     private static JPanel libraryPanel;
     private static JPanel playListsPanel;
+    private static JPanel artworkPanel;
+    private static JLabel artworkLabel;
 
     public WestPanel()
     {
@@ -31,6 +33,7 @@ public class WestPanel extends JPanel
         JLabel playListsLabel;
         JLabel playListsIcon;
         JLabel addToPlaylistsIcon;
+
 
         this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
         this.setBackground(new Color(23,23,23));
@@ -109,14 +112,25 @@ public class WestPanel extends JPanel
         playListsPanel.add(addToPlaylistsIcon);
         addToPlaylistsIcon.addMouseListener(new PlaylistsPlusIconListener(addToPlaylistsIcon));
         this.add(playListsPanel);
+        this.add(Box.createVerticalStrut(220));
+        artworkPanel=new JPanel();
+        artworkPanel.setBackground(new Color(23,23,23));
+        artworkPanel.setPreferredSize(new Dimension(80,50));
+        artworkLabel=new JLabel();
+        //artworkLabel.setIcon(setImageSize("Images/test.jpg"));
+        artworkPanel.add(artworkLabel);
+        this.add(artworkPanel);
 
 
 
+    }
+    public static JLabel getArtworkLabel()
+    {
+        return artworkLabel;
+    }
+    public static ImageIcon setImageSize(Image artworkImage) {
 
-
-
-
-
+        return new ImageIcon(artworkImage.getScaledInstance(120, 120, Image.SCALE_SMOOTH));
     }
     public static ImageIcon setIconSize(String name) {
         ImageIcon output = new ImageIcon(name);
