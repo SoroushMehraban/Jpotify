@@ -101,7 +101,17 @@ class AlbumPanel extends MusicPanel {
     void addNewSongs(ArrayList<MP3Info> albumMusicsInfo,LyricsLinker lyricsLinker){
         HashMap<String,SongPanel> newSongs = createSongPanels(albumMusicsInfo,lyricsLinker);//creating hashmap of new songs
         for(String songTitle : newSongs.keySet())//adding songs which our album doesn't has
-            if(!songPanels.containsKey(songTitle))
-                songPanels.put(songTitle,newSongs.get(songTitle));
+            if(!songPanels.containsKey(songTitle)) {
+                songPanels.put(songTitle, newSongs.get(songTitle));
+                updateDescription();
+            }
+    }
+
+    /**
+     * this method update description after new song added to this album.
+     */
+    private void updateDescription(){
+        String newDescription = "Album contains "+songPanels.size()+" songs";
+        getDescriptionLabel().setText(newDescription);
     }
 }
