@@ -69,7 +69,7 @@ public class SongPanel extends  MusicPanel {
                     if(!selected){//if it's not selected before, we add it to addingSongPanel and make it look brighter
                         selected = true;
                         source.setBackground(new Color(41,41,41));
-                        playlistOptionLinker.getAddingSongPanel().add(source);//(it changes playlist after done button clicked!)
+                        playlistOptionLinker.getAddingSongPanel().add(0, source);//(it changes playlist after done button clicked!)
                     }
                     else{//else we make look like previous form and remove from addingSongPanel
                         selected = false;
