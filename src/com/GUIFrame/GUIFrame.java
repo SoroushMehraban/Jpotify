@@ -11,7 +11,6 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -27,6 +26,7 @@ public class GUIFrame extends JFrame {
     private static SouthPanel southPanel;
     private static CenterPanel centerPanel;
     private static WestPanel westPanel;
+    private static JPanel artworkPanel;
     /**
      * Class Constructor
      */
@@ -36,16 +36,20 @@ public class GUIFrame extends JFrame {
         this.setLocationRelativeTo(null); //setting frame at the center of screen
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing the program when user close the window.
         this.setMinimumSize(new Dimension(940,512));
+
         centerPanel = new CenterPanel();
         this.add(centerPanel,BorderLayout.CENTER);
+
         southPanel = new SouthPanel();
         southPanel.setLyricsLinker(centerPanel.getCenterPart());
         this.add(southPanel,BorderLayout.SOUTH);
+
         westPanel=new WestPanel();
-        JScrollPane leftJScrollPane=new JScrollPane(westPanel);
-        leftJScrollPane.setPreferredSize(new Dimension(120,600));
-        customizeJScrollPane(leftJScrollPane);
-        this.add(leftJScrollPane,BorderLayout.WEST);
+        artworkPanel = new JPanel();
+        artworkPanel.setLayout(new BoxLayout(artworkPanel,BoxLayout.LINE_AXIS));
+        JPanel westContainer = createWestContainer(westPanel,artworkPanel);
+        this.add(westContainer,BorderLayout.WEST);
+
         this.setVisible(true);
         //setting like linker between playPanel in southPanel and centerPart in centerPanel:
         southPanel.getPlayPanel().setLikeLinker(centerPanel.getCenterPart());
@@ -83,19 +87,19 @@ public class GUIFrame extends JFrame {
     }
     /**
      * this method play clicked music and then can be controlled in south panel.
+     * it also reload artwork panel and shows new artwork of playing music.
      * @param songPanel song we want to play.
      */
-
     public static void playClickedMusic(SongPanel songPanel){
         try {
-            Image test=songPanel.getMp3Info().getImage();
-            WestPanel.getArtworkLabel().setIcon(WestPanel.setImageSize(test));
-            reload();
+            Image playingArtwork = songPanel.getMp3Info().getImage().getScaledInstance(120,120,Image.SCALE_SMOOTH);
+            artworkPanel.removeAll();//removing previous artwork in artwork panel
+            artworkPanel.add(new JLabel(new ImageIcon(playingArtwork)));//adding new artwork to show
+            reload();//reload to show the changes
             southPanel.play(songPanel, centerPanel.getCenterPart().getCurrentPlaying());
         } catch (InvalidDataException | IOException | UnsupportedTagException e) {
             JOptionPane.showMessageDialog(null, "Error reading artwork image for showing in west panel","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
     /**
@@ -211,5 +215,23 @@ public class GUIFrame extends JFrame {
             }
 
         };
+    }
+
+    /**
+     * this private method creates a container which holds west panel and artwork panel
+     * @param westPanel program west panel
+     * @param artworkPanel artwork panel which shows artworks after playing song.
+     * @return desired container
+     */
+    private JPanel createWestContainer(WestPanel westPanel, JPanel artworkPanel){
+        JPanel westContainer = new JPanel();
+        westContainer.setLayout(new BoxLayout(westContainer,BoxLayout.PAGE_AXIS));
+        JScrollPane leftJScrollPane=new JScrollPane(westPanel);
+        leftJScrollPane.setPreferredSize(new Dimension(120,600));
+        customizeJScrollPane(leftJScrollPane);
+        westContainer.add(leftJScrollPane);
+        westContainer.add(artworkPanel);
+        westContainer.setPreferredSize(new Dimension(120,600));
+        return westContainer;
     }
 }
