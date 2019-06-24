@@ -38,7 +38,7 @@ abstract class MusicPanel extends JPanel{
 
         JLabel descriptionLabel = new JLabel();//creating description label
         String stringModified = description.replace("\n","<br/>");//fixing all \n with <br/> as a line breaker.
-        description ="<html><p style=\"width:170px\">"+stringModified+"</p></html>";//creating a paragraph width which line breaks after that.
+        description ="<html><p style=\"width:155px\">"+stringModified+"</p></html>";//creating a paragraph width which line breaks after that.
         descriptionLabel.setText(description);//setting description text
         descriptionLabel.setForeground(new Color(120,120,120));//setting description color
 
