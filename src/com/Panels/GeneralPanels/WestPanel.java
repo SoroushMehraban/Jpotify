@@ -121,7 +121,7 @@ public class WestPanel extends JPanel
         artworkPanel.add(artworkLabel);
         this.add(artworkPanel);
 
-
+//new
 
     }
     public static JLabel getArtworkLabel()
