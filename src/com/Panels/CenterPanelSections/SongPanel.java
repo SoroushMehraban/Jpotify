@@ -21,7 +21,6 @@ import java.io.IOException;
 public class SongPanel extends  MusicPanel {
     private MP3Info mp3Info;
     private String songTitle;
-    private LyricsLinker lyricsLinker;
     private PlaylistOptionLinker playlistOptionLinker;
     private boolean selected;//helps for adding song to playlist.
 
@@ -30,13 +29,11 @@ public class SongPanel extends  MusicPanel {
      *
      * @param mp3Info information about mp3 we want to play
      * @param description description to show under the title.
-     * @param lyricsLinker a linker to show lyrics in center panel.
      */
-    SongPanel(MP3Info mp3Info, String description, LyricsLinker lyricsLinker) throws InvalidDataException, IOException, UnsupportedTagException {
+    SongPanel(MP3Info mp3Info, String description) throws InvalidDataException, IOException, UnsupportedTagException {
         super(mp3Info.getImage(),mp3Info.getTitle(),description);
         songTitle = mp3Info.getTitle();
         this.mp3Info = mp3Info;
-        this.lyricsLinker = lyricsLinker;
 
         playlistOptionLinker = GUIFrame.getAddingAndRemovingSongLinker();
         createSongListener();
@@ -49,8 +46,8 @@ public class SongPanel extends  MusicPanel {
         this.selected = false;
     }
 
-    String getSongTitle() {
-        return songTitle;
+    public MP3Info getMp3Info() {
+        return mp3Info;
     }
 
     /**
@@ -110,7 +107,6 @@ public class SongPanel extends  MusicPanel {
                 }
                 else{//if clicked in order to play song
                     GUIFrame.playClickedMusic(source);//playing music
-                    lyricsLinker.showLyrics(mp3Info.getLyrics());//trying to find lyrics in the internet.
                 }
             }
             @Override

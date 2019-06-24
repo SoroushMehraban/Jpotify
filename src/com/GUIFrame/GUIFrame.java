@@ -34,6 +34,7 @@ public class GUIFrame extends JFrame {
         centerPanel = new CenterPanel();
         this.add(centerPanel,BorderLayout.CENTER);
         southPanel = new SouthPanel();
+        southPanel.setLyricsLinker(centerPanel.getCenterPart());
         this.add(southPanel,BorderLayout.SOUTH);
         westPanel=new WestPanel();
         JScrollPane leftJScrollPane=new JScrollPane(westPanel);

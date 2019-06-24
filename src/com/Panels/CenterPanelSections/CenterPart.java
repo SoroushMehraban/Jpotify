@@ -421,8 +421,8 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         try {
             MP3Info mp3Info = new MP3Info(directory);
             if(albumPanels.get(mp3Info.getAlbum()) != null){
-                for( SongPanel songPanel : albumPanels.get(mp3Info.getAlbum()).getSongPanels())
-                    if(songPanel.getSongTitle().equals(mp3Info.getTitle())) {
+                for( SongPanel songPanel : albumPanels.get(mp3Info.getAlbum()).getSongPanels())//searching to find song panel with that title.
+                    if(songPanel.getMp3Info().getTitle().equals(mp3Info.getTitle())) {
                         playListPanels.get("Favorite Songs").addSong(songPanel);
                         break;
                     }
@@ -453,7 +453,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         try {
             MP3Info mp3Info = new MP3Info(directory);
             for(SongPanel songPanel : favoriteSongPanels){
-                if(songPanel.getSongTitle().equals(mp3Info.getTitle()))
+                if(songPanel.getMp3Info().getTitle().equals(mp3Info.getTitle()))
                  return true;
             }
         } catch (IOException e) {

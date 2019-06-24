@@ -76,7 +76,7 @@ public class PlayListPanel extends MusicPanel {
         Iterator<SongPanel> it = tempSynchronized.iterator();
         while(it.hasNext()){
             SongPanel songPanel = it.next();
-            if(songPanel.getSongTitle().equals(title))
+            if(songPanel.getMp3Info().getTitle().equals(title))
                 it.remove();
         }
         playListSongs = new ArrayList<>(tempSynchronized);

@@ -1,5 +1,6 @@
 package com.Panels.GeneralPanels;
 
+import com.Interfaces.LyricsLinker;
 import com.Interfaces.PlayControlLinker;
 import com.MP3.CustomPlayer;
 import com.Panels.CenterPanelSections.SongPanel;
@@ -27,10 +28,11 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
     private PlayPanel playPanel;
     private CustomPlayer customPlayer;
     private SongPanel currentSongPanel;
-    private ArrayList<SongPanel> currentAlbumSongPanels;
+    private ArrayList<SongPanel> currentSongPanels;
     private boolean newRunning;
     private boolean isRepeating;
     private boolean isShuffling;
+    private LyricsLinker lyricsLinker;
 
     /**
      * Class Constructor
@@ -66,6 +68,10 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
         this.add(eastPart,BorderLayout.EAST);
     }
 
+    public void setLyricsLinker(LyricsLinker lyricsLinker) {
+        this.lyricsLinker = lyricsLinker;
+    }
+
     public PlayPanel getPlayPanel() {
         return playPanel;
     }
@@ -75,10 +81,10 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
      * it handle player by giving it to it's components.
      * @param songPanel panel of song we want to play.(help us to determine what is next)
      */
-    public void play(SongPanel songPanel, ArrayList<SongPanel> albumSongPanels) {
+    public void play(SongPanel songPanel, ArrayList<SongPanel> SongPanels) {
         //setting current song and albums if we want to go forward and backward:
         currentSongPanel = songPanel;
-        currentAlbumSongPanels = albumSongPanels;
+        currentSongPanels = SongPanels;
 
         if(customPlayer != null) {//if previous music is playing
             customPlayer.close();
@@ -88,11 +94,12 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
             @Override
             public void run() {
                 newRunning = false;// this cause outer loop doesn't break.(if we changed newRunning above to break it)
-                outer: for (int i = albumSongPanels.indexOf(songPanel); i < albumSongPanels.size()  ; i++) {
+                outer: for (int i = SongPanels.indexOf(songPanel); i < SongPanels.size()  ; i++) {
                     System.out.println("index played: "+i);//temporary to show it works correctly.
-                    currentSongPanel = albumSongPanels.get(i);//changing current song panel to play next one
+                    currentSongPanel = SongPanels.get(i);//changing current song panel to play next one
                     customPlayer = new CustomPlayer(currentSongPanel.getInputFileDirectory());
                     playPanel.playMusic(customPlayer);
+                    lyricsLinker.showLyrics(currentSongPanel.getMp3Info().getLyrics());
                     progressPanel.controlMusic(customPlayer);
                     westPart.updateNames(songPanel.getInputFileDirectory());
                     while(!customPlayer.isComplete()) {//wait until song finish playing(end of playing).
@@ -103,7 +110,7 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
                         i--;
                     if(isShuffling){//if IsShuffling is true(its button prssed):
                         Random random = new Random();
-                        int randomIndex = random.nextInt(albumSongPanels.size()) % albumSongPanels.size() - 1;
+                        int randomIndex = random.nextInt(SongPanels.size()) % SongPanels.size() - 1;
                         //random index has -1 at end of that because loop first make ++ of that and then run loops
                         //if we didnt do that, if randomIndex become last index, after ++ in loop it ends the loop
                         i = randomIndex;
@@ -116,21 +123,21 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
 
     @Override
     public void goForward() {
-        if(currentAlbumSongPanels != null) {//if music is playing
-            int indexOfNextSong = (currentAlbumSongPanels.indexOf(currentSongPanel) + 1) % currentAlbumSongPanels.size() ;
-            SongPanel nextSong = currentAlbumSongPanels.get(indexOfNextSong);
-            play(nextSong, new ArrayList<>(currentAlbumSongPanels));
+        if(currentSongPanels != null) {//if music is playing
+            int indexOfNextSong = (currentSongPanels.indexOf(currentSongPanel) + 1) % currentSongPanels.size() ;
+            SongPanel nextSong = currentSongPanels.get(indexOfNextSong);
+            play(nextSong, new ArrayList<>(currentSongPanels));
         }
     }
 
     @Override
     public void goBack() {
-        if(currentAlbumSongPanels != null) {//if music is playing
-            int indexOfPreviousSong = (currentAlbumSongPanels.indexOf(currentSongPanel) - 1);
+        if(currentSongPanels != null) {//if music is playing
+            int indexOfPreviousSong = (currentSongPanels.indexOf(currentSongPanel) - 1);
             if(indexOfPreviousSong == -1)
-                indexOfPreviousSong = currentAlbumSongPanels.size() -1;
-            SongPanel previousSong = currentAlbumSongPanels.get(indexOfPreviousSong);
-            play(previousSong, new ArrayList<>(currentAlbumSongPanels));
+                indexOfPreviousSong = currentSongPanels.size() -1;
+            SongPanel previousSong = currentSongPanels.get(indexOfPreviousSong);
+            play(previousSong, new ArrayList<>(currentSongPanels));
         }
     }
 

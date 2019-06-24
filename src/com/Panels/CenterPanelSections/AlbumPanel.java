@@ -85,7 +85,7 @@ class AlbumPanel extends MusicPanel {
         HashMap<String,SongPanel> songPanels = new HashMap<>();
         for(MP3Info mp3Info: mp3Infos ) {
             try {
-                songPanels.put(mp3Info.getTitle(),new SongPanel(mp3Info, mp3Info.getArtist(),lyricsLinker));
+                songPanels.put(mp3Info.getTitle(),new SongPanel(mp3Info, mp3Info.getArtist()));
             } catch (InvalidDataException | IOException | UnsupportedTagException e) {
                 JOptionPane.showMessageDialog(null, "Error reading mp3 file image");
             }
