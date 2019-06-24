@@ -59,13 +59,15 @@ public class LibraryPanelListener extends MouseAdapter
                 addFile(inputFile);
             }
             else if (inputFile.isDirectory()) {//if user chooses directory
-                if (inputFile.listFiles() != null && Objects.requireNonNull(inputFile.listFiles()).length > 0) { //if I/O Error didn't occur(!= null) and Folder is not empty{
+                if (Objects.requireNonNull(inputFile.listFiles()).length > 0) { //if I/O Error didn't occur(requireNonNull) and Folder is not empty{
                     try {
                         addFiles(inputFile);
                     } catch (IOException | NoSuchFieldException e1) {
                         JOptionPane.showMessageDialog(null, "Error reading mp3 file for MP3Info","An Error Occurred",JOptionPane.ERROR_MESSAGE);
                     }
                 }
+                else
+                    JOptionPane.showMessageDialog(null, "Folder is empty!", "Wrong directory input", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -104,6 +106,10 @@ public class LibraryPanelListener extends MouseAdapter
                 JOptionPane.showMessageDialog(null, "Error reading mp3 file for MP3Info","An Error Occurred",JOptionPane.ERROR_MESSAGE);
             }
         }
+        else
+            JOptionPane.showMessageDialog(null, "You should choose mp3 file", "Wrong file input", JOptionPane.INFORMATION_MESSAGE);
+
+
 
     }
 
@@ -121,29 +127,29 @@ public class LibraryPanelListener extends MouseAdapter
 
         ArrayList<String> albumNames = new ArrayList<>();
         if (outputArray.size() != 0)//if there exists mp3 file in chosen folder
-            albumNames.add(outputArray.get(0).getAlbum());
+            albumNames.add(outputArray.get(0).getAlbum());//creating first album names. help us for loop below here
         else
             JOptionPane.showMessageDialog(null, "Your directory doesn't has any mp3 file", "Wrong Directory", JOptionPane.INFORMATION_MESSAGE);
 
-        boolean result;
-        for (int i = 1; i <= outputArray.size() - 1; i++) {
-            result = false;
+        boolean albumMatched;
+        for (int i = 1; i <= outputArray.size() - 1; i++) {//creating list of albums
+            albumMatched = false;
             for (int j = 0; j < i; j++)
-                if (albumNames.get(j).equals(outputArray.get(i).getAlbum())) {
-                    result = true;
+                if (albumNames.get(j).equals(outputArray.get(i).getAlbum())) {//if album was exist before.
+                    albumMatched = true;
                     break;
                 }
 
-            if (!result) {
+            if (!albumMatched) {
                 albumNames.add(outputArray.get(i).getAlbum());
             }
         }
 
-        for (int i = 0; i <= albumNames.size() - 1; i++) {
+        for (int i = 0; i <= albumNames.size() - 1; i++) {//adding mp3's with similar albums to library
             ArrayList<MP3Info> mainOutput = new ArrayList<>();
-            String tempAlbumName = albumNames.get(i);
+            String currentAlbumName = albumNames.get(i);
             for (int j = 0; j <= outputArray.size() - 1; j++)
-                if (tempAlbumName.equals(outputArray.get(j).getAlbum())) {
+                if (currentAlbumName.equals(outputArray.get(j).getAlbum())) {
                     mainOutput.add(outputArray.get(j));
                 }
 
