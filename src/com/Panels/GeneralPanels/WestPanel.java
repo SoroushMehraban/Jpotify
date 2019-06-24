@@ -1,5 +1,6 @@
 
 package com.Panels.GeneralPanels;
+import com.GUIFrame.GUIFrame;
 import com.Panels.WestPanelSections.WestPanelListeners.AlbumsPanelListener;
 import com.Panels.WestPanelSections.WestPanelListeners.HomePanelListener;
 import com.Panels.WestPanelSections.WestPanelListeners.LibraryPanelListener;
@@ -11,10 +12,16 @@ import java.awt.*;
 
 public class WestPanel extends JPanel
 {
-
+    private static WestPanel westPanel;
+    private static JPanel albumsPanel;
+    private static JPanel homePanel;
+    private static JPanel songsPanel;
+    private static JPanel libraryPanel;
+    private static JPanel playListsPanel;
 
     public WestPanel()
     {
+        westPanel=this;
         JLabel homeLabel;
         JLabel homeIcon;
         JLabel libraryLabel;
@@ -30,7 +37,7 @@ public class WestPanel extends JPanel
 
         this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
         this.setBackground(new Color(23,23,23));
-        JPanel homePanel=new JPanel();
+        homePanel=new JPanel();
         homePanel.setBackground(new Color(23,23,23));
         homePanel.setLayout(new BoxLayout(homePanel,BoxLayout.LINE_AXIS));
         homeIcon=new JLabel();
@@ -43,9 +50,8 @@ public class WestPanel extends JPanel
         homePanel.add(homeLabel);
         this.add(Box.createVerticalStrut(20));
         this.add(homePanel);
-        this.add(Box.createVerticalStrut(20));
-        this.add(Box.createVerticalStrut(20));
-        JPanel libraryPanel=new JPanel();
+        this.add(Box.createVerticalStrut(50));
+        libraryPanel=new JPanel();
         libraryPanel.setBackground(new Color(23,23,23));
         libraryPanel.setLayout(new BoxLayout(libraryPanel,BoxLayout.LINE_AXIS));
         libraryLabel=new JLabel(" Library  ");
@@ -61,8 +67,8 @@ public class WestPanel extends JPanel
         libraryPanel.add(libraryLabel);
         libraryPanel.add(addToLibraryIcon);
         this.add(libraryPanel);
-        this.add(Box.createVerticalStrut(20));
-        JPanel songsPanel=new JPanel();
+        this.add(Box.createVerticalStrut(30));
+        songsPanel=new JPanel();
         songsPanel.setBackground(new Color(23,23,23));
         songsPanel.setLayout(new BoxLayout(songsPanel,BoxLayout.LINE_AXIS));
         songsIcon=new JLabel();
@@ -74,12 +80,11 @@ public class WestPanel extends JPanel
         songsLabel.setForeground(Color.WHITE);
         songsPanel.add(songsLabel);
         this.add(songsPanel);
-        this.add(Box.createVerticalStrut(20));
-        JPanel albumsPanel=new JPanel();
+        this.add(Box.createVerticalStrut(30));
+        albumsPanel=new JPanel();
         albumsPanel.setBackground(new Color(23,23,23));
         albumsPanel.setLayout(new BoxLayout(albumsPanel,BoxLayout.LINE_AXIS));
         albumsIcon=new JLabel();
-        //ImageIcon albumsImage=new ImageIcon("Icons/Album-no-selected.png");
         albumsIcon.setIcon(setIconSize("Icons/Album-no-selected.png"));
         albumsPanel.add(albumsIcon);
         albumsLabel=new JLabel(" Albums");
@@ -88,8 +93,8 @@ public class WestPanel extends JPanel
         albumsLabel.setForeground(Color.WHITE);
         albumsPanel.add(albumsLabel);
         this.add(albumsPanel);
-        this.add(Box.createVerticalStrut(20));
-        JPanel playListsPanel=new JPanel();
+        this.add(Box.createVerticalStrut(30));
+        playListsPanel=new JPanel();
         playListsPanel.setBackground(new Color(23,23,23));
         playListsPanel.setLayout(new BoxLayout(playListsPanel,BoxLayout.LINE_AXIS));
         playListsIcon=new JLabel();
@@ -124,6 +129,20 @@ public class WestPanel extends JPanel
         Image newimg = newImage.getScaledInstance(10, 10, Image.SCALE_SMOOTH);
         output = new ImageIcon(newimg);
         return output;
+    }
+    public static JPanel getAlbumsPanel()
+    {
+        return albumsPanel;
+    }
+    public static WestPanel getWestPanel()
+    {
+        return westPanel;
+    }
+
+    public static void setAlbumsPanel(JPanel changedAlbums)
+    {
+        albumsPanel=changedAlbums;
+        GUIFrame.setWestPanel(westPanel);
     }
     /*public JButton getLibraryButton()
     {
