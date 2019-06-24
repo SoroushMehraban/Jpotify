@@ -1,13 +1,11 @@
 package com.Panels.GeneralPanels;
 
-import com.MP3.MP3Info;
 import com.Panels.CenterPanelSections.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * This class is about center panel of our Jpotify
@@ -30,13 +28,14 @@ public class CenterPanel extends JPanel {
         this.setLayout(new BorderLayout());//creating panel layout
         this.setBackground(new Color(23,23,23));//creating panel background
 
-        northPart = new NorthPart();//creating north part of panel
-        this.add(northPart,BorderLayout.NORTH);//adding north part of panel to center panel
-
         centerPart = new CenterPart();//creating center part panel
         JScrollPane jScrollPane = new JScrollPane(centerPart);//creating JScrollPane to cover center part with scrollbar
         customizeJScrollPane(jScrollPane);//customizing jScrollPane's colors
         this.add(jScrollPane,BorderLayout.CENTER);//adding center part to center panel.
+
+        northPart = new NorthPart(centerPart);//creating north part of panel
+        this.add(northPart,BorderLayout.NORTH);//adding north part of panel to center panel
+
     }
 
     public CenterPart getCenterPart() {

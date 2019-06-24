@@ -1,9 +1,6 @@
 package com.Panels.CenterPanelSections;
 
-import com.Interfaces.PlaylistOptionLinker;
-import com.Interfaces.LikeLinker;
-import com.Interfaces.LyricsLinker;
-import com.Interfaces.ShowSongsLinker;
+import com.Interfaces.*;
 import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
@@ -27,7 +24,7 @@ import java.util.HashMap;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, PlaylistOptionLinker {
+public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, PlaylistOptionLinker, SearchLinker {
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
     private PlayListPanel currentPlaylistPanel;//helps for adding, removing and swapping in playlist song.
@@ -723,5 +720,17 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         coveringContainer.add(Box.createHorizontalStrut(5));//adding spaces between components.
         coveringContainer.add(descriptionLabel);
         return coveringContainer;
+    }
+
+    @Override
+    public void doSearch(String searchingMessage) {
+        ArrayList<SongPanel> findingPanels = new ArrayList<>();
+
+        for (AlbumPanel albumPanel : albumPanels.values())
+            for(SongPanel songPanel : albumPanel.getSongPanels())
+                if(songPanel.hasThisName(searchingMessage))
+                    findingPanels.add(songPanel);
+
+        showSongs(findingPanels);
     }
 }

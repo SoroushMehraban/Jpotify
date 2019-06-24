@@ -2,7 +2,6 @@ package com.Panels.CenterPanelSections;
 
 import com.GUIFrame.GUIFrame;
 import com.Interfaces.PlaylistOptionLinker;
-import com.Interfaces.LyricsLinker;
 import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
@@ -44,6 +43,10 @@ public class SongPanel extends  MusicPanel {
      */
     void unSelect() {
         this.selected = false;
+    }
+
+    public String getInputFileDirectory(){
+        return mp3Info.getInputFileDirectory();
     }
 
     public MP3Info getMp3Info() {
@@ -125,7 +128,19 @@ public class SongPanel extends  MusicPanel {
         });
     }
 
-    public String getInputFileDirectory(){
-        return mp3Info.getInputFileDirectory();
+    /**
+     * this method is called when a message is searched in searchbox, it indicate that it match to this song or not.
+     *
+     * @param message given search message
+     * @return true if matched or false if it's not.
+     */
+    public boolean hasThisName(String message){
+        //creating Strings to compare, with ignoring lower or upper case:
+        String songTitle = mp3Info.getTitle().toLowerCase();
+        String albumTitle = mp3Info.getAlbum().toLowerCase();
+        String artistTtile = mp3Info.getArtist().toLowerCase();
+        String searchingMessage = message.toLowerCase();
+        //comparing:
+        return songTitle.contains(searchingMessage) || albumTitle.contains(searchingMessage) || artistTtile.contains(searchingMessage);
     }
 }
