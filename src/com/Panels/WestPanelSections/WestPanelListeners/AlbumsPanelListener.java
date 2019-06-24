@@ -37,7 +37,7 @@ public class AlbumsPanelListener extends MouseAdapter
 
         if(numberOfClicks%2==1)
         {
-            ArrayList<String> albumTitles=new ArrayList<>();
+            ArrayList<String> albumTitles;
             albumTitles= GUIFrame.getAlbumTitles();
             albumsPanel=WestPanel.getAlbumsPanel();
             albumsPanel.setBackground(new Color(23,23,23));

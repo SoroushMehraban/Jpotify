@@ -1,10 +1,7 @@
 
 package com.Panels.GeneralPanels;
 import com.GUIFrame.GUIFrame;
-import com.Panels.WestPanelSections.WestPanelListeners.AlbumsPanelListener;
-import com.Panels.WestPanelSections.WestPanelListeners.HomePanelListener;
-import com.Panels.WestPanelSections.WestPanelListeners.LibraryPanelListener;
-import com.Panels.WestPanelSections.WestPanelListeners.SongsPanelListener;
+import com.Panels.WestPanelSections.WestPanelListeners.*;
 
 import java.io.*;
 import javax.swing.*;
@@ -88,8 +85,9 @@ public class WestPanel extends JPanel
         albumsIcon.setIcon(setIconSize("Icons/Album-no-selected.png"));
         albumsPanel.add(albumsIcon);
         albumsLabel=new JLabel(" Albums");
-        albumsIcon.addMouseListener(new AlbumsPanelListener(albumsIcon,albumsLabel));
-        albumsLabel.addMouseListener(new AlbumsPanelListener(albumsIcon,albumsLabel));
+        AlbumsPanelListener AlbumsTempListener=new AlbumsPanelListener(albumsIcon,albumsLabel);
+        albumsIcon.addMouseListener(AlbumsTempListener);
+        albumsLabel.addMouseListener(AlbumsTempListener);
         albumsLabel.setForeground(Color.WHITE);
         albumsPanel.add(albumsLabel);
         this.add(albumsPanel);
@@ -103,9 +101,13 @@ public class WestPanel extends JPanel
         playListsLabel=new JLabel(" Playlists  ");
         playListsLabel.setForeground(Color.WHITE);
         playListsPanel.add(playListsLabel);
+        PlaylistsListener playlistsTempListener=new PlaylistsListener(playListsIcon,playListsLabel);
+        playListsIcon.addMouseListener(playlistsTempListener);
+        playListsLabel.addMouseListener(playlistsTempListener);
         addToPlaylistsIcon=new JLabel();
         addToPlaylistsIcon.setIcon(setPlusIconSize("Icons/Plus-no-select.PNG"));
         playListsPanel.add(addToPlaylistsIcon);
+        addToPlaylistsIcon.addMouseListener(new PlaylistsPlusIconListener(addToPlaylistsIcon));
         this.add(playListsPanel);
 
 
@@ -142,6 +144,14 @@ public class WestPanel extends JPanel
     public static void setAlbumsPanel(JPanel changedAlbums)
     {
         albumsPanel=changedAlbums;
+    }
+    public static JPanel getPlayListsPanel()
+    {
+        return playListsPanel;
+    }
+    public static void setPlayListsPanel(JPanel changedPlaylists)
+    {
+        playListsPanel=changedPlaylists;
     }
     /*public JButton getLibraryButton()
     {

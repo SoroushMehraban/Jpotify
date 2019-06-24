@@ -151,10 +151,6 @@ public class GUIFrame extends JFrame {
     public static PlaylistOptionLinker getAddingAndRemovingSongLinker(){
         return centerPanel.getCenterPart();
     }
-    public static void setWestPanel(WestPanel changedWestPane)
-    {
-        westPanel=changedWestPane;
-    }
     public static WestPanel getWestPanel()
     {
         return westPanel;
