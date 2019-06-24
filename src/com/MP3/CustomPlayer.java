@@ -23,9 +23,11 @@ public class CustomPlayer {
     private Player player;
     private FileInputStream fileInputStream;
     private boolean isPlaying;
+    private boolean firstPlaying;
     private String directory;
     private int total;
     private int stopped;
+    private int firstAdditionalBytes;//helps us to get current time.
 
     /**
      * Class constructor, it only gives mp3 file directory from user.
@@ -86,7 +88,11 @@ public class CustomPlayer {
             isPlaying = true;
             fileInputStream = new FileInputStream(directory);
             total = fileInputStream.available();
-            if(pos > 0) fileInputStream.skip(pos);//skipping additional bytes
+            if(pos > 0) {
+                fileInputStream.skip(pos);//skipping additional bytes
+                firstPlaying = false;//it's not playing at first(help us to get current time)
+            }
+            else firstPlaying = true;//it's playing at first
             player = new Player(new BufferedInputStream(fileInputStream));
             new Thread(//creating thread to play parallel with our program.
                     new Runnable(){
@@ -122,8 +128,12 @@ public class CustomPlayer {
      * @throws IOException if stream is closed.
      */
     public int getCurrentSeconds() throws IOException {
-        int passedBytes = total - fileInputStream.available();//amount of bytes which played.
-        return (int) ((passedBytes / (double) total) * getTotalSeconds()) - 3;
+        if(firstPlaying) {
+            firstAdditionalBytes = total - fileInputStream.available();
+            firstPlaying = false;
+        }
+        int passedBytes = total - fileInputStream.available() - firstAdditionalBytes;//amount of bytes which played.
+        return (int) ((passedBytes / (double) total) * getTotalSeconds());
     }
 
     public boolean isPlaying() {

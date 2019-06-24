@@ -109,10 +109,10 @@ public class ProgressPanel extends JPanel {
         int totalmin = player.getTotalSeconds() / 60;//getting music's  total minutes.
         int totalSec = player.getTotalSeconds() % 60;//getting music's total  seconds.
         String totalTimeString = String.format("%02d:%02d",totalmin, totalSec);//creating a formatted String to show in jlabel
-        totalTimeLabel.setText(totalTimeString);//setting jlabel's text
+        totalTimeLabel.setText(totalTimeString);//setting JLabel's text
         Thread t = new Thread(new Runnable() {//creating thread
             @Override
-            public void run() {//creating thread to control player parralell with our program.
+            public void run() {//creating thread to control player parallel with our program.
                 while (true){//this loop runs until music's fileInputStream closed (music finished).
                     if(player.isPlaying()) {//changing progressbar if music is playing
                         try {
