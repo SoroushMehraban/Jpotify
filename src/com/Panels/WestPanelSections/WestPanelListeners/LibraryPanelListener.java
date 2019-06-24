@@ -134,12 +134,13 @@ public class LibraryPanelListener extends MouseAdapter
         boolean albumMatched;
         for (int i = 1; i <= outputArray.size() - 1; i++) {//creating list of albums
             albumMatched = false;
-            for (int j = 0; j < i; j++)
+            for (int j = 0; j < albumNames.size() - 1; j++) {
+                System.out.println(j);
                 if (albumNames.get(j).equals(outputArray.get(i).getAlbum())) {//if album was exist before.
                     albumMatched = true;
                     break;
                 }
-
+            }
             if (!albumMatched) {
                 albumNames.add(outputArray.get(i).getAlbum());
             }
