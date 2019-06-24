@@ -33,7 +33,6 @@ public class LibraryPanelListener extends MouseAdapter
         try
         {
             JFileChooser fileChooser=new JFileChooser();
-            //JButton butt1=new JButton();
             ArrayList<MP3Info> outputArray=new ArrayList<>();
             fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             int res=fileChooser.showOpenDialog(null);

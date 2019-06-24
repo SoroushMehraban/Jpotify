@@ -142,7 +142,6 @@ public class WestPanel extends JPanel
     public static void setAlbumsPanel(JPanel changedAlbums)
     {
         albumsPanel=changedAlbums;
-        GUIFrame.setWestPanel(westPanel);
     }
     /*public JButton getLibraryButton()
     {

@@ -55,6 +55,7 @@ public class AlbumsPanelListener extends MouseAdapter
             }
 
             WestPanel.setAlbumsPanel(albumsPanel);
+            GUIFrame.reload();
 
         }
         else
@@ -66,6 +67,7 @@ public class AlbumsPanelListener extends MouseAdapter
                albumsPanel.remove(2);
            }
             WestPanel.setAlbumsPanel(albumsPanel);
+           GUIFrame.reload();
 
         }
 
