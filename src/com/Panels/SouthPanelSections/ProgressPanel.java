@@ -63,26 +63,36 @@ public class ProgressPanel extends JPanel {
         musicPlayerBar.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(player != null && player.isPlaying()) {
-                    musicPlayerBar.setValue((int) (e.getX() / ((double) musicPlayerBar.getWidth()) * 100));
-                    player.resume(e.getX() / ((double) musicPlayerBar.getWidth()));
-                    setMusicCurrentTime();
-                }
+                mouseAction(e);
             }
         });
         musicPlayerBar.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if(player != null && player.isPlaying()){
-                    player.resume(e.getX() / ((double) musicPlayerBar.getWidth()));
-                    musicPlayerBar.setValue((int) (e.getX() / ((double) musicPlayerBar.getWidth()) * 100));
-                    setMusicCurrentTime();
-                }
+                mouseAction(e);
             }
         });
 
     }
 
+    /**
+     * this method update progressbar and do necessary actions.
+     * if music is playing, it resume from given point chosen by user
+     * else it resume only a moment to update where it is, then it become pause.
+     * after all it set current time no matter playing or not.
+     */
+    private void mouseAction(MouseEvent e){
+        if(player != null) {
+            musicPlayerBar.setValue((int) (e.getX() / ((double) musicPlayerBar.getWidth()) * 100));
+            if(player.isPlaying())
+                player.resume(e.getX() / ((double) musicPlayerBar.getWidth()));
+            else {
+                player.resume(e.getX() / ((double) musicPlayerBar.getWidth()));
+                player.pause();
+            }
+            setMusicCurrentTime();
+        }
+    }
     /**
      * this method set current time to time which music player bar points on it.
      */
