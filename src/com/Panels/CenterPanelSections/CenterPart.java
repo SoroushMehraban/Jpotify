@@ -487,12 +487,29 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     }
 
     /**
-     * this method adds a song to given playlist.
+     * this method is called when we want to load songs after playing our program.
+     * if play list didn't exist, we create one!
+     * at the end we add our given song to our playlist.
      * @param playListTitle  title of playlist as a key of HashMap.
+     * @param description description to show in playlist panel.
      * @param songDirectory directory of music to add.
      */
-    public void addSongToPlayList(String playListTitle, String songDirectory){
-        //should be implement later
+    public void addSongToPlayList(String playListTitle,String description, String songDirectory){
+        if(!playListPanels.containsKey(playListTitle)) {//if this playlist doesn't exist.
+            createPlayList(playListTitle,description);//creating new one
+        }
+        try {//adding song to playlist
+            MP3Info currentSong = new MP3Info(songDirectory);//creating mp3 info file
+            AlbumPanel songAlbum = albumPanels.get(currentSong.getAlbum());//getting song's album
+            for(SongPanel songPanel : songAlbum.getSongPanels()){
+                if(songPanel.getMp3Info().getTitle().equals(currentSong.getTitle())) {//if we found that song
+                    playListPanels.get(playListTitle).getPlayListSongs().add(songPanel);//adding to given playlist
+                    break;
+                }
+            }
+        } catch (IOException | NoSuchFieldException e) {
+            JOptionPane.showMessageDialog(null, "Error reading mp3 file","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**

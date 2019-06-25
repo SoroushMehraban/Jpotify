@@ -23,6 +23,7 @@ public class PlayListPanel extends MusicPanel {
     private ArrayList<SongPanel> playListSongs;
     private ShowSongsLinker showSongsLinker;
     private String title;
+    private String description;
 
     /**
      * Constructor which set information need to show in super class.
@@ -34,6 +35,7 @@ public class PlayListPanel extends MusicPanel {
     PlayListPanel(BufferedImage image, String title, String description, ShowSongsLinker showSongsLinker) {
         super(image, title, description);
         this.title = title;
+        this.description = description;
         playListSongs = new ArrayList<>();
         this.showSongsLinker = showSongsLinker;
         createPlayListListener();
@@ -41,6 +43,10 @@ public class PlayListPanel extends MusicPanel {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     private void createPlayListListener(){

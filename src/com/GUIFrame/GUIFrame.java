@@ -40,16 +40,15 @@ public class GUIFrame extends JFrame {
      * Class Constructor
      */
     private GUIFrame() throws IOException {
-        JTextField usernameField = new JTextField(10);
-        //JTextField descriptionField = new JTextField(10);
-
-        JPanel myPanel = new JPanel();
-        myPanel.add(new JLabel("Username:"));
-        myPanel.add(usernameField);
+        JTextField usernameField = new JTextField(10);//creating a field to input user name.
+        JPanel myPanel = new JPanel();//creating a label to hold that field.
+        myPanel.add(new JLabel("Username:"));//creating a label to show user should input username and adding it to myPanel
+        myPanel.add(usernameField);//adding text field to myPanel
         int result = JOptionPane.showConfirmDialog(null, myPanel,
-                "Please Enter Your Username", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            username=usernameField.getText();
+                "Please Enter Your Username", JOptionPane.OK_CANCEL_OPTION);//showing a JOptionPane to enter input
+        if (result == JOptionPane.OK_OPTION) {//if user pressed enter
+            username=usernameField.getText();//setting program username.
+
             this.setLayout(new BorderLayout()); //frame layout
             this.setSize(940,512); //frame length : 940 * 512
             this.setLocationRelativeTo(null); //setting frame at the center of screen
@@ -81,6 +80,8 @@ public class GUIFrame extends JFrame {
             this.setVisible(true);
             //setting like linker between playPanel in southPanel and centerPart in centerPanel:
             southPanel.getPlayPanel().setLikeLinker(centerPanel.getCenterPart());
+
+            AppStorage.loadSongs();//loading songs if user has from previous run
             showHome();//showing home by default
 
 
@@ -159,10 +160,11 @@ public class GUIFrame extends JFrame {
     /**
      * this method adds a song to given playlist.(works as a linker)
      * @param playListTitle  title of playlist as a key of HashMap.
+     * @param description description of playlist(helps us to create one if it doesn't exist)
      * @param songDirectory directory of music to add.
      */
-    public static void addSongToPlayList(String playListTitle, String songDirectory){
-        centerPanel.getCenterPart().addSongToPlayList(playListTitle,songDirectory);
+    public static void addSongToPlayList(String playListTitle,String description, String songDirectory){
+        centerPanel.getCenterPart().addSongToPlayList(playListTitle,description,songDirectory);
     }
 
     /**
