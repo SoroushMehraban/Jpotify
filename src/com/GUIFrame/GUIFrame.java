@@ -142,6 +142,7 @@ public class GUIFrame extends JFrame {
      */
     public static void createPlayList(String title, String description){
         centerPanel.getCenterPart().createPlayList(title,description);
+        showHome();
     }
     /**
      * this method adds a song to given playlist.(works as a linker)
