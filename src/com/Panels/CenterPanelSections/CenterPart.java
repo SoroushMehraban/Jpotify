@@ -164,6 +164,14 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         this.secondSelectedSwaping = secondSelectedSwaping;
     }
 
+    public HashMap<String, AlbumPanel> getAlbumPanels() {
+        return albumPanels;
+    }
+
+    public HashMap<String, PlayListPanel> getPlayListPanels() {
+        return playListPanels;
+    }
+
     public void swapPlayList(){
         if(firstSelectedSwaping != null && secondSelectedSwaping != null){
             int firstIndex = currentPlaylistPanel.getPlayListSongs().indexOf(firstSelectedSwaping);//first index to swap

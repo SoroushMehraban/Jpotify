@@ -2,7 +2,10 @@ package com.GUIFrame;
 
 import com.Interfaces.PlaylistOptionLinker;
 import com.Interfaces.ShowSongsLinker;
+import com.MP3.AppStorage;
 import com.MP3.MP3Info;
+import com.Panels.CenterPanelSections.AlbumPanel;
+import com.Panels.CenterPanelSections.PlayListPanel;
 import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.GeneralPanels.*;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -12,8 +15,11 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * the window GUI where User can play a music.
@@ -48,6 +54,12 @@ public class GUIFrame extends JFrame {
             this.setSize(940,512); //frame length : 940 * 512
             this.setLocationRelativeTo(null); //setting frame at the center of screen
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing the program when user close the window.
+            this.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    AppStorage.saveSongs();
+                }
+            });
             this.setMinimumSize(new Dimension(940,512));
 
             centerPanel = new CenterPanel();
@@ -200,6 +212,14 @@ public class GUIFrame extends JFrame {
     }
     public static ShowSongsLinker getShowSongsLinker(){
         return centerPanel.getCenterPart();
+    }
+
+    public static HashMap<String, AlbumPanel> getAlbumPanels(){
+        return centerPanel.getCenterPart().getAlbumPanels();
+    }
+
+    public static HashMap<String, PlayListPanel> getPlayListPanels(){
+        return centerPanel.getCenterPart().getPlayListPanels();
     }
 
 

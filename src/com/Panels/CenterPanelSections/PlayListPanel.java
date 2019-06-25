@@ -81,7 +81,7 @@ public class PlayListPanel extends MusicPanel {
         playListSongs = new ArrayList<>(tempSynchronized);
     }
 
-    ArrayList<SongPanel> getPlayListSongs() {
+    public ArrayList<SongPanel> getPlayListSongs() {
         return playListSongs;
     }
 
