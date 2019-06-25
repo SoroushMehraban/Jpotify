@@ -92,7 +92,7 @@ public class GUIFrame extends JFrame {
      */
     public static void playClickedMusic(SongPanel songPanel){
         try {
-            Image playingArtwork = songPanel.getMp3Info().getImage().getScaledInstance(120,120,Image.SCALE_SMOOTH);
+            Image playingArtwork = songPanel.getMp3Info().getImage().getScaledInstance(150,150,Image.SCALE_SMOOTH);
             artworkPanel.removeAll();//removing previous artwork in artwork panel
             artworkPanel.add(new JLabel(new ImageIcon(playingArtwork)));//adding new artwork to show
             reload();//reload to show the changes
@@ -227,11 +227,11 @@ public class GUIFrame extends JFrame {
         JPanel westContainer = new JPanel();
         westContainer.setLayout(new BoxLayout(westContainer,BoxLayout.PAGE_AXIS));
         JScrollPane leftJScrollPane=new JScrollPane(westPanel);
-        leftJScrollPane.setPreferredSize(new Dimension(120,600));
+        leftJScrollPane.setPreferredSize(new Dimension(150,600));
         customizeJScrollPane(leftJScrollPane);
         westContainer.add(leftJScrollPane);
         westContainer.add(artworkPanel);
-        westContainer.setPreferredSize(new Dimension(120,600));
+        westContainer.setPreferredSize(new Dimension(150,600));
         return westContainer;
     }
 }

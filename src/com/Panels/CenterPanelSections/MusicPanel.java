@@ -27,9 +27,9 @@ abstract class MusicPanel extends JPanel{
     MusicPanel(BufferedImage image,String title, String description){
         this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));//setting panel layout
         this.setBackground(new Color(23,23,23));//setting panel default background
-        this.setPreferredSize(new Dimension(200,270));//setting panel's preferred size
+        this.setPreferredSize(new Dimension(170,230));//setting panel's preferred size
 
-        Image showingImage = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);//making a specified size for image
+        Image showingImage = image.getScaledInstance(170, 170, Image.SCALE_SMOOTH);//making a specified size for image
         JLabel musicLabel = new JLabel(new ImageIcon(showingImage));//creating a label to show image
 
         JLabel titleLabel = new JLabel();//creating title label
@@ -38,7 +38,7 @@ abstract class MusicPanel extends JPanel{
 
         descriptionLabel = new JLabel();//creating description label
         String stringModified = description.replace("\n","<br/>");//fixing all \n with <br/> as a line breaker.
-        description ="<html><p style=\"width:155px\">"+stringModified+"</p></html>";//creating a paragraph width which line breaks after that.
+        description ="<html><p style=\"width:135px\">"+stringModified+"</p></html>";//creating a paragraph width which line breaks after that.
         descriptionLabel.setText(description);//setting description text
         descriptionLabel.setForeground(new Color(120,120,120));//setting description color
 
