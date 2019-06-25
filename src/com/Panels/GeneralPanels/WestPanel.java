@@ -37,6 +37,7 @@ public class WestPanel extends JPanel
 
         this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
         this.setBackground(new Color(23,23,23));
+        this.setPreferredSize(new Dimension(150,600));
         homePanel=new JPanel();
         homePanel.setBackground(new Color(23,23,23));
         homePanel.setLayout(new BoxLayout(homePanel,BoxLayout.LINE_AXIS));

@@ -26,6 +26,7 @@ public class GUIFrame extends JFrame {
     private static SouthPanel southPanel;
     private static CenterPanel centerPanel;
     private static WestPanel westPanel;
+    private static EastPanel eastPanel;
     private static JPanel artworkPanel;
     private static String username;
     /**
@@ -33,21 +34,13 @@ public class GUIFrame extends JFrame {
      */
     private GUIFrame() throws IOException {
         JTextField usernameField = new JTextField(10);
-        //JTextField descriptionField = new JTextField(10);
-
         JPanel myPanel = new JPanel();
         myPanel.add(new JLabel("Username:"));
         myPanel.add(usernameField);
-        //myPanel.add(Box.createHorizontalStrut(50));
-        //myPanel.add(Box.createVerticalStrut(100));
-        //myPanel.add(new JLabel("Description:"));
-        //myPanel.add(descriptionField);
-
         int result = JOptionPane.showConfirmDialog(null, myPanel,
                 "Please Enter Your Username", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             username=usernameField.getText();
-            System.out.println(username);
             this.setLayout(new BorderLayout()); //frame layout
             this.setSize(940,512); //frame length : 940 * 512
             this.setLocationRelativeTo(null); //setting frame at the center of screen
@@ -66,7 +59,10 @@ public class GUIFrame extends JFrame {
             artworkPanel.setLayout(new BoxLayout(artworkPanel,BoxLayout.LINE_AXIS));
             JPanel westContainer = createWestContainer(westPanel,artworkPanel);
             this.add(westContainer,BorderLayout.WEST);
-
+            eastPanel=new EastPanel();
+            JScrollPane eastPanelJScrollPane=new JScrollPane(eastPanel);
+            customizeJScrollPane(eastPanelJScrollPane);
+            this.add(eastPanelJScrollPane,BorderLayout.EAST);
             this.setVisible(true);
             //setting like linker between playPanel in southPanel and centerPart in centerPanel:
             southPanel.getPlayPanel().setLikeLinker(centerPanel.getCenterPart());
