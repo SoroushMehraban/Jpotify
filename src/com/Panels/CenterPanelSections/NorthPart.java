@@ -1,13 +1,14 @@
 package com.Panels.CenterPanelSections;
 
 import com.Interfaces.SearchLinker;
+import com.jtattoo.plaf.BaseComboBoxUI;
+import com.jtattoo.plaf.hifi.HiFiComboBoxUI;
 
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * north part of center panel. it has this features:
@@ -26,29 +27,20 @@ public class NorthPart extends JPanel {
      */
     public NorthPart(SearchLinker searchLinker) throws IOException {
         //setting north part layout:
-        this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+        this.setLayout(new BorderLayout());
         //setting background color:
         this.setBackground(new Color(23,23,23));
 
         searchBox = new SearchBox(10,searchLinker);//creating searchbox
         searchBox.setForeground(new Color(168,168,168));//setting search box text color
-        this.add(searchBox);//adding search box beside left arrow label
-        this.add(Box.createHorizontalStrut(900));
-        JComboBox<JLabel> usersBox=new JComboBox<>();
-        //usersBox.setBounds();
-        //usersBox.getEditor().getEditorComponent().setBackground(new Color(23,23,23));
-        //JLabel temp=new JLabel("USER");
-        //users.add(temp);
-        //usersBox.setVisible(true);
-        //usersBox.add(temp);
-        //usersBox.setEditable(true);
-        //usersBox.setBackground(new Color(23,23,23));
-        //usersBox.setPrototypeDisplayValue("USERS");
-        //usersBox.setBounds(50,50,50,50);
-        this.add(usersBox);
+        this.add(searchBox,BorderLayout.WEST);//adding search box in west of our panel.
 
+        JComboBox usersBox=new JComboBox();//creating a JComboBox for user.
+        usersBox.setUI(new BaseComboBoxUI());
+        usersBox.setPreferredSize(new Dimension(100,25));//setting PreferredSize to show.
+        JLabel temp=new JLabel("USER");
+        //usersBox.addItem(temp);
 
-
-
+        this.add(usersBox,BorderLayout.EAST);
     }
 }

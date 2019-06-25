@@ -1,5 +1,6 @@
 import com.GUIFrame.GUIFrame;
-import java.io.IOException;
+
+import javax.swing.*;
 
 /**
  * Main class, where program executes.
@@ -9,6 +10,11 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args){
-        GUIFrame frame = GUIFrame.getInstance();
+        try {
+            UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
+            GUIFrame.getInstance();
+        } catch (Exception ignored){
+            //ignoring...nothing is gonna happen just default theme is going to load.
+        }
     }
 }

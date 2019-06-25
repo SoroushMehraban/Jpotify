@@ -31,6 +31,7 @@ public class GUIFrame extends JFrame {
      * Class Constructor
      */
     private GUIFrame() throws IOException {
+        super("JPotify");
         this.setLayout(new BorderLayout()); //frame layout
         this.setSize(940,512); //frame length : 940 * 512
         this.setLocationRelativeTo(null); //setting frame at the center of screen
@@ -234,4 +235,5 @@ public class GUIFrame extends JFrame {
         westContainer.setPreferredSize(new Dimension(150,600));
         return westContainer;
     }
+
 }

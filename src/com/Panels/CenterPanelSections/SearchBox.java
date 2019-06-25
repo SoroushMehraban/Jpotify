@@ -29,6 +29,7 @@ class SearchBox extends JTextField {
      */
     SearchBox(int size, SearchLinker searchLinker) throws IOException {
         super(size);//setting size of search box
+        this.setBackground(Color.WHITE);
         this.searchLinker = searchLinker;//setting search linker
         this.setMaximumSize(new Dimension(100,50));//set maximum size to fit in BoxLayout of north part
         defaultText = "Search...";//setting default text
@@ -48,7 +49,7 @@ class SearchBox extends JTextField {
     protected void paintComponent(Graphics g) {
         g.setColor(getBackground());//setting search box background which is white(JTextfield background)
         g.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 50);//make a oval border.
-        g.drawImage(searchImage, 2,2,15,15,this);//draw search icon at the left.
+        //g.drawImage(searchImage, 2,2,15,15,this);//draw search icon at the left.
         this.setMargin(new Insets(2,15,2,2));//setting start pointer of writing text
 
         createMouseListener();
