@@ -27,33 +27,54 @@ public class GUIFrame extends JFrame {
     private static CenterPanel centerPanel;
     private static WestPanel westPanel;
     private static JPanel artworkPanel;
+    private static String username;
     /**
      * Class Constructor
      */
     private GUIFrame() throws IOException {
-        this.setLayout(new BorderLayout()); //frame layout
-        this.setSize(940,512); //frame length : 940 * 512
-        this.setLocationRelativeTo(null); //setting frame at the center of screen
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing the program when user close the window.
-        this.setMinimumSize(new Dimension(940,512));
+        JTextField usernameField = new JTextField(10);
+        //JTextField descriptionField = new JTextField(10);
 
-        centerPanel = new CenterPanel();
-        this.add(centerPanel,BorderLayout.CENTER);
+        JPanel myPanel = new JPanel();
+        myPanel.add(new JLabel("Username:"));
+        myPanel.add(usernameField);
+        //myPanel.add(Box.createHorizontalStrut(50));
+        //myPanel.add(Box.createVerticalStrut(100));
+        //myPanel.add(new JLabel("Description:"));
+        //myPanel.add(descriptionField);
 
-        southPanel = new SouthPanel();
-        southPanel.setLyricsLinker(centerPanel.getCenterPart());
-        this.add(southPanel,BorderLayout.SOUTH);
+        int result = JOptionPane.showConfirmDialog(null, myPanel,
+                "Please Enter Your Username", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            username=usernameField.getText();
+            System.out.println(username);
+            this.setLayout(new BorderLayout()); //frame layout
+            this.setSize(940,512); //frame length : 940 * 512
+            this.setLocationRelativeTo(null); //setting frame at the center of screen
+            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing the program when user close the window.
+            this.setMinimumSize(new Dimension(940,512));
 
-        westPanel=new WestPanel();
-        artworkPanel = new JPanel();
-        artworkPanel.setLayout(new BoxLayout(artworkPanel,BoxLayout.LINE_AXIS));
-        JPanel westContainer = createWestContainer(westPanel,artworkPanel);
-        this.add(westContainer,BorderLayout.WEST);
+            centerPanel = new CenterPanel();
+            this.add(centerPanel,BorderLayout.CENTER);
 
-        this.setVisible(true);
-        //setting like linker between playPanel in southPanel and centerPart in centerPanel:
-        southPanel.getPlayPanel().setLikeLinker(centerPanel.getCenterPart());
-        showHome();//showing home by default
+            southPanel = new SouthPanel();
+            southPanel.setLyricsLinker(centerPanel.getCenterPart());
+            this.add(southPanel,BorderLayout.SOUTH);
+
+            westPanel=new WestPanel();
+            artworkPanel = new JPanel();
+            artworkPanel.setLayout(new BoxLayout(artworkPanel,BoxLayout.LINE_AXIS));
+            JPanel westContainer = createWestContainer(westPanel,artworkPanel);
+            this.add(westContainer,BorderLayout.WEST);
+
+            this.setVisible(true);
+            //setting like linker between playPanel in southPanel and centerPart in centerPanel:
+            southPanel.getPlayPanel().setLikeLinker(centerPanel.getCenterPart());
+            showHome();//showing home by default
+
+
+        }
+
     }
 
     /**
@@ -100,6 +121,10 @@ public class GUIFrame extends JFrame {
         } catch (InvalidDataException | IOException | UnsupportedTagException e) {
             JOptionPane.showMessageDialog(null, "Error reading artwork image for showing in west panel","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
+    }
+    public static String getUsername()
+    {
+        return username;
     }
 
     /**
