@@ -17,6 +17,8 @@ import java.awt.image.BufferedImage;
  */
 abstract class MusicPanel extends JPanel{
     private JLabel descriptionLabel;
+    private JLabel imageLabel;
+    private int imageScale;
     /**
      * a constructor to create a desired panel.
      *
@@ -29,8 +31,9 @@ abstract class MusicPanel extends JPanel{
         this.setBackground(new Color(23,23,23));//setting panel default background
         this.setPreferredSize(new Dimension(170,230));//setting panel's preferred size
 
+        imageScale = 170;
         Image showingImage = image.getScaledInstance(170, 170, Image.SCALE_SMOOTH);//making a specified size for image
-        JLabel musicLabel = new JLabel(new ImageIcon(showingImage));//creating a label to show image
+        imageLabel = new JLabel(new ImageIcon(showingImage));//creating a label to show image
 
         JLabel titleLabel = new JLabel();//creating title label
         titleLabel.setText(title);//setting title text
@@ -43,13 +46,21 @@ abstract class MusicPanel extends JPanel{
         descriptionLabel.setForeground(new Color(120,120,120));//setting description color
 
         //adding components to panel:
-        this.add(musicLabel);
+        this.add(imageLabel);
         this.add(titleLabel);
         this.add(descriptionLabel);
 
     }
 
-    protected JLabel getDescriptionLabel() {
+    JLabel getDescriptionLabel() {
         return descriptionLabel;
+    }
+
+    JLabel getImageLabel() {
+        return imageLabel;
+    }
+
+    int getImageScale() {
+        return imageScale;
     }
 }

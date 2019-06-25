@@ -577,6 +577,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
             public void mouseClicked(MouseEvent e) {
                 if(addingSongToPlaylist) {
                     currentPlaylistPanel.getPlayListSongs().addAll(0,addingSongPanels);//adding selected songs to playlist.
+                    currentPlaylistPanel.updateImage();//updating playlist image to the last song added artowrk
                     addingSongPanels = null;//we don't need to this anymore, let garbage collector delete that!
                 }
                 else if(removeSongFromPlaylist){

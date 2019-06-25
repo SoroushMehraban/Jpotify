@@ -1,8 +1,6 @@
 package com.Panels.CenterPanelSections;
 
-import com.Interfaces.LyricsLinker;
 import com.Interfaces.ShowSongsLinker;
-import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
@@ -11,6 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -84,5 +83,21 @@ public class PlayListPanel extends MusicPanel {
 
     ArrayList<SongPanel> getPlayListSongs() {
         return playListSongs;
+    }
+
+    /**
+     * this method update playlist panel every time it called after adding new song(s)
+     */
+    void updateImage(){
+        if(!title.equals("Favorite Songs") && !title.equals("Shared Songs")) {
+            SongPanel lastSongAdded = playListSongs.get(0);//getting last song artwork added to playlist
+            try {
+                Image updatedImage =lastSongAdded.getMp3Info().getImage().getScaledInstance(getImageScale(),getImageScale(),Image.SCALE_SMOOTH);
+                getImageLabel().setIcon(new ImageIcon(updatedImage));
+            } catch (InvalidDataException | IOException | UnsupportedTagException e) {
+                JOptionPane.showMessageDialog(null, "Error reading new playlist song artwork","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
     }
 }
