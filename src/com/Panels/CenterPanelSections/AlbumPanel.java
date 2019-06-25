@@ -103,6 +103,7 @@ class AlbumPanel extends MusicPanel {
         for(String songTitle : newSongs.keySet())//adding songs which our album doesn't has
             if(!songPanels.containsKey(songTitle)) {
                 songPanels.put(songTitle, newSongs.get(songTitle));
+                showSongsLinker.getAllSongsPanel().add(newSongs.get(songTitle));//adding new song to allSongsPanel.
                 updateDescription();
             }
     }

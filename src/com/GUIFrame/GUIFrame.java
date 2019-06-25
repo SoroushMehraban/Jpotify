@@ -1,6 +1,7 @@
 package com.GUIFrame;
 
 import com.Interfaces.PlaylistOptionLinker;
+import com.Interfaces.ShowSongsLinker;
 import com.MP3.MP3Info;
 import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.GeneralPanels.*;
@@ -190,13 +191,16 @@ public class GUIFrame extends JFrame {
     public static ArrayList<String> getAlbumTitles(){
         return centerPanel.getCenterPart().getAlbumTitles();
     }
-    public static PlaylistOptionLinker getAddingAndRemovingSongLinker(){
+    public static PlaylistOptionLinker getPlaylistOptionLinker(){
         return centerPanel.getCenterPart();
     }
     public static WestPanel getWestPanel()
     {
         return westPanel;
 
+    }
+    public static ShowSongsLinker getShowSongsLinker(){
+        return centerPanel.getCenterPart();
     }
 
 

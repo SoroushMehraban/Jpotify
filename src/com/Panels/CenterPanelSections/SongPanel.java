@@ -2,6 +2,7 @@ package com.Panels.CenterPanelSections;
 
 import com.GUIFrame.GUIFrame;
 import com.Interfaces.PlaylistOptionLinker;
+import com.Interfaces.ShowSongsLinker;
 import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
@@ -21,6 +22,7 @@ public class SongPanel extends  MusicPanel {
     private MP3Info mp3Info;
     private String songTitle;
     private PlaylistOptionLinker playlistOptionLinker;
+    private ShowSongsLinker showSongsLinker;
     private boolean selected;//helps for adding song to playlist.
 
     /**
@@ -34,7 +36,8 @@ public class SongPanel extends  MusicPanel {
         songTitle = mp3Info.getTitle();
         this.mp3Info = mp3Info;
 
-        playlistOptionLinker = GUIFrame.getAddingAndRemovingSongLinker();
+        playlistOptionLinker = GUIFrame.getPlaylistOptionLinker();
+        showSongsLinker = GUIFrame.getShowSongsLinker();
         createSongListener();
     }
 
@@ -109,6 +112,10 @@ public class SongPanel extends  MusicPanel {
                     }
                 }
                 else{//if clicked in order to play song
+                    //changing playing song index to first:
+                    showSongsLinker.getAllSongsPanel().remove(source);
+                    showSongsLinker.getAllSongsPanel().add(0,source);
+                    //play clicked music:
                     GUIFrame.playClickedMusic(source);//playing music
                 }
             }
@@ -134,7 +141,7 @@ public class SongPanel extends  MusicPanel {
      * @param message given search message
      * @return true if matched or false if it's not.
      */
-    public boolean hasThisName(String message){
+    boolean hasThisName(String message){
         //creating Strings to compare, with ignoring lower or upper case:
         String songTitle = mp3Info.getTitle().toLowerCase();
         String albumTitle = mp3Info.getAlbum().toLowerCase();

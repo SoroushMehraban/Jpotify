@@ -30,6 +30,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     private PlayListPanel currentPlaylistPanel;//helps for adding, removing and swapping in playlist song.
     private ArrayList<SongPanel> addingSongPanels; //helps for adding song to playlist.
     private ArrayList<SongPanel> removingSongPanels; //helps for removing song from playlist.
+    private ArrayList<SongPanel> allSongPanels; //helps to show all songs.
     private SongPanel firstSelectedSwaping;//helps for swapping
     private SongPanel secondSelectedSwaping;//helps for swaping
     private ArrayList<SongPanel> currentPlaying;
@@ -62,6 +63,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
 
         albumPanels = new HashMap<>();//list of albumPanels.
         playListPanels = new HashMap<>();
+        allSongPanels = new ArrayList<>();
 
         //creating remove song from playlist label:
         try {
@@ -133,6 +135,9 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     public ArrayList<SongPanel> getRemovingSongPanels() {
         return removingSongPanels;
     }
+
+    @Override
+    public ArrayList<SongPanel> getAllSongsPanel(){ return allSongPanels;}
 
     @Override
     public boolean isSwaping() {
@@ -325,18 +330,17 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         int gridx = 0;
         int gridy = 0;
         //showing all songs:
-        for (AlbumPanel albumPanel : albumPanels.values())
-            for(SongPanel songPanel : albumPanel.getSongPanels()){
-                //this boolean check in case if we show all songs for adding to playlist, it doesn't show song that playlist already has:
-                boolean canAdd = !addingSongToPlaylist || !currentPlaylistPanel.getPlayListSongs().contains(songPanel);
-                if(canAdd) {
-                    allSongs.add(songPanel);
-                    songPanel.setBackground(new Color(23, 23, 23));//setting default background in case it doesn't
-                    songPanel.unSelect();//unSelecting if it's selected on previous adding panel.
-                    constraints.gridy = gridy;
-                    constraints.gridx = gridx;
-                    this.add(songPanel, constraints);
-                    if (gridx < 3) {
+        for(SongPanel songPanel : allSongPanels){
+            //this boolean check in case if we show all songs for adding to playlist, it doesn't show song that playlist already has:
+            boolean canAdd = !addingSongToPlaylist || !currentPlaylistPanel.getPlayListSongs().contains(songPanel);
+            if(canAdd) {
+                allSongs.add(songPanel);
+                songPanel.setBackground(new Color(23, 23, 23));//setting default background in case it doesn't
+                songPanel.unSelect();//unSelecting if it's selected on previous adding panel.
+                constraints.gridy = gridy;
+                constraints.gridx = gridx;
+                this.add(songPanel, constraints);
+                if (gridx < 3) {
                         gridx++;
                     } else {
                         gridx = 0;
@@ -367,6 +371,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         if(!albumPanels.containsKey(albumTitle)) {//if album is a new album
             AlbumPanel albumPanel = createAlbumPanel(albumMusicsInfo);
             albumPanels.put(albumTitle, albumPanel);
+            allSongPanels.addAll(albumPanel.getSongPanels());//adding to all song panels,help to show them when user click songs button.
             showHome();//showing home after created new album to show it's added.
         }
         else//if album added before we just add new songs
