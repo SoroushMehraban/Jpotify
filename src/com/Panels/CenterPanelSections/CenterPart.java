@@ -164,8 +164,8 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     }
 
     @Override
-    public HashMap<String, AlbumPanel> getAlbumPanels() {
-        return albumPanels;
+    public ArrayList<SongPanel> getAllSongPanels() {
+        return allSongPanels;
     }
 
     @Override
