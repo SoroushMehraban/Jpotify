@@ -72,14 +72,14 @@ public class PlaylistsListener extends MouseAdapter
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        icon.setIcon(WestPanel.setIconSize("Icons/p-selected.png"));
+        icon.setIcon(WestPanel.setIconSize("Icons/p-selected.png",20));
         label.setFont(new Font("Serif", Font.BOLD, 16));
 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        icon.setIcon(WestPanel.setIconSize("Icons/p-no-selected.png"));
+        icon.setIcon(WestPanel.setIconSize("Icons/p-no-selected.png",20));
         label.setFont(font);
 
     }

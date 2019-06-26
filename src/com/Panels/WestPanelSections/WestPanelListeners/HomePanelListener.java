@@ -30,14 +30,14 @@ public class HomePanelListener extends MouseAdapter
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        icon.setIcon(WestPanel.setIconSize("Icons/Home.png"));
+        icon.setIcon(WestPanel.setIconSize("Icons/Home.png",20));
         label.setFont(new Font("Serif", Font.BOLD, 16));
 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        icon.setIcon(WestPanel.setIconSize("Icons/Home-no-select.png"));
+        icon.setIcon(WestPanel.setIconSize("Icons/Home-no-select.png",20));
         label.setFont(font);
 
     }
