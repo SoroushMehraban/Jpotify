@@ -1,8 +1,9 @@
 package com.Interfaces;
 
-import com.Panels.CenterPanelSections.AlbumPanel;
 import com.Panels.CenterPanelSections.PlayListPanel;
+import com.Panels.CenterPanelSections.SongPanel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -11,7 +12,7 @@ import java.util.HashMap;
  */
 public interface SongPanelsLinker {
 
-    HashMap<String, AlbumPanel> getAlbumPanels();
+    ArrayList<SongPanel> getAllSongPanels();
 
     HashMap<String, PlayListPanel> getPlayListPanels();
 }

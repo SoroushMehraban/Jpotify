@@ -38,7 +38,6 @@ public class GUIFrame extends JFrame {
     private static EastPanel eastPanel;
     private static JPanel artworkPanel;
     private static String username;
-    private static EastPanelThread mainThread;
     /**
      * Class Constructor
      */
@@ -85,13 +84,11 @@ public class GUIFrame extends JFrame {
             });
             AppStorage.loadSongs();//loading songs if user has from previous run
             showHome();//showing home by default
-            mainThread=new EastPanelThread();
+            Thread mainThread=new Thread(new EastPanelThread());
             mainThread.start();
-
         }
 
     }
-
 
     /**
      * getting instance of class.
@@ -287,10 +284,4 @@ public class GUIFrame extends JFrame {
         westContainer.setPreferredSize(new Dimension(150,600));
         return westContainer;
     }
-    public static EastPanelThread getMainThread()
-    {
-        return mainThread;
-
-    }
-
 }
