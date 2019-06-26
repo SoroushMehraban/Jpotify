@@ -2,6 +2,7 @@ package com.MP3;
 
 
 import com.GUIFrame.GUIFrame;
+import com.Interfaces.SongPanelsLinker;
 import com.Panels.CenterPanelSections.AlbumPanel;
 import com.Panels.CenterPanelSections.PlayListPanel;
 import com.Panels.CenterPanelSections.SongPanel;
@@ -30,11 +31,12 @@ public class AppStorage {
      * at the end it saves all songs existing in playlists.
      */
     public static void saveSongs(){
+        SongPanelsLinker songPanelsLinker = GUIFrame.getSongPanelesLinker();
         try {
            String currentUser = GUIFrame.getUsername().replace(" ","-");
            Formatter out = new Formatter("SavedDirectories/SavedSongsOf"+currentUser+".txt");
 
-            HashMap<String, AlbumPanel> albumPanels = GUIFrame.getAlbumPanels();
+            HashMap<String, AlbumPanel> albumPanels = songPanelsLinker.getAlbumPanels();
             String albumName;
             String directory;
             for(AlbumPanel albumPanel : albumPanels.values())
@@ -44,7 +46,7 @@ public class AppStorage {
                     out.format("Album^%s^%s%n",albumName,directory);
                 }
 
-            HashMap<String,PlayListPanel> playListPanels = GUIFrame.getPlayListPanels();
+            HashMap<String,PlayListPanel> playListPanels = songPanelsLinker.getPlayListPanels();
             String playlistName;
             String playlistDescription;
             for(PlayListPanel playListPanel: playListPanels.values()) {

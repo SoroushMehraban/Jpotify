@@ -1,6 +1,8 @@
 package com.Panels.CenterPanelSections;
 
+import com.GUIFrame.GUIFrame;
 import com.Interfaces.ShowSongsLinker;
+import com.Interfaces.SongPanelsLinker;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
@@ -22,6 +24,7 @@ import java.util.List;
 public class PlayListPanel extends MusicPanel {
     private ArrayList<SongPanel> playListSongs;
     private ShowSongsLinker showSongsLinker;
+    private SongPanelsLinker songPanelsLinker;
     private String title;
     private String description;
 
@@ -32,12 +35,13 @@ public class PlayListPanel extends MusicPanel {
      * @param title         title to show under the image.
      * @param description   description to show under the title.
      */
-    PlayListPanel(BufferedImage image, String title, String description, ShowSongsLinker showSongsLinker) {
+    PlayListPanel(BufferedImage image, String title, String description, ShowSongsLinker showSongsLinker,SongPanelsLinker songPanelsLinker) {
         super(image, title, description);
         this.title = title;
         this.description = description;
         playListSongs = new ArrayList<>();
         this.showSongsLinker = showSongsLinker;
+        this.songPanelsLinker = songPanelsLinker;
         createPlayListListener();
     }
 
@@ -59,9 +63,22 @@ public class PlayListPanel extends MusicPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                showSongsLinker.showPlayListSongs(title);
-                PlayListPanel source = (PlayListPanel) e.getSource();
-                source.setBackground(new Color(23,23,23));
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    showSongsLinker.showPlayListSongs(title);
+                    PlayListPanel source = (PlayListPanel) e.getSource();
+                    source.setBackground(new Color(23, 23, 23));
+                }
+                else if(SwingUtilities.isRightMouseButton(e)){//if user press right click, he wants to remove playlist
+                    System.out.println("Right clicked");
+                    if(!title.equals("Favorite Songs") && !title.equals("Shared Songs")) {//if chosen playlist created by user
+                        int result = JOptionPane.showConfirmDialog(null, "Do you want to remove this playlist?",
+                                "Removing playlist..", JOptionPane.OK_CANCEL_OPTION);
+                        if (result == JOptionPane.OK_OPTION) {
+                            songPanelsLinker.getPlayListPanels().remove(title);//removing this from our playlist panel.
+                            GUIFrame.showHome();
+                        }
+                    }
+                }
             }
 
             @Override

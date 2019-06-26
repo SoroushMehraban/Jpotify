@@ -2,6 +2,7 @@ package com.GUIFrame;
 
 import com.Interfaces.PlaylistOptionLinker;
 import com.Interfaces.ShowSongsLinker;
+import com.Interfaces.SongPanelsLinker;
 import com.MP3.AppStorage;
 import com.MP3.MP3Info;
 import com.Panels.CenterPanelSections.AlbumPanel;
@@ -48,17 +49,10 @@ public class GUIFrame extends JFrame {
                 "Please Enter Your Username", JOptionPane.OK_CANCEL_OPTION);//showing a JOptionPane to enter input
         if (result == JOptionPane.OK_OPTION) {//if user pressed enter
             username=usernameField.getText();//setting program username.
-
             this.setLayout(new BorderLayout()); //frame layout
             this.setSize(940,512); //frame length : 940 * 512
             this.setLocationRelativeTo(null); //setting frame at the center of screen
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing the program when user close the window.
-            this.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    AppStorage.saveSongs();
-                }
-            });
             this.setMinimumSize(new Dimension(940,512));
 
             centerPanel = new CenterPanel();
@@ -81,6 +75,12 @@ public class GUIFrame extends JFrame {
             //setting like linker between playPanel in southPanel and centerPart in centerPanel:
             southPanel.getPlayPanel().setLikeLinker(centerPanel.getCenterPart());
 
+            this.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    AppStorage.saveSongs();
+                }
+            });
             AppStorage.loadSongs();//loading songs if user has from previous run
             showHome();//showing home by default
 
@@ -216,12 +216,11 @@ public class GUIFrame extends JFrame {
         return centerPanel.getCenterPart();
     }
 
-    public static HashMap<String, AlbumPanel> getAlbumPanels(){
-        return centerPanel.getCenterPart().getAlbumPanels();
-    }
-
-    public static HashMap<String, PlayListPanel> getPlayListPanels(){
-        return centerPanel.getCenterPart().getPlayListPanels();
+    /**
+     * getting this helps us to control song panels in AppStorage and playlist panels.
+     */
+    public static SongPanelsLinker getSongPanelesLinker(){
+        return centerPanel.getCenterPart();
     }
 
 

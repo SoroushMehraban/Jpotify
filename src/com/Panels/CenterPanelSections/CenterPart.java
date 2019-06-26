@@ -24,7 +24,7 @@ import java.util.HashMap;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, PlaylistOptionLinker, SearchLinker {
+public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, PlaylistOptionLinker, SearchLinker,SongPanelsLinker {
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
     private PlayListPanel currentPlaylistPanel;//helps for adding, removing and swapping in playlist song.
@@ -60,7 +60,6 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         constraints = new GridBagConstraints();//creating panel constraints to denote where components should located on.
         constraints.insets = new Insets(0,0,15,15);//denoting spaces between components.
         this.setBackground(new Color(23,23,23));//setting panel background
-
         albumPanels = new HashMap<>();//list of albumPanels.
         playListPanels = new HashMap<>();
         allSongPanels = new ArrayList<>();
@@ -164,10 +163,12 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         this.secondSelectedSwaping = secondSelectedSwaping;
     }
 
+    @Override
     public HashMap<String, AlbumPanel> getAlbumPanels() {
         return albumPanels;
     }
 
+    @Override
     public HashMap<String, PlayListPanel> getPlayListPanels() {
         return playListPanels;
     }
@@ -412,14 +413,14 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     private void createDefaultPlayLists(){
         try {
             BufferedImage favoriteSongsImage = ImageIO.read(new File("Images/FavoriteSong.png"));
-            PlayListPanel favoriteSongs = new PlayListPanel(favoriteSongsImage,"Favorite Songs","Favorite albumSongs chosen by user",this);
+            PlayListPanel favoriteSongs = new PlayListPanel(favoriteSongsImage,"Favorite Songs","Favorite albumSongs chosen by user",this,this);
             playListPanels.put("Favorite Songs",favoriteSongs);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading favorite albumSongs image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
         try {
             BufferedImage sharedSongImage = ImageIO.read(new File("Images/SharedSongs.jpg"));
-            PlayListPanel sharedSongs = new PlayListPanel(sharedSongImage,"Shared Songs","Shared albumSongs between users",this);
+            PlayListPanel sharedSongs = new PlayListPanel(sharedSongImage,"Shared Songs","Shared albumSongs between users",this,this);
             playListPanels.put("Shared Songs",sharedSongs);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading shared albumSongs image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
@@ -481,7 +482,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      */
     public void createPlayList(String title, String description){
         if(!playListPanels.containsKey(title)){//if this playlist doesn't exist.
-            PlayListPanel newPlayListPanel = new PlayListPanel(emptyPlayListImage,title, description,this);
+            PlayListPanel newPlayListPanel = new PlayListPanel(emptyPlayListImage,title, description,this,this);
             playListPanels.put(title,newPlayListPanel);
         }
     }
@@ -504,6 +505,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
             for(SongPanel songPanel : songAlbum.getSongPanels()){
                 if(songPanel.getMp3Info().getTitle().equals(currentSong.getTitle())) {//if we found that song
                     playListPanels.get(playListTitle).getPlayListSongs().add(songPanel);//adding to given playlist
+                    playListPanels.get(playListTitle).updateImage();//updating playlist image
                     break;
                 }
             }
