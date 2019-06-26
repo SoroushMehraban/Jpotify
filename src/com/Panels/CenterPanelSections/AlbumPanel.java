@@ -24,6 +24,7 @@ import java.util.HashMap;
 public class AlbumPanel extends MusicPanel {
     private HashMap<String,SongPanel> songPanels;
     private ShowSongsLinker showSongsLinker;
+    private String title;
 
     /**
      * Constructor which set information need to show in super class.
@@ -39,11 +40,12 @@ public class AlbumPanel extends MusicPanel {
     AlbumPanel(BufferedImage image, String title, String description, ArrayList<MP3Info> albumMusicsInfo, ShowSongsLinker showSongsLinker, LyricsLinker lyricsLinker) {
         super(image, title, description);
         songPanels = createSongPanels(albumMusicsInfo,lyricsLinker);
+        this.title = title;
         createAlbumListener();
         this.showSongsLinker = showSongsLinker;
     }
 
-    public ArrayList<SongPanel> getSongPanels() {
+    ArrayList<SongPanel> getSongPanels() {
         return new ArrayList<>(songPanels.values());
     }
 
@@ -63,7 +65,7 @@ public class AlbumPanel extends MusicPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                showSongsLinker.showSongs(new ArrayList<>(songPanels.values()));
+                showSongsLinker.showAlbumSongs(title);
                 AlbumPanel source = (AlbumPanel)e.getSource();
                 source.setBackground(new Color(23,23,23));
             }

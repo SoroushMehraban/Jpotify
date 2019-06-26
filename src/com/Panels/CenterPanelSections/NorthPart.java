@@ -37,7 +37,7 @@ public class NorthPart extends JPanel {
         //setting north part layout:
         this.setLayout(new BorderLayout());
         //setting background color:
-        this.setBackground(new Color(23,23,23));
+        this.setBackground(new Color(10, 10, 10));
 
         searchBox = new SearchBox(10,searchLinker);//creating searchbox
         searchBox.setForeground(new Color(168,168,168));//setting search box text color

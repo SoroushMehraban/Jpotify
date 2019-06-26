@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 public interface ShowSongsLinker {
     ArrayList<SongPanel> getAllSongsPanel();
-    void showSongs(ArrayList<SongPanel> songPanels);
+
+    void showAlbumSongs(String albumTitle);
 
     /**
      * This method only shows song panels related to a playlist.

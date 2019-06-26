@@ -3,8 +3,6 @@ package com.Panels.GeneralPanels;
 import com.GUIFrame.GUIFrame;
 import com.Panels.CenterPanelSections.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicArrowButton;
-import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 import java.io.IOException;
 
@@ -21,6 +19,7 @@ import java.io.IOException;
 public class CenterPanel extends JPanel {
     private NorthPart northPart;
     private CenterPart centerPart;
+    private SortPart sortPart;
     /**
      * Class constructor.
      * it set border layout as it's layout and has only two parts:
@@ -31,10 +30,21 @@ public class CenterPanel extends JPanel {
         this.setLayout(new BorderLayout());//creating panel layout
         this.setBackground(new Color(23,23,23));//creating panel background
 
-        centerPart = new CenterPart();//creating center part panel
+        sortPart = new SortPart();
+
+        centerPart = new CenterPart(sortPart);//creating center part panel
         JScrollPane jScrollPane = new JScrollPane(centerPart);//creating JScrollPane to cover center part with scrollbar
         GUIFrame.customizeJScrollPane(jScrollPane);//customizing jScrollPane's colors
-        this.add(jScrollPane,BorderLayout.CENTER);//adding center part to center panel.
+        sortPart.setSortLinker(centerPart);
+
+        JPanel centerContainer = new JPanel();
+        centerContainer.setOpaque(false);//to show center panel background behind it.
+        centerContainer.setLayout(new BorderLayout());
+        centerContainer.add(sortPart,BorderLayout.NORTH);
+        centerContainer.add(Box.createHorizontalStrut(3));
+        centerContainer.add(jScrollPane,BorderLayout.CENTER);
+
+        this.add(centerContainer,BorderLayout.CENTER);//adding center part to center panel.
 
         try {
             northPart = new NorthPart(centerPart);//creating north part of panel
