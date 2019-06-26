@@ -1,5 +1,6 @@
 package com.Panels.GeneralPanels;
 
+import com.Panels.WestPanelSections.WestPanelListeners.HomePanelListener;
 import com.Panels.WestPanelSections.WestPanelListeners.SongsPanelListener;
 
 import javax.swing.*;
@@ -10,15 +11,29 @@ public class EastPanel extends JPanel
     private static JPanel songsPanel;
     private static JLabel songsIcon;
     private static JLabel songsLabel;
+    private static JPanel homePanel;
+    private static JLabel homeLabel;
+    private static JLabel homeIcon;
     public EastPanel()
     {
         this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
         this.setBackground(new Color(23,23,23));
         this.setPreferredSize(new Dimension(150,600));
         this.add(Box.createVerticalStrut(20));
-        JLabel title=new JLabel("   Friend  Activity   ");
-        title.setForeground(Color.WHITE);
-        this.add(title);
+        //JLabel title=new JLabel("   Friend  Activity   ");
+        //title.setForeground(Color.WHITE);
+        homePanel=new JPanel();
+        homePanel.setBackground(new Color(23,23,23));
+        homePanel.setLayout(new BoxLayout(homePanel,BoxLayout.LINE_AXIS));
+        homeIcon=new JLabel();
+        homeIcon.setIcon(setIconSize("Icons/Home-no-select.png"));
+        homeLabel=new JLabel(" HOME");
+        homeIcon.addMouseListener(new HomePanelListener(homeIcon,homeLabel));
+        homeLabel.addMouseListener(new HomePanelListener(homeIcon,homeLabel));
+        homeLabel.setForeground(Color.WHITE);
+        homePanel.add(homeIcon);
+        homePanel.add(homeLabel);
+        this.add(homePanel);
         this.add(Box.createVerticalStrut(50));
         /*this.add(Box.createVerticalStrut(30));
         songsPanel=new JPanel();

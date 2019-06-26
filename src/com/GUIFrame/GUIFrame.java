@@ -3,6 +3,8 @@ package com.GUIFrame;
 import com.Interfaces.PlaylistOptionLinker;
 import com.MP3.MP3Info;
 import com.Panels.CenterPanelSections.SongPanel;
+import com.Panels.EastPanelSections.EastPanelThread;
+import com.Panels.EastPanelSections.EastPanelThread;
 import com.Panels.GeneralPanels.*;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
@@ -12,6 +14,7 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 
 /**
@@ -29,13 +32,12 @@ public class GUIFrame extends JFrame {
     private static EastPanel eastPanel;
     private static JPanel artworkPanel;
     private static String username;
+    //private static ServerSocket serverSocket;
     /**
      * Class Constructor
      */
     private GUIFrame() throws IOException {
         JTextField usernameField = new JTextField(10);
-        //JTextField descriptionField = new JTextField(10);
-
         JPanel myPanel = new JPanel();
         myPanel.add(new JLabel("Username:"));
         myPanel.add(usernameField);
@@ -69,8 +71,8 @@ public class GUIFrame extends JFrame {
             //setting like linker between playPanel in southPanel and centerPart in centerPanel:
             southPanel.getPlayPanel().setLikeLinker(centerPanel.getCenterPart());
             showHome();//showing home by default
-
-
+            Thread mainThread=new Thread(new EastPanelThread());
+            mainThread.start();
         }
 
     }
