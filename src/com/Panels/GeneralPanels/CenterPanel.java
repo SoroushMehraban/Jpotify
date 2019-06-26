@@ -23,9 +23,11 @@ public class CenterPanel extends JPanel {
     private CenterPart centerPart;
     /**
      * Class constructor.
-     * @throws IOException if opening icon image failed.
+     * it set border layout as it's layout and has only two parts:
+     * center part: where music panels is shown there.
+     * north part: where search box and user box is located there.
      */
-    public CenterPanel() throws IOException {
+    public CenterPanel(){
         this.setLayout(new BorderLayout());//creating panel layout
         this.setBackground(new Color(23,23,23));//creating panel background
 
@@ -34,7 +36,11 @@ public class CenterPanel extends JPanel {
         GUIFrame.customizeJScrollPane(jScrollPane);//customizing jScrollPane's colors
         this.add(jScrollPane,BorderLayout.CENTER);//adding center part to center panel.
 
-        northPart = new NorthPart(centerPart);//creating north part of panel
+        try {
+            northPart = new NorthPart(centerPart);//creating north part of panel
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading north part images","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+        }
         this.add(northPart,BorderLayout.NORTH);//adding north part of panel to center panel
 
     }

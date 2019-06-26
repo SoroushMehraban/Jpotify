@@ -31,7 +31,7 @@ public class AppStorage {
      * at the end it saves all songs existing in playlists.
      */
     public static void saveSongs(){
-        SongPanelsLinker songPanelsLinker = GUIFrame.getSongPanelesLinker();
+        SongPanelsLinker songPanelsLinker = GUIFrame.getSongPanelsLinker();
         try {
            String currentUser = GUIFrame.getUsername().replace(" ","-");
            Formatter out = new Formatter("SavedDirectories/SavedSongsOf"+currentUser+".txt");
