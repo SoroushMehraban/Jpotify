@@ -56,6 +56,8 @@ public class AppStorage {
                     directory = songPanel.getInputFileDirectory();
                     out.format("Playlist^%s^%s^%s%n",playlistName,playlistDescription,directory);
                 }
+                if(playListPanel.getPlayListSongs().size() == 0)//if it's a empty playlist
+                    out.format("Playlist^%s^%s%n",playlistName,playlistDescription);
             }
             out.close();
         } catch (IOException e) {
@@ -88,8 +90,13 @@ public class AppStorage {
                             break;
                         case "Playlist":
                             currentMP3info = new ArrayList<>();
-                            currentMP3info.add(new MP3Info(parts[3]));
-                            GUIFrame.addSongToPlayList(parts[1],parts[2],parts[3]);
+                            if(parts.length == 4) {
+                                currentMP3info.add(new MP3Info(parts[3]));
+                                GUIFrame.addSongToPlayList(parts[1], parts[2], parts[3]);
+                            }
+                            else {//if playlist is empty
+                                GUIFrame.createPlayList(parts[1], parts[2]);
+                            }
                             break;
                     }
                 }
