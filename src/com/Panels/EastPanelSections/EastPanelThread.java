@@ -21,14 +21,14 @@ public class EastPanelThread extends Thread
             PrintWriter serverSocketWriter=new PrintWriter(serverSocketOutputStream,true);
             Scanner serverSocketReader=new Scanner(serverSocketInputStream);
             serverSocketWriter.write("Hi,you are connected to this server.");
-            System.out.println(serverSocketReader.next());
+            System.out.println(serverSocketReader.nextLine());
             //mainSocket.accept();
 
         }
         catch (Exception e)
         {
             //this.interrupt();
-            System.err.println("(server socket)CAN NOT CONNECT");
+            System.err.println("(server socket)CAN NOT CONNECT.THERE IS A PROBLEM. ");
 
         }
 

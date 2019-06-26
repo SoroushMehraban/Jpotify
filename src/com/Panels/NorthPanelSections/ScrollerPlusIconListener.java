@@ -37,7 +37,7 @@ public class ScrollerPlusIconListener extends MouseAdapter
                 Scanner consolInput=new Scanner(System.in);
                 System.out.println(clientSocketReader.next());
                 System.out.println("write a message for server:");
-                clientSocketWriter.write(consolInput.next());
+                clientSocketWriter.write(consolInput.nextLine());
 
 
             }
