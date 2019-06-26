@@ -1,6 +1,7 @@
 package com.Panels.CenterPanelSections;
 
 import com.Interfaces.SearchLinker;
+import com.Panels.NorthPanelSections.ScrollerPlusIconListener;
 import com.jtattoo.plaf.BaseComboBoxUI;
 import com.jtattoo.plaf.hifi.HiFiComboBoxUI;
 
@@ -45,6 +46,7 @@ public class NorthPart extends JPanel {
         plusIcon = ImageIO.read(new File("Icons/PlusCircle-no-select.png"));//loading plus Icon image
         plusLabel = new JLabel(new ImageIcon(plusIcon));//creating plus label to hold that.
         createPlusListener();//creating it's listener
+        plusLabel.addMouseListener(new ScrollerPlusIconListener());
 
         JComboBox usersBox=new JComboBox();//creating a JComboBox for user.
         usersBox.setPreferredSize(new Dimension(100,25));//setting PreferredSize to show.

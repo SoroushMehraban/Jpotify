@@ -1,9 +1,13 @@
 package com.GUIFrame;
 
 import com.Interfaces.PlaylistOptionLinker;
+import com.Interfaces.ShowSongsLinker;
+import com.Interfaces.SongPanelsLinker;
+import com.MP3.AppStorage;
 import com.MP3.MP3Info;
+import com.Panels.CenterPanelSections.AlbumPanel;
+import com.Panels.CenterPanelSections.PlayListPanel;
 import com.Panels.CenterPanelSections.SongPanel;
-import com.Panels.EastPanelSections.EastPanelThread;
 import com.Panels.EastPanelSections.EastPanelThread;
 import com.Panels.GeneralPanels.*;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -13,9 +17,11 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * the window GUI where User can play a music.
@@ -32,19 +38,19 @@ public class GUIFrame extends JFrame {
     private static EastPanel eastPanel;
     private static JPanel artworkPanel;
     private static String username;
-    //private static ServerSocket serverSocket;
+    private static EastPanelThread mainThread;
     /**
      * Class Constructor
      */
     private GUIFrame() throws IOException {
-        JTextField usernameField = new JTextField(10);
-        JPanel myPanel = new JPanel();
-        myPanel.add(new JLabel("Username:"));
-        myPanel.add(usernameField);
+        JTextField usernameField = new JTextField(10);//creating a field to input user name.
+        JPanel myPanel = new JPanel();//creating a label to hold that field.
+        myPanel.add(new JLabel("Username:"));//creating a label to show user should input username and adding it to myPanel
+        myPanel.add(usernameField);//adding text field to myPanel
         int result = JOptionPane.showConfirmDialog(null, myPanel,
-                "Please Enter Your Username", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            username=usernameField.getText();
+                "Please Enter Your Username", JOptionPane.OK_CANCEL_OPTION);//showing a JOptionPane to enter input
+        if (result == JOptionPane.OK_OPTION) {//if user pressed enter
+            username=usernameField.getText();//setting program username.
             this.setLayout(new BorderLayout()); //frame layout
             this.setSize(940,512); //frame length : 940 * 512
             this.setLocationRelativeTo(null); //setting frame at the center of screen
@@ -70,12 +76,22 @@ public class GUIFrame extends JFrame {
             this.setVisible(true);
             //setting like linker between playPanel in southPanel and centerPart in centerPanel:
             southPanel.getPlayPanel().setLikeLinker(centerPanel.getCenterPart());
+
+            this.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    AppStorage.saveSongs();
+                }
+            });
+            AppStorage.loadSongs();//loading songs if user has from previous run
             showHome();//showing home by default
-            Thread mainThread=new Thread(new EastPanelThread());
+            mainThread=new EastPanelThread();
             mainThread.start();
+
         }
 
     }
+
 
     /**
      * getting instance of class.
@@ -143,14 +159,16 @@ public class GUIFrame extends JFrame {
      */
     public static void createPlayList(String title, String description){
         centerPanel.getCenterPart().createPlayList(title,description);
+        showHome();
     }
     /**
      * this method adds a song to given playlist.(works as a linker)
      * @param playListTitle  title of playlist as a key of HashMap.
+     * @param description description of playlist(helps us to create one if it doesn't exist)
      * @param songDirectory directory of music to add.
      */
-    public static void addSongToPlayList(String playListTitle, String songDirectory){
-        centerPanel.getCenterPart().addSongToPlayList(playListTitle,songDirectory);
+    public static void addSongToPlayList(String playListTitle,String description, String songDirectory){
+        centerPanel.getCenterPart().addSongToPlayList(playListTitle,description,songDirectory);
     }
 
     /**
@@ -190,13 +208,23 @@ public class GUIFrame extends JFrame {
     public static ArrayList<String> getAlbumTitles(){
         return centerPanel.getCenterPart().getAlbumTitles();
     }
-    public static PlaylistOptionLinker getAddingAndRemovingSongLinker(){
+    public static PlaylistOptionLinker getPlaylistOptionLinker(){
         return centerPanel.getCenterPart();
     }
     public static WestPanel getWestPanel()
     {
         return westPanel;
 
+    }
+    public static ShowSongsLinker getShowSongsLinker(){
+        return centerPanel.getCenterPart();
+    }
+
+    /**
+     * getting this helps us to control song panels in AppStorage and playlist panels.
+     */
+    public static SongPanelsLinker getSongPanelsLinker(){
+        return centerPanel.getCenterPart();
     }
 
 
@@ -259,4 +287,10 @@ public class GUIFrame extends JFrame {
         westContainer.setPreferredSize(new Dimension(150,600));
         return westContainer;
     }
+    public static EastPanelThread getMainThread()
+    {
+        return mainThread;
+
+    }
+
 }
