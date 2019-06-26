@@ -39,6 +39,7 @@ public class GUIFrame extends JFrame {
     private static JPanel artworkPanel;
     private static String username;
     private static EastPanelThread mainThread;
+
     /**
      * Class Constructor
      */
