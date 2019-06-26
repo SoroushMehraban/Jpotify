@@ -82,13 +82,6 @@ public class GUIFrame extends JFrame {
                     AppStorage.saveSongs();
                 }
             });
-
-            this.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    AppStorage.saveSongs();
-                }
-            });
             AppStorage.loadSongs();//loading songs if user has from previous run
             showHome();//showing home by default
             Thread mainThread=new Thread(new EastPanelThread());
