@@ -219,7 +219,7 @@ public class GUIFrame extends JFrame {
     /**
      * getting this helps us to control song panels in AppStorage and playlist panels.
      */
-    public static SongPanelsLinker getSongPanelesLinker(){
+    public static SongPanelsLinker getSongPanelsLinker(){
         return centerPanel.getCenterPart();
     }
 
