@@ -31,14 +31,14 @@ public class SongsPanelListener extends MouseAdapter
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        icon.setIcon(WestPanel.setIconSize("Icons/Song-selected.png"));
+        icon.setIcon(WestPanel.setIconSize("Icons/Song-selected.png",20));
         label.setFont(new Font("Serif", Font.BOLD, 16));
 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        icon.setIcon(WestPanel.setIconSize("Icons/Song-no-selected.png"));
+        icon.setIcon(WestPanel.setIconSize("Icons/Song-no-selected.png",20));
         label.setFont(font);
 
     }

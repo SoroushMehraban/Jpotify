@@ -46,13 +46,13 @@ public class PlaylistsPlusIconListener extends MouseAdapter
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        icon.setIcon(WestPanel.setPlusIconSize("Icons/Plus.png"));
+        icon.setIcon(WestPanel.setIconSize("Icons/Plus.png",10));
 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        icon.setIcon(WestPanel.setPlusIconSize("Icons/Plus-no-select.PNG"));
+        icon.setIcon(WestPanel.setIconSize("Icons/Plus-no-select.PNG",10));
 
     }
 

@@ -21,7 +21,7 @@ import java.util.HashMap;
  * @author Soroush Mehraban
  * @version 1.0
  */
-class AlbumPanel extends MusicPanel {
+public class AlbumPanel extends MusicPanel {
     private HashMap<String,SongPanel> songPanels;
     private ShowSongsLinker showSongsLinker;
 
@@ -43,7 +43,7 @@ class AlbumPanel extends MusicPanel {
         this.showSongsLinker = showSongsLinker;
     }
 
-    ArrayList<SongPanel> getSongPanels() {
+    public ArrayList<SongPanel> getSongPanels() {
         return new ArrayList<>(songPanels.values());
     }
 
@@ -103,6 +103,7 @@ class AlbumPanel extends MusicPanel {
         for(String songTitle : newSongs.keySet())//adding songs which our album doesn't has
             if(!songPanels.containsKey(songTitle)) {
                 songPanels.put(songTitle, newSongs.get(songTitle));
+                showSongsLinker.getAllSongsPanel().add(newSongs.get(songTitle));//adding new song to allSongsPanel.
                 updateDescription();
             }
     }

@@ -80,14 +80,14 @@ public class AlbumsPanelListener extends MouseAdapter
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        icon.setIcon(setIconSize("Icons/Album-selected.png"));
+        icon.setIcon(setIconSize("Icons/Album-selected.png",20));
         label.setFont(new Font("Serif", Font.BOLD, 14));
 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        icon.setIcon(setIconSize("Icons/Album-no-selected.png"));
+        icon.setIcon(setIconSize("Icons/Album-no-selected.png",20));
         label.setFont(font);
 
     }

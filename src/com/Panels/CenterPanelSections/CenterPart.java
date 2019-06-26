@@ -24,12 +24,13 @@ import java.util.HashMap;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, PlaylistOptionLinker, SearchLinker {
+public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, PlaylistOptionLinker, SearchLinker,SongPanelsLinker {
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
     private PlayListPanel currentPlaylistPanel;//helps for adding, removing and swapping in playlist song.
     private ArrayList<SongPanel> addingSongPanels; //helps for adding song to playlist.
     private ArrayList<SongPanel> removingSongPanels; //helps for removing song from playlist.
+    private ArrayList<SongPanel> allSongPanels; //helps to show all songs.
     private SongPanel firstSelectedSwaping;//helps for swapping
     private SongPanel secondSelectedSwaping;//helps for swaping
     private ArrayList<SongPanel> currentPlaying;
@@ -59,9 +60,9 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         constraints = new GridBagConstraints();//creating panel constraints to denote where components should located on.
         constraints.insets = new Insets(0,0,15,15);//denoting spaces between components.
         this.setBackground(new Color(23,23,23));//setting panel background
-
         albumPanels = new HashMap<>();//list of albumPanels.
         playListPanels = new HashMap<>();
+        allSongPanels = new ArrayList<>();
 
         //creating remove song from playlist label:
         try {
@@ -135,6 +136,9 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     }
 
     @Override
+    public ArrayList<SongPanel> getAllSongsPanel(){ return allSongPanels;}
+
+    @Override
     public boolean isSwaping() {
         return isSwaping;
     }
@@ -157,6 +161,16 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     @Override
     public void setSecondSelectedSwaping(SongPanel secondSelectedSwaping) {
         this.secondSelectedSwaping = secondSelectedSwaping;
+    }
+
+    @Override
+    public HashMap<String, AlbumPanel> getAlbumPanels() {
+        return albumPanels;
+    }
+
+    @Override
+    public HashMap<String, PlayListPanel> getPlayListPanels() {
+        return playListPanels;
     }
 
     public void swapPlayList(){
@@ -325,18 +339,17 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         int gridx = 0;
         int gridy = 0;
         //showing all songs:
-        for (AlbumPanel albumPanel : albumPanels.values())
-            for(SongPanel songPanel : albumPanel.getSongPanels()){
-                //this boolean check in case if we show all songs for adding to playlist, it doesn't show song that playlist already has:
-                boolean canAdd = !addingSongToPlaylist || !currentPlaylistPanel.getPlayListSongs().contains(songPanel);
-                if(canAdd) {
-                    allSongs.add(songPanel);
-                    songPanel.setBackground(new Color(23, 23, 23));//setting default background in case it doesn't
-                    songPanel.unSelect();//unSelecting if it's selected on previous adding panel.
-                    constraints.gridy = gridy;
-                    constraints.gridx = gridx;
-                    this.add(songPanel, constraints);
-                    if (gridx < 3) {
+        for(SongPanel songPanel : allSongPanels){
+            //this boolean check in case if we show all songs for adding to playlist, it doesn't show song that playlist already has:
+            boolean canAdd = !addingSongToPlaylist || !currentPlaylistPanel.getPlayListSongs().contains(songPanel);
+            if(canAdd) {
+                allSongs.add(songPanel);
+                songPanel.setBackground(new Color(23, 23, 23));//setting default background in case it doesn't
+                songPanel.unSelect();//unSelecting if it's selected on previous adding panel.
+                constraints.gridy = gridy;
+                constraints.gridx = gridx;
+                this.add(songPanel, constraints);
+                if (gridx < 3) {
                         gridx++;
                     } else {
                         gridx = 0;
@@ -367,6 +380,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         if(!albumPanels.containsKey(albumTitle)) {//if album is a new album
             AlbumPanel albumPanel = createAlbumPanel(albumMusicsInfo);
             albumPanels.put(albumTitle, albumPanel);
+            allSongPanels.addAll(albumPanel.getSongPanels());//adding to all song panels,help to show them when user click songs button.
             showHome();//showing home after created new album to show it's added.
         }
         else//if album added before we just add new songs
@@ -399,14 +413,14 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     private void createDefaultPlayLists(){
         try {
             BufferedImage favoriteSongsImage = ImageIO.read(new File("Images/FavoriteSong.png"));
-            PlayListPanel favoriteSongs = new PlayListPanel(favoriteSongsImage,"Favorite Songs","Favorite albumSongs chosen by user",this);
+            PlayListPanel favoriteSongs = new PlayListPanel(favoriteSongsImage,"Favorite Songs","Favorite albumSongs chosen by user",this,this);
             playListPanels.put("Favorite Songs",favoriteSongs);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading favorite albumSongs image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
         try {
             BufferedImage sharedSongImage = ImageIO.read(new File("Images/SharedSongs.jpg"));
-            PlayListPanel sharedSongs = new PlayListPanel(sharedSongImage,"Shared Songs","Shared albumSongs between users",this);
+            PlayListPanel sharedSongs = new PlayListPanel(sharedSongImage,"Shared Songs","Shared albumSongs between users",this,this);
             playListPanels.put("Shared Songs",sharedSongs);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading shared albumSongs image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
@@ -468,18 +482,36 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      */
     public void createPlayList(String title, String description){
         if(!playListPanels.containsKey(title)){//if this playlist doesn't exist.
-            PlayListPanel newPlayListPanel = new PlayListPanel(emptyPlayListImage,title, description,this);
+            PlayListPanel newPlayListPanel = new PlayListPanel(emptyPlayListImage,title, description,this,this);
             playListPanels.put(title,newPlayListPanel);
         }
     }
 
     /**
-     * this method adds a song to given playlist.
+     * this method is called when we want to load songs after playing our program.
+     * if play list didn't exist, we create one!
+     * at the end we add our given song to our playlist.
      * @param playListTitle  title of playlist as a key of HashMap.
+     * @param description description to show in playlist panel.
      * @param songDirectory directory of music to add.
      */
-    public void addSongToPlayList(String playListTitle, String songDirectory){
-        //should be implement later
+    public void addSongToPlayList(String playListTitle,String description, String songDirectory){
+        if(!playListPanels.containsKey(playListTitle)) {//if this playlist doesn't exist.
+            createPlayList(playListTitle,description);//creating new one
+        }
+        try {//adding song to playlist
+            MP3Info currentSong = new MP3Info(songDirectory);//creating mp3 info file
+            AlbumPanel songAlbum = albumPanels.get(currentSong.getAlbum());//getting song's album
+            for(SongPanel songPanel : songAlbum.getSongPanels()){
+                if(songPanel.getMp3Info().getTitle().equals(currentSong.getTitle())) {//if we found that song
+                    playListPanels.get(playListTitle).getPlayListSongs().add(songPanel);//adding to given playlist
+                    playListPanels.get(playListTitle).updateImage();//updating playlist image
+                    break;
+                }
+            }
+        } catch (IOException | NoSuchFieldException e) {
+            JOptionPane.showMessageDialog(null, "Error reading mp3 file","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**

@@ -75,16 +75,16 @@ public class LibraryPanelListener extends MouseAdapter
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        icon.setIcon(WestPanel.setIconSize("Icons/Library.PNG"));
+        icon.setIcon(WestPanel.setIconSize("Icons/Library.PNG",20));
         label.setFont(new Font("Serif", Font.BOLD, 16));
-        plusIcon.setIcon(WestPanel.setPlusIconSize("Icons/Plus.png"));
+        plusIcon.setIcon(WestPanel.setIconSize("Icons/Plus.png",10));
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        icon.setIcon(WestPanel.setIconSize("Icons/Library-no-select.PNG"));
+        icon.setIcon(WestPanel.setIconSize("Icons/Library-no-select.PNG",20));
         label.setFont(font);
-        plusIcon.setIcon(WestPanel.setPlusIconSize("Icons/Plus-no-select.png"));
+        plusIcon.setIcon(WestPanel.setIconSize("Icons/Plus-no-select.png",10));
 
     }
 
