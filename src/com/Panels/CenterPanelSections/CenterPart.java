@@ -25,7 +25,8 @@ import java.util.HashMap;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, PlaylistOptionLinker, SearchLinker,SongPanelsLinker {
+public class CenterPart extends JPanel
+        implements ShowSongsLinker, LikeLinker, LyricsLinker, PlaylistOptionLinker, SearchLinker,SongPanelsLinker,SortLinker {
     private SortPart sortPart;
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
@@ -201,6 +202,11 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
 
             showPlayListSongs(currentPlaylistPanel.getTitle());//reloading playlist songs to user see they swapped
         }
+    }
+
+    @Override
+    public PlayListPanel getCurrentPlaylistPanel() {
+        return currentPlaylistPanel;
     }
 
     /**

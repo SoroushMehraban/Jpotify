@@ -35,6 +35,7 @@ public class CenterPanel extends JPanel {
         centerPart = new CenterPart(sortPart);//creating center part panel
         JScrollPane jScrollPane = new JScrollPane(centerPart);//creating JScrollPane to cover center part with scrollbar
         GUIFrame.customizeJScrollPane(jScrollPane);//customizing jScrollPane's colors
+        sortPart.setSortLinker(centerPart);
 
         JPanel centerContainer = new JPanel();
         centerContainer.setOpaque(false);//to show center panel background behind it.
