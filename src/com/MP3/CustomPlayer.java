@@ -25,9 +25,9 @@ public class CustomPlayer {
     private boolean isPlaying;
     private boolean firstPlaying;
     private String directory;
-    private int total;
     private int stopped;
-    private int firstAdditionalBytes;//helps us to get current time.
+    private int startOffset;
+    private int endOffset;
 
     /**
      * Class constructor, it only gives mp3 file directory from user.
@@ -52,7 +52,7 @@ public class CustomPlayer {
                 player.close();//close the entire player.
                 isPlaying = false;
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(null, "Error pausing mp3 file");
+                JOptionPane.showMessageDialog(null, "Error pausing mp3 file","An Error Occured",JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -62,7 +62,7 @@ public class CustomPlayer {
      */
     public void resume(){
         if(!isPlaying) {//if musing is not playing
-            play(total - stopped);//play from remaining bytes.
+            play(endOffset - stopped);//play from remaining bytes.
             isPlaying = true;
         }
     }
@@ -74,9 +74,9 @@ public class CustomPlayer {
      * @param startingTimeDegree a number between 0 and 1 indicates how much time spends.
      */
     public void resume(double startingTimeDegree){
-        stopped = total - (int) (total * startingTimeDegree);//generating remaining bytes amounts from point of start
+        stopped = (int) ((endOffset - startOffset) - (endOffset - startOffset) * startingTimeDegree);//generating remaining bytes amounts from point of start
         close();//closing current music(if we didn't close it plays beside previous one)
-        play(total - stopped);//play from beginning point of JProgressbar
+        play(endOffset - stopped);//play from beginning point of JProgressbar
     }
 
     /**
@@ -87,7 +87,6 @@ public class CustomPlayer {
         try{
             isPlaying = true;
             fileInputStream = new FileInputStream(directory);
-            total = fileInputStream.available();
             if(pos > 0) {
                 fileInputStream.skip(pos);//skipping additional bytes
                 firstPlaying = false;//it's not playing at first(help us to get current time)
@@ -129,11 +128,11 @@ public class CustomPlayer {
      */
     public int getCurrentSeconds() throws IOException {
         if(firstPlaying) {
-            firstAdditionalBytes = total - fileInputStream.available();
-            firstPlaying = false;
+            startOffset = getStartOffset();
+            endOffset = getEndOffset();
         }
-        int passedBytes = total - fileInputStream.available() - firstAdditionalBytes;//amount of bytes which played.
-        return (int) ((passedBytes / (double) total) * getTotalSeconds());
+        int passedBytes = endOffset - fileInputStream.available() - startOffset;//amount of bytes which played.
+        return (int) ((passedBytes / (double) endOffset) * getTotalSeconds());
     }
 
     public boolean isPlaying() {
@@ -150,5 +149,24 @@ public class CustomPlayer {
      */
     public void close(){
         player.close();
+    }
+
+    private int getStartOffset(){
+        try {
+            Mp3File mp3File = new Mp3File(directory);
+            return mp3File.getStartOffset();
+        } catch (IOException | UnsupportedTagException | InvalidDataException e) {
+            JOptionPane.showMessageDialog(null, "Error pausing mp3 file","An Error Occured",JOptionPane.ERROR_MESSAGE);
+        }
+        return 0;
+    }
+    private int getEndOffset(){
+        try {
+            Mp3File mp3File = new Mp3File(directory);
+            return mp3File.getEndOffset();
+        } catch (IOException | UnsupportedTagException | InvalidDataException e) {
+            JOptionPane.showMessageDialog(null, "Error pausing mp3 file","An Error Occured",JOptionPane.ERROR_MESSAGE);
+        }
+        return 0;
     }
 }
