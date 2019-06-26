@@ -38,10 +38,7 @@ public class GUIFrame extends JFrame {
     private static EastPanel eastPanel;
     private static JPanel artworkPanel;
     private static String username;
-<<<<<<< HEAD
     private static EastPanelThread mainThread;
-=======
-        >>>>>>> 0cd5b05b60442df5b601c96c8b358952e556cca7
     /**
      * Class Constructor
      */
@@ -115,8 +112,10 @@ public class GUIFrame extends JFrame {
      * reloading com.GUIFrame.GUIFrame when components changes.
      */
     public static void reload(){
-        guiFrame.repaint();
-        guiFrame.revalidate();
+        if(guiFrame != null) {
+            guiFrame.repaint();
+            guiFrame.revalidate();
+        }
     }
 
     /**

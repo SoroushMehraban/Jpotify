@@ -1,5 +1,6 @@
 package com.Panels.CenterPanelSections;
 
+import com.GUIFrame.GUIFrame;
 import com.Interfaces.*;
 import com.MP3.MP3Info;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -25,6 +26,7 @@ import java.util.HashMap;
  * @version 1.0
  */
 public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, LyricsLinker, PlaylistOptionLinker, SearchLinker,SongPanelsLinker {
+    private SortPart sortPart;
     private HashMap<String,AlbumPanel> albumPanels;
     private HashMap<String,PlayListPanel> playListPanels;
     private PlayListPanel currentPlaylistPanel;//helps for adding, removing and swapping in playlist song.
@@ -51,15 +53,19 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     private boolean addingSongToPlaylist;//helps for adding song to playlist
     private boolean removeSongFromPlaylist;//helps for removing song from playlist.
     private boolean isSwaping;//helps for swap between playlist songs.
+    private boolean playlistIsRunning;//helps for showing sort box
 
     /**
      * Class Constructor.
      */
-    public CenterPart() {
+    public CenterPart(SortPart sortPart) {
         this.setLayout(new GridBagLayout());//setting panel layout
         constraints = new GridBagConstraints();//creating panel constraints to denote where components should located on.
         constraints.insets = new Insets(0,0,15,15);//denoting spaces between components.
         this.setBackground(new Color(23,23,23));//setting panel background
+
+        this.sortPart = sortPart;
+
         albumPanels = new HashMap<>();//list of albumPanels.
         playListPanels = new HashMap<>();
         allSongPanels = new ArrayList<>();
@@ -163,6 +169,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         this.secondSelectedSwaping = secondSelectedSwaping;
     }
 
+
     @Override
     public ArrayList<SongPanel> getAllSongPanels() {
         return allSongPanels;
@@ -208,6 +215,8 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      * when this method calls, it shows albums in center part of Center panel.
      */
     public void showHome(){
+        playlistIsRunning = false;
+        displaySortBox();
         this.removeAll();//removing all components in center part
         addingSongToPlaylist = false;
         removeSongFromPlaylist = false;
@@ -263,8 +272,8 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      *
      * @param songPanels desired song panel to show.
      */
-    @Override
-    public void showSongs(ArrayList<SongPanel> songPanels){
+    private void showSongs(ArrayList<SongPanel> songPanels){
+        displaySortBox();//displaying if we showing playlist songs.
         this.currentPlaying = songPanels;
         addingSongToPlaylist = false;
         this.removeAll();//removing all components.
@@ -302,6 +311,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
      * @param albumTitle title of album as a key
      */
     public void showAlbumSongs(String albumTitle){
+        playlistIsRunning = false;
         showSongs(albumPanels.get(albumTitle).getSongPanels());
     }
 
@@ -309,6 +319,10 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
     @Override
     public void showPlayListSongs(String playListTitle){
         currentPlaylistPanel = playListPanels.get(playListTitle);//getting current song where user see.
+
+        playlistIsRunning = true;//helps method below show sortBox.
+        displaySortBox();//displaying sortBox if we need.
+
         showSongs(playListPanels.get(playListTitle).getPlayListSongs());//show all songs related to playlist
         //creating playlist options containers:
         JPanel swapContainer = createOptionContainer(swapLabel,swapTextLabel);
@@ -328,10 +342,28 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         }
 
     }
+
+    /**
+     * this private method display sort box when user opens a playlist and had at least 2 song in there
+     */
+    private void displaySortBox(){
+        if(playlistIsRunning) {
+            if (currentPlaylistPanel.getPlayListSongs().size() >= 2)
+                sortPart.showSortBox();
+            else
+                sortPart.removeSortBox();
+        }
+        else
+            sortPart.removeSortBox();
+        GUIFrame.reload();
+    }
     /**
      * This method is called when user press Songs in West panel, it shows all songs which exists in library.
      */
     public void showAllSongs(){
+        playlistIsRunning = false;
+        displaySortBox();
+
         this.removeAll();//removing all components.
         removeSongFromPlaylist = false;
         ArrayList<SongPanel> allSongs = new ArrayList<>();//this helps us to play ordered song in south panel.
@@ -381,6 +413,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
             AlbumPanel albumPanel = createAlbumPanel(albumMusicsInfo);
             albumPanels.put(albumTitle, albumPanel);
             allSongPanels.addAll(albumPanel.getSongPanels());//adding to all song panels,help to show them when user click songs button.
+
             showHome();//showing home after created new album to show it's added.
         }
         else//if album added before we just add new songs
@@ -400,7 +433,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
         AlbumPanel album = null;
         String description = "Album contains "+albumMusicsInfo.size()+" songs";
         try {//creating an album panel with its listener
-            album = new AlbumPanel(firstMP3Info.getImage(),firstMP3Info.getTitle(),description,albumMusicsInfo,this,this);
+            album = new AlbumPanel(firstMP3Info.getImage(),firstMP3Info.getAlbum(),description,albumMusicsInfo,this,this);
         } catch (InvalidDataException | IOException | UnsupportedTagException e) {
             JOptionPane.showMessageDialog(null, "Error reading mp3 file image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
@@ -659,6 +692,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
             public void mouseClicked(MouseEvent e) {
                 removeSongFromPlaylist = true;//this cause showSong method show done at the end
                 removingSongPanels = new ArrayList<>();//this creates a temporary memory space which hold removing song panels.
+                playlistIsRunning = false;
                 showSongs(currentPlaylistPanel.getPlayListSongs());//show existing song in playlist to remove.
                 mouseExited(e);//turn its gui like mouse exited.
             }
@@ -764,6 +798,7 @@ public class CenterPart extends JPanel implements ShowSongsLinker, LikeLinker, L
                 if(songPanel.hasThisName(searchingMessage))
                     findingPanels.add(songPanel);
 
+        playlistIsRunning = false;
         showSongs(findingPanels);
     }
 }
