@@ -20,6 +20,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,7 +31,7 @@ import java.util.HashMap;
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
-public class GUIFrame extends JFrame {
+public class GUIFrame extends JFrame implements Serializable {
     private static GUIFrame guiFrame;
     private static SouthPanel southPanel;
     private static CenterPanel centerPanel;
@@ -43,7 +44,7 @@ public class GUIFrame extends JFrame {
     /**
      * Class Constructor
      */
-    private GUIFrame() throws IOException {
+    private GUIFrame()  throws IOException {
         JTextField usernameField = new JTextField(10);//creating a field to input user name.
         JPanel myPanel = new JPanel();//creating a label to hold that field.
         myPanel.add(new JLabel("Username:"));//creating a label to show user should input username and adding it to myPanel
@@ -51,6 +52,7 @@ public class GUIFrame extends JFrame {
         int result = JOptionPane.showConfirmDialog(null, myPanel,
                 "Please Enter Your Username", JOptionPane.OK_CANCEL_OPTION);//showing a JOptionPane to enter input
         if (result == JOptionPane.OK_OPTION) {//if user pressed enter
+            guiFrame=this;
             username=usernameField.getText();//setting program username.
             this.setLayout(new BorderLayout()); //frame layout
             this.setSize(940,512); //frame length : 940 * 512
@@ -295,5 +297,21 @@ public class GUIFrame extends JFrame {
         return mainThread;
 
     }
+    public static String getUserName()
+    {
+        return username;
+    }
+    public static EastPanel getEastPanel()
+    {
+        return eastPanel;
+
+    }
+    public static GUIFrame getGUIFrame()
+    {
+        return guiFrame;
+    }
+
+
+
 
 }
