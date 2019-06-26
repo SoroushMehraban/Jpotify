@@ -8,6 +8,7 @@ import com.MP3.MP3Info;
 import com.Panels.CenterPanelSections.AlbumPanel;
 import com.Panels.CenterPanelSections.PlayListPanel;
 import com.Panels.CenterPanelSections.SongPanel;
+import com.Panels.EastPanelSections.EastPanelThread;
 import com.Panels.GeneralPanels.*;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
@@ -81,10 +82,17 @@ public class GUIFrame extends JFrame {
                     AppStorage.saveSongs();
                 }
             });
+
+            this.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    AppStorage.saveSongs();
+                }
+            });
             AppStorage.loadSongs();//loading songs if user has from previous run
             showHome();//showing home by default
-
-
+            Thread mainThread=new Thread(new EastPanelThread());
+            mainThread.start();
         }
 
     }
