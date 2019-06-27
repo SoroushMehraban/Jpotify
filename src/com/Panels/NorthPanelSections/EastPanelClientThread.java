@@ -96,12 +96,11 @@ public class EastPanelClientThread extends Thread {
                     Thread.sleep(2000);
                 }
             }
-            catch (IOException e1){
+            catch (Exception e) {
+                //this.interrupt();
+                System.err.println("(server socket)CAN NOT CONNECT.THERE IS A PROBLEM. ");
                 state.setIcon(WestPanel.setIconSize("Icons/red.PNG",10));
                 GUIFrame.reload();
-            }
-            catch (Exception e1) {
-                System.err.println("(socket)CAN NOT CONNECT TO THE INPUT HOST NAME.");
             }
         }
     }

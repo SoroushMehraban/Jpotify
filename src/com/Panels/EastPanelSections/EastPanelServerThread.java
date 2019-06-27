@@ -92,14 +92,12 @@ public class EastPanelServerThread extends Thread {
 
             //mainSocket.accept();
 
-        } catch (IOException e1){
-            state.setIcon(WestPanel.setIconSize("Icons/red.PNG",10));
-            GUIFrame.reload();
         }
         catch (Exception e) {
             //this.interrupt();
             System.err.println("(server socket)CAN NOT CONNECT.THERE IS A PROBLEM. ");
-
+            state.setIcon(WestPanel.setIconSize("Icons/red.PNG",10));
+            GUIFrame.reload();
         }
 
     }
