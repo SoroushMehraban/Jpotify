@@ -42,12 +42,16 @@ public class EastPanelServerThread extends Thread {
             userInformationPanel.setBackground(new Color(23, 23, 23));
             JLabel connectedUserName = new JLabel(" " + serverSocketReader.nextLine());
             connectedUserName.setForeground(Color.WHITE);
+
             JLabel connectedUserIcon = new JLabel(WestPanel.setIconSize("Icons/User.PNG", 20));
             userInformationPanel.add(connectedUserIcon);
             userInformationPanel.add(connectedUserName);
 
             userInformationPanel.add(Box.createHorizontalStrut(5));
+            System.out.println("1");
+            state=new JLabel();
             state.setIcon(WestPanel.setIconSize("Icons/green.PNG",10));
+            System.out.println("2");
             userInformationPanel.add(state);
 
             connectedUserPanel.add(userInformationPanel);

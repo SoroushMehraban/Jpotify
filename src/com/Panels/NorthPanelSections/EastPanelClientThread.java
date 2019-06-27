@@ -54,6 +54,7 @@ public class EastPanelClientThread extends Thread {
                 serverInformationPanel.add(connectedServerName);
 
                 serverInformationPanel.add(Box.createHorizontalStrut(5));
+                state=new JLabel();
                 state.setIcon(WestPanel.setIconSize("Icons/green.PNG",10));
                 serverInformationPanel.add(state);
 
