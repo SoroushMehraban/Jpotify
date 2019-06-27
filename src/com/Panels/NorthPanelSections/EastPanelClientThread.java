@@ -54,13 +54,14 @@ public class EastPanelClientThread extends Thread {
                 GUIFrame.getEastPanel().add(connectedServerPanel);
                 GUIFrame.getEastPanel().add(Box.createVerticalStrut(30));
                 while (true) {
-                    if (songTitle != null && songArtist != null) {
-                        clientSocketWriter.println(songTitle);
-                        clientSocketWriter.println(songArtist);
-                     }
+                    //System.out.println("here");
+                    if (songTitle == null && songArtist == null) {
+                        clientSocketWriter.println("nothingPlayed");
+                        clientSocketWriter.println("nothingPlayed");
+                    }
                      else{
-                         clientSocketWriter.println("nothingPlayed");
-                         clientSocketWriter.println("nothingPlayed");
+                        clientSocketWriter.println(songArtist);
+                        clientSocketWriter.println(songTitle);
                     }
                     String serverSongName = clientSocketReader.nextLine();
                     String serverSongArtist = clientSocketReader.nextLine();
@@ -70,6 +71,7 @@ public class EastPanelClientThread extends Thread {
                         continue;
                     }
                     if(!songTitle.equals(serverSongName) && !songArtist.equals(serverSongArtist)){
+                        boolean a=true;
                         connectedServerPanel.removeAll();
                         connectedServerPanel.add(serverInformationPanel);
                         connectedServerPanel.add(Box.createVerticalStrut(10));
@@ -81,7 +83,7 @@ public class EastPanelClientThread extends Thread {
                     /*connectedServerPanel.repaint();
                     connectedServerPanel.revalidate();*/
                     GUIFrame.reload();
-                    Thread.sleep(2000);
+                    //Thread.sleep(2000);
                 }
             } catch (Exception e1) {
                 System.err.println("(socket)CAN NOT CONNECT TO THE INPUT HOST NAME.");
