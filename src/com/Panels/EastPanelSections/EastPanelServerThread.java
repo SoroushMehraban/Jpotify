@@ -6,10 +6,7 @@ import com.Panels.GeneralPanels.WestPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
@@ -17,6 +14,8 @@ import java.util.Scanner;
 public class EastPanelServerThread extends Thread {
     private String songTitle;
     private String songArtist;
+    private JPanel userInformationPanel;
+    private JLabel state;
 
     @Override
     public void run() {
@@ -38,7 +37,7 @@ public class EastPanelServerThread extends Thread {
             JPanel connectedUserPanel = new JPanel();//main panel
             connectedUserPanel.setLayout(new BoxLayout(connectedUserPanel, BoxLayout.PAGE_AXIS));
             connectedUserPanel.setBackground(new Color(23, 23, 23));
-            JPanel userInformationPanel = new JPanel();
+            userInformationPanel = new JPanel();
             userInformationPanel.setLayout(new BoxLayout(userInformationPanel, BoxLayout.LINE_AXIS));
             userInformationPanel.setBackground(new Color(23, 23, 23));
             JLabel connectedUserName = new JLabel(" " + serverSocketReader.nextLine());
@@ -46,6 +45,11 @@ public class EastPanelServerThread extends Thread {
             JLabel connectedUserIcon = new JLabel(WestPanel.setIconSize("Icons/User.PNG", 20));
             userInformationPanel.add(connectedUserIcon);
             userInformationPanel.add(connectedUserName);
+
+            userInformationPanel.add(Box.createHorizontalStrut(5));
+            state.setIcon(WestPanel.setIconSize("Icons/green.PNG",10));
+            userInformationPanel.add(state);
+
             connectedUserPanel.add(userInformationPanel);
             GUIFrame.getEastPanel().add(connectedUserPanel);
             GUIFrame.reload();
@@ -84,7 +88,11 @@ public class EastPanelServerThread extends Thread {
 
             //mainSocket.accept();
 
-        } catch (Exception e) {
+        } catch (IOException e1){
+            state.setIcon(WestPanel.setIconSize("Icons/red.PNG",10));
+            GUIFrame.reload();
+        }
+        catch (Exception e) {
             //this.interrupt();
             System.err.println("(server socket)CAN NOT CONNECT.THERE IS A PROBLEM. ");
 

@@ -5,6 +5,7 @@ import com.Panels.GeneralPanels.WestPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -15,7 +16,8 @@ public class EastPanelClientThread extends Thread {
     private String songTitle;
     private String songArtist;
     private JLabel connectedServerName;
-
+    private JPanel serverInformationPanel;
+    private JLabel state;
     @Override
     public void run() {
         JTextField hostNameField = new JTextField(10);
@@ -42,7 +44,7 @@ public class EastPanelClientThread extends Thread {
                 connectedServerPanel.setLayout(new BoxLayout(connectedServerPanel, BoxLayout.PAGE_AXIS));
                 connectedServerPanel.setBackground(new Color(23, 23, 23));
 
-                JPanel serverInformationPanel = new JPanel();
+                serverInformationPanel = new JPanel();
                 serverInformationPanel.setLayout(new BoxLayout(serverInformationPanel, BoxLayout.LINE_AXIS));
                 serverInformationPanel.setBackground(new Color(23, 23, 23));
                 connectedServerName = new JLabel(" " + clientSocketReader.nextLine());
@@ -50,6 +52,11 @@ public class EastPanelClientThread extends Thread {
                 JLabel connectedServerIcon = new JLabel(WestPanel.setIconSize("Icons/User.PNG", 20));
                 serverInformationPanel.add(connectedServerIcon);
                 serverInformationPanel.add(connectedServerName);
+
+                serverInformationPanel.add(Box.createHorizontalStrut(5));
+                state.setIcon(WestPanel.setIconSize("Icons/green.PNG",10));
+                serverInformationPanel.add(state);
+
                 connectedServerPanel.add(serverInformationPanel);
                 GUIFrame.getEastPanel().add(connectedServerPanel);
                 GUIFrame.getEastPanel().add(Box.createVerticalStrut(30));
@@ -87,8 +94,12 @@ public class EastPanelClientThread extends Thread {
                     GUIFrame.reload();
                     Thread.sleep(2000);
                 }
-
-            } catch (Exception e1) {
+            }
+            catch (IOException e1){
+                state.setIcon(WestPanel.setIconSize("Icons/red.PNG",10));
+                GUIFrame.reload();
+            }
+            catch (Exception e1) {
                 System.err.println("(socket)CAN NOT CONNECT TO THE INPUT HOST NAME.");
             }
         }
