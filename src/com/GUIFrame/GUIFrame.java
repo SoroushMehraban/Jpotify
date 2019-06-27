@@ -10,7 +10,7 @@ import com.Panels.CenterPanelSections.PlayListPanel;
 import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.EastPanelSections.EastPanelThread;
 import com.Panels.GeneralPanels.*;
-import com.Socket.RadioClient;
+import com.Panels.NorthPanelSections.ScrollerPlusIconListener;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
@@ -41,6 +41,7 @@ public class GUIFrame extends JFrame implements Serializable {
     private static transient JPanel artworkPanel;
     private static String username;
     private static transient EastPanelThread mainThread;
+    private static transient ScrollerPlusIconListener mainClientThread;
 
     /**
      * Class Constructor
@@ -61,7 +62,6 @@ public class GUIFrame extends JFrame implements Serializable {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing the program when user close the window.
             this.setMinimumSize(new Dimension(940,512));
 
-            RadioClient radioClient = new RadioClient();
             centerPanel = new CenterPanel();
             this.add(centerPanel,BorderLayout.CENTER);
 
@@ -92,20 +92,16 @@ public class GUIFrame extends JFrame implements Serializable {
             showHome();//showing home by default
             mainThread=new EastPanelThread();
             mainThread.start();
+            mainClientThread=new ScrollerPlusIconListener();
+            Thread clientThread=new Thread(mainClientThread);
+            clientThread.start();
+
 
         }
 
     }
 
-    /**
-     * This method works as a linker and adds new radio songs.
-     * @param songTitle song title
-     * @param songArtist song artist
-     */
-    public static void addRadioSong(String songTitle, String songArtist){
-        centerPanel.getCenterPart().addRadioSong(songTitle,songArtist);
-        centerPanel.getCenterPart().showRadioSongs();
-    }
+
     /**
      * getting instance of class.
      * @return a unique com.GUIFrame.GUIFrame object.

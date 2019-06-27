@@ -29,8 +29,8 @@ public class EastPanelThread extends Thread
             Scanner serverSocketReader=new Scanner(serverSocketInputStream);
             serverSocketWriter.println("Hi,you are connected to this server.");
             System.out.println(serverSocketReader.nextLine());
-            ObjectInputStream objectReader=new ObjectInputStream(serverSocketInputStream);
-            GUIFrame recievedGUIFrameObject=(GUIFrame) objectReader.readObject();
+            //ObjectInputStream objectReader=new ObjectInputStream(serverSocketInputStream);
+            //GUIFrame recievedGUIFrameObject=(GUIFrame) objectReader.readObject();
 
             JPanel connectedUserPanel=new JPanel();//main panel
             connectedUserPanel.setLayout(new BoxLayout(connectedUserPanel,BoxLayout.PAGE_AXIS));
@@ -38,7 +38,7 @@ public class EastPanelThread extends Thread
             JPanel userInformationPanel=new JPanel();
             userInformationPanel.setLayout(new BoxLayout(userInformationPanel,BoxLayout.LINE_AXIS));
             userInformationPanel.setBackground(new Color(23, 23, 23));
-            JLabel connectedUserName=new JLabel(" "+recievedGUIFrameObject.getUserName());
+            JLabel connectedUserName=new JLabel(" "+serverSocketReader.nextLine());
             connectedUserName.setForeground(Color.WHITE);
             JLabel connectedUserIcon=new JLabel(WestPanel.setIconSize("Icons/User.PNG",20));
             userInformationPanel.add(connectedUserIcon);
