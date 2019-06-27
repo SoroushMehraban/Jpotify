@@ -54,7 +54,6 @@ public class EastPanelClientThread extends Thread {
                 GUIFrame.getEastPanel().add(connectedServerPanel);
                 GUIFrame.getEastPanel().add(Box.createVerticalStrut(30));
                 while (true) {
-                    //System.out.println("here");
                     if (songTitle == null && songArtist == null) {
                         clientSocketWriter.println("nothingPlayed");
                         clientSocketWriter.println("nothingPlayed");
@@ -62,6 +61,8 @@ public class EastPanelClientThread extends Thread {
                      else{
                         clientSocketWriter.println(songArtist);
                         clientSocketWriter.println(songTitle);
+                        System.out.println(songArtist);
+                        System.out.println(songTitle);
                     }
                     String serverSongName = clientSocketReader.nextLine();
                     String serverSongArtist = clientSocketReader.nextLine();
@@ -70,7 +71,7 @@ public class EastPanelClientThread extends Thread {
                     if(serverSongName.equals("nothingPlayed") && serverSongArtist.equals("nothingPlayed")){
                         continue;
                     }
-                    if(!songTitle.equals(serverSongName) && !songArtist.equals(serverSongArtist)){
+                    if((songTitle == null && songArtist == null) || (!songTitle.equals(serverSongName) && !songArtist.equals(serverSongArtist))){
                         boolean a=true;
                         connectedServerPanel.removeAll();
                         connectedServerPanel.add(serverInformationPanel);
