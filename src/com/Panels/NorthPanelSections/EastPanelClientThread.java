@@ -12,6 +12,9 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class EastPanelClientThread extends Thread {
+    private String songTitle;
+    private String songArtist;
+    private JLabel connectedServerName;
 
     @Override
     public void run() {
@@ -21,71 +24,76 @@ public class EastPanelClientThread extends Thread {
         myPanel.add(hostNameField);
         int result = JOptionPane.showConfirmDialog(null, myPanel,
                 "Please Enter a Host Name", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION)
-        {
-            try
-            {
-
+        if (result == JOptionPane.OK_OPTION) {
+            try {
                 //GUIFrame.getMainThread().interrupt();
-                Socket clientSocket=new Socket(hostNameField.getText(),2019);
-                OutputStream clientSocketOutputStream=clientSocket.getOutputStream();
-                InputStream clientSocketInputStream=clientSocket.getInputStream();
-                PrintWriter clientSocketWriter=new PrintWriter(clientSocketOutputStream,true);
-                Scanner clientSocketReader=new Scanner(clientSocketInputStream);
-                Scanner consolInput=new Scanner(System.in);
+                Socket clientSocket = new Socket(hostNameField.getText(), 2019);
+                OutputStream clientSocketOutputStream = clientSocket.getOutputStream();
+                InputStream clientSocketInputStream = clientSocket.getInputStream();
+                PrintWriter clientSocketWriter = new PrintWriter(clientSocketOutputStream, true);
+                Scanner clientSocketReader = new Scanner(clientSocketInputStream);
+                Scanner consolInput = new Scanner(System.in);
                 System.out.println(clientSocketReader.nextLine());
                 System.out.println("write a message for server:");
                 clientSocketWriter.println(consolInput.nextLine());
                 clientSocketWriter.println(GUIFrame.getUsername());
 
-                JPanel connectedServerPanel=new JPanel();//main panel
-                connectedServerPanel.setLayout(new BoxLayout(connectedServerPanel,BoxLayout.PAGE_AXIS));
+                JPanel connectedServerPanel = new JPanel();//main panel
+                connectedServerPanel.setLayout(new BoxLayout(connectedServerPanel, BoxLayout.PAGE_AXIS));
                 connectedServerPanel.setBackground(new Color(23, 23, 23));
 
-                JPanel serverInformationPanel=new JPanel();
-                serverInformationPanel.setLayout(new BoxLayout(serverInformationPanel,BoxLayout.LINE_AXIS));
+                JPanel serverInformationPanel = new JPanel();
+                serverInformationPanel.setLayout(new BoxLayout(serverInformationPanel, BoxLayout.LINE_AXIS));
                 serverInformationPanel.setBackground(new Color(23, 23, 23));
-                JLabel connectedServerName=new JLabel(" "+clientSocketReader.nextLine());
+                connectedServerName = new JLabel(" " + clientSocketReader.nextLine());
                 connectedServerName.setForeground(Color.WHITE);
-                JLabel connectedServerIcon=new JLabel(WestPanel.setIconSize("Icons/User.PNG",20));
+                JLabel connectedServerIcon = new JLabel(WestPanel.setIconSize("Icons/User.PNG", 20));
                 serverInformationPanel.add(connectedServerIcon);
                 serverInformationPanel.add(connectedServerName);
                 connectedServerPanel.add(serverInformationPanel);
                 GUIFrame.getEastPanel().add(connectedServerPanel);
+                GUIFrame.getEastPanel().add(Box.createVerticalStrut(30));
+                while (true) {
+                    if (songTitle != null && songArtist != null) {
+                        clientSocketWriter.println(songTitle);
+                        clientSocketWriter.println(songArtist);
+                     }
+                     else{
+                         clientSocketWriter.println("nothingPlayed");
+                         clientSocketWriter.println("nothingPlayed");
+                    }
+                    String serverSongName = clientSocketReader.nextLine();
+                    String serverSongArtist = clientSocketReader.nextLine();
+                    JLabel titleLabel = new JLabel(serverSongName);
+                    JLabel artistLabel = new JLabel(serverSongArtist);
+                    if(serverSongName.equals("nothingPlayed") && serverSongArtist.equals("nothingPlayed")){
+                        continue;
+                    }
+                    if(!songTitle.equals(serverSongName) && !songArtist.equals(serverSongArtist)){
+                        connectedServerPanel.removeAll();
+                        connectedServerPanel.add(serverInformationPanel);
+                        connectedServerPanel.add(Box.createVerticalStrut(10));
+                        connectedServerPanel.add(titleLabel);
+                        connectedServerPanel.add(Box.createVerticalStrut(10));
+                        connectedServerPanel.add(artistLabel);
 
-                //ObjectOutputStream objectWriter=new ObjectOutputStream(clientSocketOutputStream);
-                //objectWriter.writeObject(GUIFrame.getGUIFrame());
-                //ObjectInputStream objectReader=new ObjectInputStream(clientSocketInputStream);
-                //GUIFrame recievedGUIFrameObject=(GUIFrame)objectReader.readObject();
-
-
-
-
-
-
-
-
-
-
-
-                GUIFrame.reload();
-            }
-            catch(Exception e1)
-            {
+                    }
+                    /*connectedServerPanel.repaint();
+                    connectedServerPanel.revalidate();*/
+                    GUIFrame.reload();
+                    Thread.sleep(2000);
+                }
+            } catch (Exception e1) {
                 System.err.println("(socket)CAN NOT CONNECT TO THE INPUT HOST NAME.");
             }
         }
-
-
-
-
-
     }
 
+    public void setSongTitle(String songTitle) {
+        this.songTitle = songTitle;
+    }
 
-
-
-
-
-
+    public void setSongArtist(String songArtist) {
+        this.songArtist = songArtist;
+    }
 }

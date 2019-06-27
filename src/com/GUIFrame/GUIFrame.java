@@ -8,6 +8,7 @@ import com.MP3.MP3Info;
 import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.EastPanelSections.EastPanelServerThread;
 import com.Panels.GeneralPanels.*;
+import com.Panels.NorthPanelSections.EastPanelClientThread;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
@@ -37,6 +38,7 @@ public class GUIFrame extends JFrame implements Serializable {
     private static  JPanel artworkPanel;
     private static String username;
     private static EastPanelServerThread mainServerThread;
+    private static EastPanelClientThread mainClientThread;
     //private static transient ScrollerPlusIconListener mainClientThread;
 
     /**
@@ -144,7 +146,8 @@ public class GUIFrame extends JFrame implements Serializable {
             ArrayList<SongPanel> sharedSongs = centerPanel.getCenterPart().getSharedSongs();
             for(SongPanel sharedSong : sharedSongs){
                 if(sharedSong.getMp3Info().getTitle().equals(songPanel.getMp3Info().getTitle())){
-
+                    mainClientThread.setSongArtist(sharedSong.getMp3Info().getArtist());
+                    mainClientThread.setSongTitle(sharedSong.getMp3Info().getArtist());
                     break;
                 }
             }
@@ -320,7 +323,11 @@ public class GUIFrame extends JFrame implements Serializable {
         return guiFrame;
     }
 
+    public static void setMainServerThread(EastPanelServerThread mainServerThread) {
+        GUIFrame.mainServerThread = mainServerThread;
+    }
 
-
-
+    public static void setMainClientThread(EastPanelClientThread mainClientThread) {
+        GUIFrame.mainClientThread = mainClientThread;
+    }
 }
