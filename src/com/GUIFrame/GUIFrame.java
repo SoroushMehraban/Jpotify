@@ -146,8 +146,10 @@ public class GUIFrame extends JFrame implements Serializable {
             ArrayList<SongPanel> sharedSongs = centerPanel.getCenterPart().getSharedSongs();
             for(SongPanel sharedSong : sharedSongs){
                 if(sharedSong.getMp3Info().getTitle().equals(songPanel.getMp3Info().getTitle())){
-                    mainClientThread.setSongArtist(sharedSong.getMp3Info().getArtist());
-                    mainClientThread.setSongTitle(sharedSong.getMp3Info().getTitle());
+                    if(mainClientThread != null) {
+                        mainClientThread.setSongArtist(sharedSong.getMp3Info().getArtist());
+                        mainClientThread.setSongTitle(sharedSong.getMp3Info().getTitle());
+                    }
                     mainServerThread.setSongTitle(sharedSong.getMp3Info().getTitle());
                     mainServerThread.setSongArtist(sharedSong.getMp3Info().getArtist());
                     break;

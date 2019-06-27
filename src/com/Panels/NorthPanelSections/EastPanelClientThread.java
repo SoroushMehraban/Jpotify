@@ -84,7 +84,7 @@ public class EastPanelClientThread extends Thread {
                     /*connectedServerPanel.repaint();
                     connectedServerPanel.revalidate();*/
                     GUIFrame.reload();
-                    //Thread.sleep(2000);
+                    Thread.sleep(2000);
                 }
             } catch (Exception e1) {
                 System.err.println("(socket)CAN NOT CONNECT TO THE INPUT HOST NAME.");

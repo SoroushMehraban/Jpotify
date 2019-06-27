@@ -78,8 +78,7 @@ public class EastPanelServerThread extends Thread {
                     /*connectedServerPanel.repaint();
                     connectedServerPanel.revalidate();*/
                 GUIFrame.reload();
-               // Thread.sleep(2000);
-                //GUIFrame.reload();
+                Thread.sleep(2000);
             }
 
 
