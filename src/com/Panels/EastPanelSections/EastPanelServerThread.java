@@ -14,7 +14,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class EastPanelThread extends Thread
+public class EastPanelServerThread extends Thread
 {
     @Override
     public void run()  {
@@ -46,6 +46,13 @@ public class EastPanelThread extends Thread
             connectedUserPanel.add(userInformationPanel);
             GUIFrame.getEastPanel().add(connectedUserPanel);
 
+
+
+
+
+
+
+            GUIFrame.reload();
 
 
 

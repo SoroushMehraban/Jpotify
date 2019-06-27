@@ -183,6 +183,9 @@ public class CenterPart extends JPanel
         return playListPanels;
     }
 
+    public ArrayList<SongPanel> getSharedSongs(){
+        return playListPanels.get("Shared Songs").getPlayListSongs();
+    }
     public void swapPlayList(){
         if(firstSelectedSwaping != null && secondSelectedSwaping != null){
             int firstIndex = currentPlaylistPanel.getPlayListSongs().indexOf(firstSelectedSwaping);//first index to swap

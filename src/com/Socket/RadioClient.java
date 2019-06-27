@@ -76,7 +76,7 @@ public class RadioClient {
             System.out.println("Trying to receive..");
             while (socketReader.hasNext()) {
                 System.out.println("Adding to Radio songs...");
-                GUIFrame.addRadioSong(socketReader.nextLine(), socketReader.nextLine());
+                //GUIFrame.addRadioSong(socketReader.nextLine(), socketReader.nextLine());
                 System.out.println("added!");
             }
         }
