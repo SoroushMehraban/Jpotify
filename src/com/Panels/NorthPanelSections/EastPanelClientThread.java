@@ -54,7 +54,7 @@ public class EastPanelClientThread extends Thread {
                 GUIFrame.getEastPanel().add(connectedServerPanel);
                 GUIFrame.getEastPanel().add(Box.createVerticalStrut(30));
                 while (true) {
-                    //System.out.println("here");
+                    System.out.println("here");
                     if (songTitle == null && songArtist == null) {
                         clientSocketWriter.println("nothingPlayed");
                         clientSocketWriter.println("nothingPlayed");
