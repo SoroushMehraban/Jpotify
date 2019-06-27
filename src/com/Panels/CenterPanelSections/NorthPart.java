@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * north part of center panel. it has this features:
@@ -28,6 +29,8 @@ public class NorthPart extends JPanel {
     private JTextField searchBox;
     private BufferedImage plusIcon;
     private JLabel plusLabel;
+    private JComboBox<String> usersBox;
+    private ArrayList<String> users;
     /**
      * class constructor
      * @param searchLinker a linker helps to searchBox search in centerPart.
@@ -48,7 +51,8 @@ public class NorthPart extends JPanel {
         createPlusListener();//creating it's listener
         plusLabel.addMouseListener(new ScrollerPlusIconListener());
 
-        JComboBox usersBox=new JComboBox();//creating a JComboBox for user.
+        users = new ArrayList<>();
+        usersBox=new JComboBox<>();//creating a JComboBox for user.
         usersBox.setPreferredSize(new Dimension(100,25));//setting PreferredSize to show.
         //creating a container to hold plus label and user box:
         JPanel userContainer = new JPanel();
@@ -87,5 +91,16 @@ public class NorthPart extends JPanel {
                 }
             }
         });
+    }
+
+    /**
+     * This method adds a user to userbox only if we haven't that user.
+     * @param newUser new username to add.
+     */
+    public void addUser(String newUser){
+        if(!users.contains(newUser)){
+            users.add(newUser);
+            usersBox.addItem(newUser);
+        }
     }
 }

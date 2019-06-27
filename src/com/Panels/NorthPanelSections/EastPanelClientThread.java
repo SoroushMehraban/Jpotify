@@ -47,7 +47,11 @@ public class EastPanelClientThread extends Thread {
                 serverInformationPanel = new JPanel();
                 serverInformationPanel.setLayout(new BoxLayout(serverInformationPanel, BoxLayout.LINE_AXIS));
                 serverInformationPanel.setBackground(new Color(23, 23, 23));
-                connectedServerName = new JLabel(" " + clientSocketReader.nextLine());
+
+                String connectedUser = clientSocketReader.nextLine();
+                GUIFrame.setConnectedUserName(connectedUser);//setting connected user to show in JCombobox.
+                connectedServerName = new JLabel(" " + connectedUser);
+
                 connectedServerName.setForeground(Color.WHITE);
                 JLabel connectedServerIcon = new JLabel(WestPanel.setIconSize("Icons/User.PNG", 20));
                 serverInformationPanel.add(connectedServerIcon);

@@ -334,4 +334,12 @@ public class GUIFrame extends JFrame implements Serializable {
     public static void setMainClientThread(EastPanelClientThread mainClientThread) {
         GUIFrame.mainClientThread = mainClientThread;
     }
+
+    /**
+     * This method works as a linker to add new user to north part JCombobox.
+     * @param newUser new user to add.
+     */
+    public static void setConnectedUserName(String newUser){
+        centerPanel.getNorthPart().addUser(newUser);
+    }
 }

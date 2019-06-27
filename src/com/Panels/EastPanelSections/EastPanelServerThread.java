@@ -1,7 +1,6 @@
 package com.Panels.EastPanelSections;
 
 import com.GUIFrame.GUIFrame;
-import com.Panels.GeneralPanels.EastPanel;
 import com.Panels.GeneralPanels.WestPanel;
 
 import javax.swing.*;
@@ -30,8 +29,7 @@ public class EastPanelServerThread extends Thread {
             serverSocketWriter.println("Hi,you are connected to this server.");
             System.out.println(serverSocketReader.nextLine());
             serverSocketWriter.println(GUIFrame.getUsername());
-            //ObjectInputStream objectReader=new ObjectInputStream(serverSocketInputStream);
-            //GUIFrame recievedGUIFrameObject=(GUIFrame) objectReader.readObject();
+
 
 
             JPanel connectedUserPanel = new JPanel();//main panel
@@ -40,7 +38,10 @@ public class EastPanelServerThread extends Thread {
             userInformationPanel = new JPanel();
             userInformationPanel.setLayout(new BoxLayout(userInformationPanel, BoxLayout.LINE_AXIS));
             userInformationPanel.setBackground(new Color(23, 23, 23));
-            JLabel connectedUserName = new JLabel(" " + serverSocketReader.nextLine());
+
+            String connectedUser = serverSocketReader.nextLine();
+            GUIFrame.setConnectedUserName(connectedUser);//setting connected user to show in JCombobox.
+            JLabel connectedUserName = new JLabel(" " + connectedUser);
             connectedUserName.setForeground(Color.WHITE);
 
             JLabel connectedUserIcon = new JLabel(WestPanel.setIconSize("Icons/User.PNG", 20));
@@ -48,10 +49,8 @@ public class EastPanelServerThread extends Thread {
             userInformationPanel.add(connectedUserName);
 
             userInformationPanel.add(Box.createHorizontalStrut(5));
-            System.out.println("1");
             state=new JLabel();
             state.setIcon(WestPanel.setIconSize("Icons/green.PNG",10));
-            System.out.println("2");
             userInformationPanel.add(state);
 
             connectedUserPanel.add(userInformationPanel);

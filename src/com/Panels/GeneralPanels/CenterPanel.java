@@ -58,4 +58,5 @@ public class CenterPanel extends JPanel {
     public CenterPart getCenterPart() {
         return centerPart;
     }
+    public NorthPart getNorthPart(){return northPart;}
 }
