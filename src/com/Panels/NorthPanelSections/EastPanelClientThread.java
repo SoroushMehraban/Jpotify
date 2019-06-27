@@ -53,6 +53,7 @@ public class EastPanelClientThread extends Thread {
                 connectedServerPanel.add(serverInformationPanel);
                 GUIFrame.getEastPanel().add(connectedServerPanel);
                 GUIFrame.getEastPanel().add(Box.createVerticalStrut(30));
+                GUIFrame.reload();
                 while (true) {
                     if (songTitle == null && songArtist == null) {
                         clientSocketWriter.println("nothingPlayed");
@@ -81,11 +82,12 @@ public class EastPanelClientThread extends Thread {
                         connectedServerPanel.add(artistLabel);
 
                     }
-                    /*connectedServerPanel.repaint();
-                    connectedServerPanel.revalidate();*/
+                    //connectedServerPanel.repaint();
+                    //connectedServerPanel.revalidate();
                     GUIFrame.reload();
                     Thread.sleep(2000);
                 }
+
             } catch (Exception e1) {
                 System.err.println("(socket)CAN NOT CONNECT TO THE INPUT HOST NAME.");
             }

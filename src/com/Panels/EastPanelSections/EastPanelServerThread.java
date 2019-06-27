@@ -48,7 +48,7 @@ public class EastPanelServerThread extends Thread {
             userInformationPanel.add(connectedUserName);
             connectedUserPanel.add(userInformationPanel);
             GUIFrame.getEastPanel().add(connectedUserPanel);
-
+            GUIFrame.reload();
             while (true) {
                 //System.out.println("here");
                 if (songTitle != null && songArtist != null) {
@@ -75,9 +75,9 @@ public class EastPanelServerThread extends Thread {
                     connectedUserPanel.add(artistLabel);
 
                 }
-                    /*connectedServerPanel.repaint();
-                    connectedServerPanel.revalidate();*/
-                GUIFrame.reload();
+                    //connectedUserPanel.repaint();
+                    //connectedUserPanel.revalidate();
+                    GUIFrame.reload();
                 Thread.sleep(2000);
             }
 
