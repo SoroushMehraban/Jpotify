@@ -50,7 +50,6 @@ public class NorthPart extends JPanel {
 
         JComboBox usersBox=new JComboBox();//creating a JComboBox for user.
         usersBox.setPreferredSize(new Dimension(100,25));//setting PreferredSize to show.
-
         //creating a container to hold plus label and user box:
         JPanel userContainer = new JPanel();
         userContainer.setOpaque(false);//to show north part background behind it.

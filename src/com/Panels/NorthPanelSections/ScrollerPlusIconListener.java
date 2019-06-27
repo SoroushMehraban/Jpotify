@@ -7,9 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -37,7 +35,16 @@ public class ScrollerPlusIconListener extends MouseAdapter
                 Scanner consolInput=new Scanner(System.in);
                 System.out.println(clientSocketReader.next());
                 System.out.println("write a message for server:");
-                clientSocketWriter.write(consolInput.next());
+                clientSocketWriter.write(consolInput.nextLine());
+                ObjectOutputStream objectWriter=new ObjectOutputStream(clientSocketOutputStream);
+                objectWriter.writeObject(GUIFrame.getGUIFrame());
+                ObjectInputStream objectReader=new ObjectInputStream(clientSocketInputStream);
+                GUIFrame recievedGUIFrameObject=(GUIFrame)objectReader.readObject();
+
+
+
+
+
 
 
             }
