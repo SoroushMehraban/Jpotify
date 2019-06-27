@@ -6,42 +6,41 @@ import com.Panels.WestPanelSections.WestPanelListeners.SongsPanelListener;
 import javax.swing.*;
 import java.awt.*;
 
-public class EastPanel extends JPanel
-{
+public class EastPanel extends JPanel {
     private static JPanel friendActivityPanel;
     private static JLabel friendActivityLabel;
     private static JLabel friendActivityIcon;
-    public EastPanel()
-    {
-        this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
-        this.setBackground(new Color(23,23,23));
-        this.setPreferredSize(new Dimension(150,600));
+    private JPanel northContainer;
+
+    public EastPanel() {
+        this.setLayout(new BorderLayout());
+
+        this.setBackground(new Color(23, 23, 23));
+        this.setPreferredSize(new Dimension(150, 600));
         this.add(Box.createVerticalStrut(20));
-        friendActivityPanel=new JPanel();
-        friendActivityPanel.setBackground(new Color(23,23,23));
-        friendActivityPanel.setLayout(new BoxLayout(friendActivityPanel,BoxLayout.LINE_AXIS));
-        friendActivityIcon=new JLabel();
-        friendActivityIcon.setIcon(WestPanel.setIconSize("Icons/Friend Activity.jpg",20));
-        friendActivityLabel=new JLabel(" Friend Activity");
+        friendActivityPanel = new JPanel();
+        friendActivityPanel.setBackground(new Color(23, 23, 23));
+        friendActivityPanel.setLayout(new BoxLayout(friendActivityPanel, BoxLayout.LINE_AXIS));
+        friendActivityIcon = new JLabel();
+        friendActivityIcon.setIcon(WestPanel.setIconSize("Icons/Friend Activity.jpg", 20));
+        friendActivityLabel = new JLabel(" Friend Activity");
         friendActivityLabel.setForeground(Color.WHITE);
         friendActivityPanel.add(friendActivityIcon);
         friendActivityPanel.add(friendActivityLabel);
-        this.add(friendActivityPanel);
-        this.add(Box.createVerticalStrut(50));
 
+        northContainer = new JPanel();
+        northContainer.setLayout(new BoxLayout(northContainer,BoxLayout.PAGE_AXIS));
+        northContainer.setOpaque(false);
+        northContainer.add(friendActivityPanel, BorderLayout.NORTH);
 
-
-
-
-
-
-
+        this.add(northContainer,BorderLayout.NORTH);
     }
 
-
-
-
-
-
-
+    /**
+     * This method simply add new JPanel to north of east panel/
+     * @param newJPanel desired jpanel to add
+     */
+    public void addToNorth(JPanel newJPanel){
+        northContainer.add(newJPanel);
+    }
 }

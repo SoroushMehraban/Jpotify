@@ -339,7 +339,21 @@ public class GUIFrame extends JFrame implements Serializable {
      * This method works as a linker to add new user to north part JCombobox.
      * @param newUser new user to add.
      */
-    public static void setConnectedUserName(String newUser){
+    public static void addConnectedUserNameJCombobox(String newUser){
         centerPanel.getNorthPart().addUser(newUser);
+    }
+
+    /**
+     * this method works as a linker and set true value to hash map of showSharedSongs in mainThreads.
+     * so in pear to pear socket threads, our client/server order to given parameter user to let us see user's shared songs.
+     * @param user given user
+     */
+    public static void setShowSharedSongs(String user){
+        if(mainServerThread != null){
+            mainServerThread.setShowSharedSongs(user);
+        }
+        if(mainClientThread != null){
+            mainClientThread.setShowSharedSongs(user);
+        }
     }
 }

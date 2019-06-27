@@ -1,5 +1,6 @@
 package com.Panels.CenterPanelSections;
 
+import com.GUIFrame.GUIFrame;
 import com.Interfaces.SearchLinker;
 import com.Panels.NorthPanelSections.ScrollerPlusIconListener;
 import com.jtattoo.plaf.BaseComboBoxUI;
@@ -10,6 +11,8 @@ import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -54,6 +57,8 @@ public class NorthPart extends JPanel {
         users = new ArrayList<>();
         usersBox=new JComboBox<>();//creating a JComboBox for user.
         usersBox.setPreferredSize(new Dimension(100,25));//setting PreferredSize to show.
+        createUserBoxListener();
+
         //creating a container to hold plus label and user box:
         JPanel userContainer = new JPanel();
         userContainer.setOpaque(false);//to show north part background behind it.
@@ -102,5 +107,20 @@ public class NorthPart extends JPanel {
             users.add(newUser);
             usersBox.addItem(newUser);
         }
+    }
+
+    /**
+     * This method creates a listener to indicate what happens if our user select a user from JCombobox.
+     * it just send a request to that user in other computer to let see his/her shared songs.
+     */
+    private void createUserBoxListener(){
+        usersBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JComboBox source = (JComboBox) e.getSource();
+                String selectedUser = (String) source.getSelectedItem();
+                GUIFrame.setShowSharedSongs(selectedUser);
+            }
+        });
     }
 }
