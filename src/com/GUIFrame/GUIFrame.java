@@ -10,6 +10,7 @@ import com.Panels.CenterPanelSections.PlayListPanel;
 import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.EastPanelSections.EastPanelThread;
 import com.Panels.GeneralPanels.*;
+import com.Panels.NorthPanelSections.ScrollerPlusIconListener;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
@@ -33,13 +34,14 @@ import java.util.HashMap;
  */
 public class GUIFrame extends JFrame implements Serializable {
     private static GUIFrame guiFrame;
-    private static SouthPanel southPanel;
-    private static CenterPanel centerPanel;
-    private static WestPanel westPanel;
-    private static EastPanel eastPanel;
-    private static JPanel artworkPanel;
+    private static transient SouthPanel southPanel;
+    private static transient CenterPanel centerPanel;
+    private static transient WestPanel westPanel;
+    private static transient EastPanel eastPanel;
+    private static transient JPanel artworkPanel;
     private static String username;
-    private static EastPanelThread mainThread;
+    private static transient EastPanelThread mainThread;
+    private static transient ScrollerPlusIconListener mainClientThread;
 
     /**
      * Class Constructor
@@ -90,6 +92,10 @@ public class GUIFrame extends JFrame implements Serializable {
             showHome();//showing home by default
             mainThread=new EastPanelThread();
             mainThread.start();
+            mainClientThread=new ScrollerPlusIconListener();
+            Thread clientThread=new Thread(mainClientThread);
+            clientThread.start();
+
 
         }
 
