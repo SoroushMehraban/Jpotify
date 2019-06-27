@@ -55,6 +55,7 @@ public class CenterPart extends JPanel
     private boolean removeSongFromPlaylist;//helps for removing song from playlist.
     private boolean isSwaping;//helps for swap between playlist songs.
     private boolean playlistIsRunning;//helps for showing sort box
+    private ArrayList<RadioSongPanel> radioSongs;
 
     /**
      * Class Constructor.
@@ -70,6 +71,7 @@ public class CenterPart extends JPanel
         albumPanels = new HashMap<>();//list of albumPanels.
         playListPanels = new HashMap<>();
         allSongPanels = new ArrayList<>();
+        radioSongs = new ArrayList<>();
 
         //creating remove song from playlist label:
         try {
@@ -313,6 +315,29 @@ public class CenterPart extends JPanel
     }
 
     /**
+     * This method simply shows all radioSongs we have
+     */
+    public void showRadioSongs(){
+        this.removeAll();
+        //initializing grids:
+        int gridy = 0;
+        int gridx = 0;
+        for(RadioSongPanel radioSong: radioSongs){
+            radioSong.setBackground(new Color(23, 23, 23));//setting default background in case it doesn't
+            constraints.gridx = gridx;
+            constraints.gridy = gridy;
+            this.add(radioSong, constraints);
+            if(gridx >= 3) {
+                gridy++;
+                gridx = 0;
+            }
+            else
+                gridx++;
+        }
+        this.repaint();
+        this.revalidate();
+    }
+    /**
      * This method only shows song panels related to an album.
      * @param albumTitle title of album as a key
      */
@@ -425,6 +450,25 @@ public class CenterPart extends JPanel
         else//if album added before we just add new songs
             albumPanels.get(albumTitle).addNewSongs(albumMusicsInfo,this);
 
+    }
+
+    /**
+     * This method simply check if we haven't given radio songs, it adds to radioSongs with default image
+     * @param songTitle radio song title.
+     * @param songArtist radio song artist.
+     */
+    public void addRadioSong(String songTitle, String songArtist){
+        for(RadioSongPanel radioSong : radioSongs) {
+            if (radioSong.getTitle().equals(songTitle))//if song exists.
+                return;//exiting method
+        }
+        try {
+            BufferedImage defaultImage = ImageIO.read(new File("RadioSongs/defaultImage.png"));
+            RadioSongPanel newRadioSong = new RadioSongPanel(defaultImage, songTitle, songArtist,radioSongs);
+            radioSongs.add(newRadioSong);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading radio default image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**

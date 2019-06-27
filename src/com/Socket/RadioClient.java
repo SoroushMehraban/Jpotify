@@ -1,8 +1,11 @@
 package com.Socket;
 
+import com.GUIFrame.GUIFrame;
+
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class RadioClient {
@@ -10,6 +13,7 @@ public class RadioClient {
     private OutputStream socketOut;
     private PrintWriter socketWriter;
     private Scanner socketReader;
+    private HashMap<String,String> titles;
     private FileOutputStream fos;
 
     public RadioClient() {
@@ -23,32 +27,7 @@ public class RadioClient {
             public void run() {
                 //trying to connect to server
                 connectToServer();
-
-                while (true) {
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException ignored) {
-                    }
-                    socketWriter.println("Update");
-                    socketWriter.flush();
-                    try {
-                        System.out.println("Trying to receive..");
-                        while (socketReader.hasNext()) {
-                            System.out.println("Receiving titles...");
-                            String a1 = socketReader.nextLine();
-                            String a2 = socketReader.nextLine();
-                            fos = new FileOutputStream(a1.replace(" ","-")+".jpg");
-                            int count;
-                            while ((count = socketIn.read()) != -1) {
-                                fos.write(count);
-                            }
-                            System.out.println(a1);
-                            System.out.println(a2);
-                        }
-                    } catch (IOException e) {
-                        System.err.println("error reading socket artwork");
-                    }
-                }
+                receiveTitles();
                 /*try {
                     FileOutputStream fos;
                     System.out.println("trying to coonect...");
@@ -84,6 +63,22 @@ public class RadioClient {
             socketReader = new Scanner(socketIn);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error connecting to server", "Socket Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    private void receiveTitles(){
+        while (true) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ignored) {
+            }
+            socketWriter.println("Update");//telling server we want to update.
+            socketWriter.flush();
+            System.out.println("Trying to receive..");
+            while (socketReader.hasNext()) {
+                System.out.println("Adding to Radio songs...");
+                GUIFrame.addRadioSong(socketReader.nextLine(), socketReader.nextLine());
+                System.out.println("added!");
+            }
         }
     }
 }

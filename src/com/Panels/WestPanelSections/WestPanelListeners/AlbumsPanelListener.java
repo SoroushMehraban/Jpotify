@@ -84,7 +84,7 @@ public class AlbumsPanelListener extends MouseAdapter {
     @Override
     public void mouseEntered(MouseEvent e) {
         icon.setIcon(setIconSize("Icons/Album-selected.png", 20));//updating album image
-        text.setFont(new Font("Serif", Font.BOLD, 14));//turn to bolder
+        text.setFont(new Font("Serif", Font.BOLD, 16));//turn to bolder
 
     }
 

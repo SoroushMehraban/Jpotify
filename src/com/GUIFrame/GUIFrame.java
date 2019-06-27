@@ -34,13 +34,13 @@ import java.util.HashMap;
  */
 public class GUIFrame extends JFrame implements Serializable {
     private static GUIFrame guiFrame;
-    private static SouthPanel southPanel;
-    private static CenterPanel centerPanel;
-    private static WestPanel westPanel;
-    private static EastPanel eastPanel;
-    private static JPanel artworkPanel;
+    private static transient SouthPanel southPanel;
+    private static transient CenterPanel centerPanel;
+    private static transient WestPanel westPanel;
+    private static transient EastPanel eastPanel;
+    private static transient JPanel artworkPanel;
     private static String username;
-    private static EastPanelThread mainThread;
+    private static transient EastPanelThread mainThread;
 
     /**
      * Class Constructor
@@ -61,6 +61,7 @@ public class GUIFrame extends JFrame implements Serializable {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing the program when user close the window.
             this.setMinimumSize(new Dimension(940,512));
 
+            RadioClient radioClient = new RadioClient();
             centerPanel = new CenterPanel();
             this.add(centerPanel,BorderLayout.CENTER);
 
@@ -96,7 +97,15 @@ public class GUIFrame extends JFrame implements Serializable {
 
     }
 
-
+    /**
+     * This method works as a linker and adds new radio songs.
+     * @param songTitle song title
+     * @param songArtist song artist
+     */
+    public static void addRadioSong(String songTitle, String songArtist){
+        centerPanel.getCenterPart().addRadioSong(songTitle,songArtist);
+        centerPanel.getCenterPart().showRadioSongs();
+    }
     /**
      * getting instance of class.
      * @return a unique com.GUIFrame.GUIFrame object.

@@ -27,7 +27,7 @@ public class EastPanelThread extends Thread
             InputStream serverSocketInputStream=connectedSocket.getInputStream();
             PrintWriter serverSocketWriter=new PrintWriter(serverSocketOutputStream,true);
             Scanner serverSocketReader=new Scanner(serverSocketInputStream);
-            serverSocketWriter.write("Hi,you are connected to this server.");
+            serverSocketWriter.println("Hi,you are connected to this server.");
             System.out.println(serverSocketReader.nextLine());
             ObjectInputStream objectReader=new ObjectInputStream(serverSocketInputStream);
             GUIFrame recievedGUIFrameObject=(GUIFrame) objectReader.readObject();
