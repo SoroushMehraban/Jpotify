@@ -20,6 +20,7 @@ public class ScrollerPlusIconListener extends MouseAdapter
     public void mouseClicked(MouseEvent e){
         EastPanelClientThread mainClientThread=new EastPanelClientThread();
         mainClientThread.start();
+        GUIFrame.setMainClientThread(mainClientThread);
     }
 
 
