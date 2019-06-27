@@ -50,6 +50,7 @@ public class EastPanelServerThread extends Thread {
             GUIFrame.getEastPanel().add(connectedUserPanel);
 
             while (true) {
+                //System.out.println("here");
                 if (songTitle != null && songArtist != null) {
                     serverSocketWriter.println(songTitle);
                     serverSocketWriter.println(songArtist);
@@ -59,12 +60,13 @@ public class EastPanelServerThread extends Thread {
                 }
                 String serverSongName = serverSocketReader.nextLine();
                 String serverSongArtist = serverSocketReader.nextLine();
+               // System.out.println(serverSongArtist);
                 JLabel titleLabel = new JLabel(serverSongName);
                 JLabel artistLabel = new JLabel(serverSongArtist);
                 if (serverSongName.equals("nothingPlayed") && serverSongArtist.equals("nothingPlayed")) {
                     continue;
                 }
-                if (!songTitle.equals(serverSongName) && !songArtist.equals(serverSongArtist)) {
+                if ((songTitle == null && songArtist == null) || (!songTitle.equals(serverSongName) && !songArtist.equals(serverSongArtist))) {
                     connectedUserPanel.removeAll();
                     connectedUserPanel.add(userInformationPanel);
                     connectedUserPanel.add(Box.createVerticalStrut(10));
