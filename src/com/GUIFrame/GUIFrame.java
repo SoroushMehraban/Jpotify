@@ -5,12 +5,9 @@ import com.Interfaces.ShowSongsLinker;
 import com.Interfaces.SongPanelsLinker;
 import com.MP3.AppStorage;
 import com.MP3.MP3Info;
-import com.Panels.CenterPanelSections.AlbumPanel;
-import com.Panels.CenterPanelSections.PlayListPanel;
 import com.Panels.CenterPanelSections.SongPanel;
-import com.Panels.EastPanelSections.EastPanelThread;
+import com.Panels.EastPanelSections.EastPanelServerThread;
 import com.Panels.GeneralPanels.*;
-import com.Panels.NorthPanelSections.ScrollerPlusIconListener;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
@@ -23,7 +20,6 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * the window GUI where User can play a music.
@@ -34,14 +30,14 @@ import java.util.HashMap;
  */
 public class GUIFrame extends JFrame implements Serializable {
     private static GUIFrame guiFrame;
-    private static transient SouthPanel southPanel;
-    private static transient CenterPanel centerPanel;
-    private static transient WestPanel westPanel;
-    private static transient EastPanel eastPanel;
-    private static transient JPanel artworkPanel;
+    private static  SouthPanel southPanel;
+    private static  CenterPanel centerPanel;
+    private static  WestPanel westPanel;
+    private static  EastPanel eastPanel;
+    private static  JPanel artworkPanel;
     private static String username;
-    private static transient EastPanelThread mainThread;
-    private static transient ScrollerPlusIconListener mainClientThread;
+    private static EastPanelServerThread mainServerThread;
+    //private static transient ScrollerPlusIconListener mainClientThread;
 
     /**
      * Class Constructor
@@ -90,11 +86,11 @@ public class GUIFrame extends JFrame implements Serializable {
             });
             AppStorage.loadSongs();//loading songs if user has from previous run
             showHome();//showing home by default
-            mainThread=new EastPanelThread();
-            mainThread.start();
-            mainClientThread=new ScrollerPlusIconListener();
-            Thread clientThread=new Thread(mainClientThread);
-            clientThread.start();
+            mainServerThread=new EastPanelServerThread();
+            mainServerThread.start();
+            //mainClientThread=new ScrollerPlusIconListener();
+            //Thread clientThread=new Thread(mainClientThread);
+            //clientThread.start();
 
 
         }
@@ -145,6 +141,13 @@ public class GUIFrame extends JFrame implements Serializable {
             artworkPanel.add(new JLabel(new ImageIcon(playingArtwork)));//adding new artwork to show
             reload();//reload to show the changes
             southPanel.play(songPanel, centerPanel.getCenterPart().getCurrentPlaying());
+            ArrayList<SongPanel> sharedSongs = centerPanel.getCenterPart().getSharedSongs();
+            for(SongPanel sharedSong : sharedSongs){
+                if(sharedSong.getMp3Info().getTitle().equals(songPanel.getMp3Info().getTitle())){
+
+                    break;
+                }
+            }
         } catch (InvalidDataException | IOException | UnsupportedTagException e) {
             JOptionPane.showMessageDialog(null, "Error reading artwork image for showing in west panel","An Error Occurred",JOptionPane.ERROR_MESSAGE);
         }
@@ -298,9 +301,9 @@ public class GUIFrame extends JFrame implements Serializable {
         westContainer.setPreferredSize(new Dimension(150,600));
         return westContainer;
     }
-    public static EastPanelThread getMainThread()
+    public static EastPanelServerThread getMainThread()
     {
-        return mainThread;
+        return mainServerThread;
 
     }
     public static String getUserName()
