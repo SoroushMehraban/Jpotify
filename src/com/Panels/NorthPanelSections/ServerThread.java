@@ -32,6 +32,7 @@ public class ServerThread extends Thread {
     private JLabel connectedClientName;
     private JLabel state;
     private ArrayList<SharedSongPanel> sharedSongPanels;
+    private ArrayList<ConnectedUserPanel> connectedUserPanels;
     private boolean gettingSharedSongsList;
     //private boolean gettingSharedSong;
     private boolean requestMade;
@@ -39,6 +40,7 @@ public class ServerThread extends Thread {
     private String connectedUser;
 
     ServerThread(){
+        connectedUserPanels = new ArrayList<>();
         //requestDownloadIndex = -1;//default invalid index;
         try {
             ServerSocket mainSocket = new ServerSocket(2019);
@@ -74,7 +76,11 @@ public class ServerThread extends Thread {
             if (serverSocketReader.nextLine().equals("user Received")) {
                 System.out.println("client received my messaage");
 
-                createConnectedClientPanel();
+                System.out.println("getting connected username...");
+                connectedUser = serverSocketReader.nextLine();
+                System.out.println("connected:" + connectedUser);
+                serverSocketWriter.println("user Received");
+                GUIFrame.addConnectedUserNameJCombobox(connectedUser);//setting connected user to show in JCombobox.
 
                 while (true) {
                     System.out.println("start of loop");
@@ -120,12 +126,13 @@ public class ServerThread extends Thread {
                                     previousArtistReceived = secondInputSocket;
                                     previousTitleReceived = firstInputSocket;
 
-                                    connectedClientPanel.removeAll();
-                                    connectedClientPanel.add(userInformationPanel);
-                                    // connectedUserPanel.add(Box.createVerticalStrut(10));
-                                    connectedClientPanel.add(titleLabel);
-                                    //connectedUserPanel.add(Box.createVerticalStrut(10));
-                                    connectedClientPanel.add(artistLabel);
+                                    ConnectedUserPanel connectedUserPanel = new ConnectedUserPanel(connectedUser,firstInputSocket,secondInputSocket);
+                                    if(connectedUserPanels.size() > 0){
+                                        ConnectedUserPanel lastConnectedUserPanel = connectedUserPanels.get(connectedUserPanels.size() - 1);
+                                        lastConnectedUserPanel.setStopped();//stop last one (changing playing label)
+                                    }
+                                    connectedUserPanels.add(connectedUserPanel);
+                                    GUIFrame.getEastPanel().addToNorth(connectedUserPanel);
                                 }
                             }
                             if (requestMade) {//if we made a request from one user to get shared songs
@@ -154,7 +161,7 @@ public class ServerThread extends Thread {
             }
         } catch (InterruptedException | NoSuchElementException e1) {
             System.err.println("socket ended");
-            state.setIcon(GUIFrame.setIconSize("Icons/red.PNG", 10));
+            connectedUserPanels.get(0).setOffline();
             GUIFrame.reload();
         }
     }
@@ -242,7 +249,7 @@ public class ServerThread extends Thread {
         userInformationPanel.add(state);
 
         connectedClientPanel.add(userInformationPanel);
-        GUIFrame.getEastPanel().addToNorth(connectedClientPanel);
+       // GUIFrame.getEastPanel().addToNorth(connectedClientPanel);
         GUIFrame.reload();
 
     }

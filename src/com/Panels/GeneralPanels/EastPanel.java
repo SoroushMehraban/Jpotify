@@ -1,5 +1,6 @@
 package com.Panels.GeneralPanels;
 
+import com.Panels.NorthPanelSections.ConnectedUserPanel;
 import com.Panels.WestPanelSections.WestPanelListeners.HomePanelListener;
 import com.Panels.WestPanelSections.WestPanelListeners.SongsPanelListener;
 
@@ -37,11 +38,11 @@ public class EastPanel extends JPanel {
     }
 
     /**
-     * This method simply add new JPanel to north of east panel/
-     * @param newJPanel desired jpanel to add
+     * This method simply add new ConnectedUserPanel to north of east panel/
+     * @param newConnectedUserPanel desired jpanel to add
      */
-    public void addToNorth(JPanel newJPanel){
-
-        northContainer.add(newJPanel);
+    public void addToNorth(ConnectedUserPanel newConnectedUserPanel){
+        northContainer.add(newConnectedUserPanel,1);
+        northContainer.add(Box.createVerticalStrut(5),2);
     }
 }

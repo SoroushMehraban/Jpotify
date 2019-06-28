@@ -31,6 +31,7 @@ public class UserThread extends Thread {
     private JPanel serverInformationPanel;
     private JLabel state;
     private ArrayList<SharedSongPanel> sharedSongPanels;
+    private ArrayList<ConnectedUserPanel> connectedUserPanels;
     private boolean gettingSharedSongsList;
     private boolean requestMade;
     //private boolean gettingSharedSong;
@@ -42,6 +43,7 @@ public class UserThread extends Thread {
     UserThread(String IPv4) {
       //  requestDownloadIndex = -1; //default invalid index;
         this.IPv4 = IPv4;
+        connectedUserPanels = new ArrayList<>();
     }
 
     String getConnectedUser() {
@@ -77,7 +79,9 @@ public class UserThread extends Thread {
             System.out.println("sent");
 
             if (clientSocketReader.nextLine().equals("user Received")) {//if server received our user
-                createConnectedServerPanel();
+                System.out.println("getting connected username...");
+                GUIFrame.addConnectedUserNameJCombobox(connectedUser);//setting connected user to show in JCombobox.
+                System.out.println("Username connected setted");
 
                 while (true) {
                     System.out.println("First of loop");
@@ -90,6 +94,7 @@ public class UserThread extends Thread {
                             System.out.println("Default sent");
                         } else {
                             clientSocketWriter.println(songArtist);
+                            System.out.println("Artist: "+songArtist);
                             clientSocketWriter.println(songTitle);
                         }
                         String firstInputSocket = clientSocketReader.nextLine();////expected to be song title
@@ -136,13 +141,15 @@ public class UserThread extends Thread {
                                     previousArtistReceived = secondInputSocket;
                                     previousTitleReceived = firstInputSocket;
 
-                                    connectedServerPanel.removeAll();
-                                    connectedServerPanel.add(serverInformationPanel);
-                                    connectedServerPanel.add(Box.createVerticalStrut(10));
-                                    connectedServerPanel.add(titleLabel);
-                                    connectedServerPanel.add(Box.createVerticalStrut(10));
-                                    connectedServerPanel.add(artistLabel);
+                                    ConnectedUserPanel connectedUserPanel = new ConnectedUserPanel(connectedUser,firstInputSocket,secondInputSocket);
+                                    if(connectedUserPanels.size() > 0){
+                                        ConnectedUserPanel lastConnectedUserPanel = connectedUserPanels.get(connectedUserPanels.size() - 1);
+                                        lastConnectedUserPanel.setStopped();//stop last one (changing playing label)
+                                    }
+                                    connectedUserPanels.add(connectedUserPanel);
+                                    GUIFrame.getEastPanel().addToNorth(connectedUserPanel);
                                 }
+
                             }
                             if (requestMade) {//if we made a request from one user to get shared songs
                                 System.out.println("a request made");
@@ -158,7 +165,7 @@ public class UserThread extends Thread {
             }
         } catch (InterruptedException | NoSuchElementException e1) {
             System.err.println("socket ended");
-            state.setIcon(GUIFrame.setIconSize("Icons/red.PNG", 10));
+            connectedUserPanels.get(0).setOffline();
             GUIFrame.reload();
         } catch (IOException e2) {
             System.err.println("socket connecting error");
@@ -241,7 +248,7 @@ public class UserThread extends Thread {
         serverInformationPanel.add(state);
 
         connectedServerPanel.add(serverInformationPanel);
-        GUIFrame.getEastPanel().addToNorth(connectedServerPanel);
+        //GUIFrame.getEastPanel().addToNorth(connectedServerPanel);
         GUIFrame.reload();
 
     }
