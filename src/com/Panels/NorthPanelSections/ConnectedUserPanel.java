@@ -6,12 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ConnectedUserPanel extends JPanel {
-    private String artist;
-    private String songTitle;
+    private String artistFullName;
+    private String songFullTitle;
     private String username;
     private long stoppedTime;
     private JLabel state;
     private JLabel playing;
+
     ConnectedUserPanel(String username, String songTitle, String artist) {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setBackground(new Color(23, 23, 23));
@@ -32,10 +33,12 @@ public class ConnectedUserPanel extends JPanel {
 
         JLabel connectedClientName = new JLabel(" " + username);
         connectedClientName.setForeground(Color.WHITE);
-        JLabel songName = new JLabel(" " + songTitle);
-        songName.setForeground(new Color(179,179,179));
-        JLabel artistName = new JLabel(" " + artist);
-        artistName.setForeground(new Color(179,179,179));
+        songFullTitle = songTitle;
+        JLabel songNameLabel = new JLabel(" " + createShortenedText(songTitle));
+        songNameLabel.setForeground(new Color(179,179,179));
+        artistFullName = artist;
+        JLabel artistNameLabel = new JLabel(" " + createShortenedText(artist));
+        artistNameLabel.setForeground(new Color(179,179,179));
 
         JLabel connectedClientIcon = new JLabel(GUIFrame.setIconSize("Icons/User.PNG", 20));
         JLabel songIcon = new JLabel(GUIFrame.setIconSize("Icons/Song-selected.PNG", 15));
@@ -52,12 +55,12 @@ public class ConnectedUserPanel extends JPanel {
         userInformationPanel.add(state);
 
         songInformationPanel.add(songIcon);
-        songInformationPanel.add(songName);
+        songInformationPanel.add(songNameLabel);
         songInformationPanel.add(Box.createHorizontalStrut(5));
         songInformationPanel.add(playing);
 
         artistInformationPanel.add(artistIcon);
-        artistInformationPanel.add(artistName);
+        artistInformationPanel.add(artistNameLabel);
 
         this.add(userInformationPanel);
         this.add(Box.createVerticalStrut(3));
@@ -76,12 +79,12 @@ public class ConnectedUserPanel extends JPanel {
         return username;
     }
 
-    public String getArtist() {
-        return artist;
+    public String getArtistFullName() {
+        return artistFullName;
     }
 
-    public String getSongTitle() {
-        return songTitle;
+    public String getSongFullTitle() {
+        return songFullTitle;
     }
     void setStopped(){
         playing.setIcon(null);//removing speaker icon
@@ -112,5 +115,12 @@ public class ConnectedUserPanel extends JPanel {
             }
         });
         updateTime.start();
+    }
+
+    private String createShortenedText(String text){
+        if(text.length() <= 12)
+            return text;
+        else
+            return text.substring(0,9) + "...";
     }
 }

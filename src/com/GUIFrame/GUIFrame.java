@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
+
 /**
  * the window GUI where User can play a music.
  * when user run this program, its only create one instance of this class, so it's a singleton class.
@@ -75,6 +77,7 @@ public class GUIFrame extends JFrame implements Serializable {
             this.add(westContainer,BorderLayout.WEST);
             eastPanel=new EastPanel();
             JScrollPane eastPanelJScrollPane=new JScrollPane(eastPanel);
+            eastPanelJScrollPane.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
             customizeJScrollPane(eastPanelJScrollPane);
             this.add(eastPanelJScrollPane,BorderLayout.EAST);
             this.setVisible(true);

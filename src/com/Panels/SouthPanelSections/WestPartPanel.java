@@ -155,7 +155,7 @@ public class WestPartPanel extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 isSongEntered = true;//this variable indicated when should thread in below terminate.
-                if(songFullName.length() > 12){//if it's size is more than 15 character and doesn't fit
+                if(songFullName.length() > 12){//if it's size is more than 12 character and doesn't fit
                     Thread songNameThread = new Thread(new Runnable() {//creating thread to move the text
                         @Override
                         public void run() {
