@@ -372,4 +372,8 @@ public class GUIFrame extends JFrame implements Serializable {
             mainClientThread.setShowSharedSongs(user);
         }
     }
+    public static void setRequestDownloadIndex(int requestDownloadIndex, String friendUser) {
+        if(mainClientThread != null)
+            mainClientThread.setRequestDownloadIndex(requestDownloadIndex, friendUser);
+    }
 }

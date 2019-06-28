@@ -20,13 +20,30 @@ public class EastPanelServerThread extends Thread {
     private JPanel userInformationPanel;
     private JLabel state;
     private HashMap<String, Boolean> showSharedSongs;
+    private int requestDownloadIndex;
+    private String friendUser;
 
     public EastPanelServerThread() {
         showSharedSongs = new HashMap<>();//this HashMap helps for each thread to send
+        requestDownloadIndex = -1; //invalid index for checking in thread
     }
 
+    /**
+     * This method put a user of showSharedSongs user to true state, so we request him to get his shared songs.
+     * @param user user we want to get him/her his/her shared songs.
+     */
     public void setShowSharedSongs(String user) {
         showSharedSongs.put(user, true);
+    }
+
+    /**
+     * This method set a request download index
+     * @param requestDownloadIndex index of song in shared song we want to download
+     * @param friendUser user we want to get Him song
+     */
+    public void setRequestDownloadIndex(int requestDownloadIndex, String friendUser) {
+        this.requestDownloadIndex = requestDownloadIndex;
+        this.friendUser = friendUser;
     }
 
     @Override

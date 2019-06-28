@@ -25,14 +25,30 @@ public class EastPanelClientThread extends Thread {
     private HashMap<String, Boolean> showSharedSongs;
     private ArrayList<SharedSongPanel> sharedSongPanels;
     private boolean gettingSharedSongs;
+    private int requestDownloadIndex;
+    private String friendUser;
 
     public EastPanelClientThread() {
         showSharedSongs = new HashMap<>();//this HashMap helps for each thread to send
+        requestDownloadIndex = -1; //invalid index for checking in thread
     }
 
+    /**
+     * This method put a user of showSharedSongs user to true state, so we request him to get his shared songs.
+     * @param user user we want to get him/her his/her shared songs.
+     */
     public void setShowSharedSongs(String user) {
-        System.out.println("setShowSharedSongs called");
         showSharedSongs.put(user, true);
+    }
+
+    /**
+     * This method set a request download index
+     * @param requestDownloadIndex index of song in shared song we want to download
+     * @param friendUser user we want to get Him song
+     */
+    public void setRequestDownloadIndex(int requestDownloadIndex, String friendUser) {
+        this.requestDownloadIndex = requestDownloadIndex;
+        this.friendUser = friendUser;
     }
 
     @Override
@@ -112,7 +128,7 @@ public class EastPanelClientThread extends Thread {
                                 secondInput = clientSocketReader.nextLine();//expect to be song artist
                                 System.out.println(secondInput);
                                 clientSocketWriter.println("song received");
-                                SharedSongPanel newSharedSong = new SharedSongPanel(defaultImage, firstInput, secondInput, sharedSongPanels);
+                                SharedSongPanel newSharedSong = new SharedSongPanel(defaultImage, firstInput, secondInput, sharedSongPanels,connectedUser);
                                 sharedSongPanels.add(newSharedSong);
                             }
                             sharedSongPanels.remove(0);//it's invalid
