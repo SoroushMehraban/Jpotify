@@ -2,6 +2,7 @@ package com.Panels.NorthPanelSections;
 
 import com.GUIFrame.GUIFrame;
 import com.Panels.CenterPanelSections.SharedSongPanel;
+import com.Panels.CenterPanelSections.SongPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -22,7 +23,6 @@ public class UserThread extends Thread {
     private String songArtist;
     private String previousTitleReceived;
     private String previousArtistReceived;
-    private JPanel userInformationPanel;
     private JPanel connectedServerPanel;
     private JLabel connectedServerName;
     private JPanel serverInformationPanel;
@@ -79,29 +79,43 @@ public class UserThread extends Thread {
                             clientSocketWriter.println(songArtist);
                             clientSocketWriter.println(songTitle);
                         }
-                        String serverSongName = clientSocketReader.nextLine();
-                        System.out.println("First input received:" + serverSongName);
-                        String serverSongArtist = clientSocketReader.nextLine();
-                        JLabel titleLabel = new JLabel(serverSongName);
-                        JLabel artistLabel = new JLabel(serverSongArtist);
-                        if (!serverSongName.equals("nothingPlayed") && !serverSongArtist.equals("nothingPlayed")) {
-                            if (previousArtistReceived == null || (!previousTitleReceived.equals(serverSongName) && !previousArtistReceived.equals(serverSongArtist))) {
-                                previousArtistReceived = serverSongArtist;
-                                previousTitleReceived = serverSongName;
+                        String firstInputSocket = clientSocketReader.nextLine();////expected to be song title
+                        System.out.println("First input received:" + firstInputSocket);
 
-                                connectedServerPanel.removeAll();
-                                connectedServerPanel.add(serverInformationPanel);
-                                connectedServerPanel.add(Box.createVerticalStrut(10));
-                                connectedServerPanel.add(titleLabel);
-                                connectedServerPanel.add(Box.createVerticalStrut(10));
-                                connectedServerPanel.add(artistLabel);
+                        if (firstInputSocket.equals("get Shared Songs")) {
+                            for (SongPanel sharedSong : GUIFrame.getSharedSongs()) {
+                                System.out.println("Sending a shared songs.......");
+                                clientSocketWriter.println(sharedSong.getMp3Info().getTitle());
+                                clientSocketWriter.println(sharedSong.getMp3Info().getArtist());
+                                if (!clientSocketReader.nextLine().equals("song received"))
+                                    System.err.println("an error occurred");
+
                             }
-                        }
-                        if (requestMade) {//if we made a request from one user to get shared songs
-                            System.out.println("true value found");
-                            clientSocketWriter.println("get Shared Songs");//sending a request
-                            requestMade = false;
-                            gettingSharedSongsList = true;
+                            clientSocketWriter.println("completed !");
+                            System.out.println("Done sending shared songs!");
+                        } else {
+                            String secondInputSocket = clientSocketReader.nextLine();//expected to be song artist
+                            JLabel titleLabel = new JLabel(firstInputSocket);
+                            JLabel artistLabel = new JLabel(secondInputSocket);
+                            if (!firstInputSocket.equals("nothingPlayed") && !secondInputSocket.equals("nothingPlayed")) {
+                                if (previousArtistReceived == null || (!previousTitleReceived.equals(firstInputSocket) && !previousArtistReceived.equals(secondInputSocket))) {
+                                    previousArtistReceived = secondInputSocket;
+                                    previousTitleReceived = firstInputSocket;
+
+                                    connectedServerPanel.removeAll();
+                                    connectedServerPanel.add(serverInformationPanel);
+                                    connectedServerPanel.add(Box.createVerticalStrut(10));
+                                    connectedServerPanel.add(titleLabel);
+                                    connectedServerPanel.add(Box.createVerticalStrut(10));
+                                    connectedServerPanel.add(artistLabel);
+                                }
+                            }
+                            if (requestMade) {//if we made a request from one user to get shared songs
+                                System.out.println("a request made");
+                                clientSocketWriter.println("get Shared Songs");//sending a request
+                                requestMade = false;
+                                gettingSharedSongsList = true;
+                            }
                         }
                     }
                     GUIFrame.reload();
@@ -152,7 +166,7 @@ public class UserThread extends Thread {
      * 2)Songs that user play for last time(it's not set in this method)
      */
     private void createConnectedServerPanel() {
-        JPanel connectedServerPanel = new JPanel();//main panel
+        connectedServerPanel = new JPanel();//main panel
         connectedServerPanel.setLayout(new BoxLayout(connectedServerPanel, BoxLayout.PAGE_AXIS));
         connectedServerPanel.setBackground(new Color(23, 23, 23));
 

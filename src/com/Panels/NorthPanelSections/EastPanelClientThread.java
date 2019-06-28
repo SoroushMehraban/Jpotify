@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class EastPanelClientThread extends Thread {
-    private boolean gettingSharedSongs;
     private int requestDownloadIndex;
 
     private ArrayList<UserThread> userThreads;
@@ -30,10 +29,11 @@ public class EastPanelClientThread extends Thread {
      * @param user user we want to get him/her his/her shared songs.
      */
     public void setShowSharedSongs(String user) {
-        for(UserThread userThread : userThreads){
-            if(userThread.getConnectedUser().equals(user))
+        for(UserThread userThread : userThreads)
+            if(userThread.getConnectedUser().equals(user)) {
                 userThread.setRequestMade(true);
-        }
+                break;
+            }
     }
 
     /**
