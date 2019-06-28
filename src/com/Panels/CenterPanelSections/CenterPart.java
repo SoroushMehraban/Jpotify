@@ -55,7 +55,7 @@ public class CenterPart extends JPanel
     private boolean removeSongFromPlaylist;//helps for removing song from playlist.
     private boolean isSwaping;//helps for swap between playlist songs.
     private boolean playlistIsRunning;//helps for showing sort box
-    private ArrayList<RadioSongPanel> radioSongs;
+    private ArrayList<SharedSongPanel> radioSongs;
 
     /**
      * Class Constructor.
@@ -321,11 +321,19 @@ public class CenterPart extends JPanel
      * This method simply shows all radioSongs we have
      */
     public void showRadioSongs(){
+        showSharedSongs(radioSongs);
+    }
+
+    /**
+     * This method simply shows all shared songs.
+     * @param sharedSongs shared songs to show
+     */
+    public void showSharedSongs(ArrayList<SharedSongPanel> sharedSongs){
         this.removeAll();
         //initializing grids:
         int gridy = 0;
         int gridx = 0;
-        for(RadioSongPanel radioSong: radioSongs){
+        for(SharedSongPanel radioSong: sharedSongs){
             radioSong.setBackground(new Color(23, 23, 23));//setting default background in case it doesn't
             constraints.gridx = gridx;
             constraints.gridy = gridy;
@@ -461,13 +469,13 @@ public class CenterPart extends JPanel
      * @param songArtist radio song artist.
      */
     public void addRadioSong(String songTitle, String songArtist){
-        for(RadioSongPanel radioSong : radioSongs) {
+        for(SharedSongPanel radioSong : radioSongs) {
             if (radioSong.getTitle().equals(songTitle))//if song exists.
                 return;//exiting method
         }
         try {
             BufferedImage defaultImage = ImageIO.read(new File("RadioSongs/defaultImage.png"));
-            RadioSongPanel newRadioSong = new RadioSongPanel(defaultImage, songTitle, songArtist,radioSongs);
+            SharedSongPanel newRadioSong = new SharedSongPanel(defaultImage, songTitle, songArtist,radioSongs);
             radioSongs.add(newRadioSong);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading radio default image","An Error Occurred",JOptionPane.ERROR_MESSAGE);

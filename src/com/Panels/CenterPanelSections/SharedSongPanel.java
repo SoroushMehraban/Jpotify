@@ -6,16 +6,16 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class RadioSongPanel extends MusicPanel {
+public class SharedSongPanel extends MusicPanel {
     private String title;
     private String artist;
-    private ArrayList<RadioSongPanel> radioSongPanels;
+    private ArrayList<SharedSongPanel> sharedSongPanels;
 
-    public RadioSongPanel(BufferedImage defaultImage, String songTitle, String songArtist, ArrayList<RadioSongPanel> radioSongPanels) {
+    public SharedSongPanel(BufferedImage defaultImage, String songTitle, String songArtist, ArrayList<SharedSongPanel> sharedSongPanels) {
         super(defaultImage, songTitle, songArtist);
         this.title = songTitle;
         this.artist = songArtist;
-        this.radioSongPanels = radioSongPanels;
+        this.sharedSongPanels = sharedSongPanels;
         createRadioSongListener();
     }
 
@@ -34,11 +34,11 @@ public class RadioSongPanel extends MusicPanel {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                RadioSongPanel source = (RadioSongPanel) e.getSource();//source is a song panel which mouse clicked on it.
+                SharedSongPanel source = (SharedSongPanel) e.getSource();//source is a song panel which mouse clicked on it.
                 //if clicked in order to play song:
                 //play clicked music:
-                for (int i = 0; i < radioSongPanels.size() - 1 ; i++)
-                    if(radioSongPanels.get(i).getTitle().equals(source.getTitle())) {
+                for (int i = 0; i < sharedSongPanels.size() - 1 ; i++)
+                    if(sharedSongPanels.get(i).getTitle().equals(source.getTitle())) {
                         System.out.println("index clicked: " + i);
                         break;
                     }

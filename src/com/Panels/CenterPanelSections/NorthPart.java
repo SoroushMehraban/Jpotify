@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * north part of center panel. it has this features:
@@ -33,7 +34,7 @@ public class NorthPart extends JPanel {
     private BufferedImage plusIcon;
     private JLabel plusLabel;
     private JComboBox<String> usersBox;
-    private ArrayList<String> users;
+    private HashMap<String, Boolean> users;//value indicate that it's first selecting(added first) or not
     /**
      * class constructor
      * @param searchLinker a linker helps to searchBox search in centerPart.
@@ -54,7 +55,7 @@ public class NorthPart extends JPanel {
         createPlusListener();//creating it's listener
         plusLabel.addMouseListener(new ScrollerPlusIconListener());
 
-        users = new ArrayList<>();
+        users = new HashMap<>();//value helps for firstplaying
         usersBox=new JComboBox<>();//creating a JComboBox for user.
         usersBox.setPreferredSize(new Dimension(100,25));//setting PreferredSize to show.
         createUserBoxListener();
@@ -103,8 +104,8 @@ public class NorthPart extends JPanel {
      * @param newUser new username to add.
      */
     public void addUser(String newUser){
-        if(!users.contains(newUser)){
-            users.add(newUser);
+        if(!users.keySet().contains(newUser)){
+            users.put(newUser,true);
             usersBox.addItem(newUser);
         }
     }
@@ -119,7 +120,12 @@ public class NorthPart extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 JComboBox source = (JComboBox) e.getSource();
                 String selectedUser = (String) source.getSelectedItem();
-                GUIFrame.setShowSharedSongs(selectedUser);
+                if(users.get(selectedUser)) {//if it's first selecting
+                    users.put(selectedUser,false);
+                }
+                else {
+                    GUIFrame.setShowSharedSongs(selectedUser);
+                }
             }
         });
     }

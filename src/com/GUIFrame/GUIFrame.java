@@ -5,6 +5,7 @@ import com.Interfaces.ShowSongsLinker;
 import com.Interfaces.SongPanelsLinker;
 import com.MP3.AppStorage;
 import com.MP3.MP3Info;
+import com.Panels.CenterPanelSections.SharedSongPanel;
 import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.EastPanelSections.EastPanelServerThread;
 import com.Panels.GeneralPanels.*;
@@ -164,6 +165,21 @@ public class GUIFrame extends JFrame implements Serializable {
         return username;
     }
 
+    /**
+     * This method is a linker between socketTreads and center part of center panel and give socket threads shared songs.
+     * @return shared songs of this user.
+     */
+    public static ArrayList<SongPanel> getSharedSongs(){
+        return centerPanel.getCenterPart().getSharedSongs();
+    }
+
+    /**
+     * a linker between socket threads and center part of center panel.
+     * @param sharedSongPanels sharedSongs to show.
+     */
+    public static void showSharedSongs(ArrayList<SharedSongPanel> sharedSongPanels){
+        centerPanel.getCenterPart().showSharedSongs(sharedSongPanels);
+    }
     /**
      * this method add an album which is selected in library.
      * @param albumTitle title of album to be shown.

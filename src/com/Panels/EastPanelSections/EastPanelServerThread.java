@@ -1,6 +1,7 @@
 package com.Panels.EastPanelSections;
 
 import com.GUIFrame.GUIFrame;
+import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.GeneralPanels.WestPanel;
 
 import javax.swing.*;
@@ -87,29 +88,40 @@ public class EastPanelServerThread extends Thread {
                         serverSocketWriter.flush();
                         System.out.println("Default sent");
                     }
-                    String serverSongName = serverSocketReader.nextLine();
-                    System.out.println(serverSongName);
-                    String serverSongArtist = serverSocketReader.nextLine();
-                    System.out.println(serverSongArtist);
+                    String firstInputSocket = serverSocketReader.nextLine();
+                    System.out.println("First input received:"+firstInputSocket);
 
-                    JLabel titleLabel = new JLabel(serverSongName);
-                    JLabel artistLabel = new JLabel(serverSongArtist);
-                    if (serverSongName.equals("nothingPlayed") && serverSongArtist.equals("nothingPlayed")) {
-                        System.out.println("sleeping 2s..");
-                        Thread.sleep(2000);
-                        System.out.println("Skipping...");
-                        continue;
+                    if(firstInputSocket.equals("get Shared Songs")){
+                        for(SongPanel sharedSong : GUIFrame.getSharedSongs()){
+                            System.out.println("Sending a shared songs.......");
+                            serverSocketWriter.println(sharedSong.getMp3Info().getTitle());
+                            serverSocketWriter.println(sharedSong.getMp3Info().getArtist());
+                            if(!serverSocketReader.nextLine().equals("song received"))
+                                System.err.println("an error occurred");
+
+                        }
+                        serverSocketWriter.println("completed !");
+                        System.out.println("Done sending shared songs!");
                     }
-                    if (previousArtistReceived == null || (!previousTitleReceived.equals(serverSongName) && !previousArtistReceived.equals(serverSongArtist))) {
-                        previousArtistReceived = serverSongArtist;
-                        previousTitleReceived = serverSongName;
+                    else {
+                        String SecondInputSocket = serverSocketReader.nextLine();
+                        System.out.println(SecondInputSocket);
 
-                        connectedUserPanel.removeAll();
-                        connectedUserPanel.add(userInformationPanel);
-                       // connectedUserPanel.add(Box.createVerticalStrut(10));
-                        connectedUserPanel.add(titleLabel);
-                        //connectedUserPanel.add(Box.createVerticalStrut(10));
-                        connectedUserPanel.add(artistLabel);
+                        JLabel titleLabel = new JLabel(firstInputSocket);
+                        JLabel artistLabel = new JLabel(SecondInputSocket);
+                        if (!firstInputSocket.equals("nothingPlayed") && !SecondInputSocket.equals("nothingPlayed")) {
+                            if (previousArtistReceived == null || (!previousTitleReceived.equals(firstInputSocket) && !previousArtistReceived.equals(SecondInputSocket))) {
+                                previousArtistReceived = SecondInputSocket;
+                                previousTitleReceived = firstInputSocket;
+
+                                connectedUserPanel.removeAll();
+                                connectedUserPanel.add(userInformationPanel);
+                                // connectedUserPanel.add(Box.createVerticalStrut(10));
+                                connectedUserPanel.add(titleLabel);
+                                //connectedUserPanel.add(Box.createVerticalStrut(10));
+                                connectedUserPanel.add(artistLabel);
+                            }
+                        }
                     }
                     //connectedUserPanel.repaint();
                     //connectedUserPanel.revalidate();
