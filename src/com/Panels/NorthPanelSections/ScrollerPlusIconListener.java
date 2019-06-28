@@ -13,18 +13,13 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ScrollerPlusIconListener extends MouseAdapter
-{
-
+public class ScrollerPlusIconListener extends MouseAdapter {
     @Override
-    public void mouseClicked(MouseEvent e){
-        EastPanelClientThread mainClientThread=new EastPanelClientThread();
+    public void mouseClicked(MouseEvent e) {
+        EastPanelClientThread mainClientThread = new EastPanelClientThread();
         mainClientThread.start();
         GUIFrame.setMainClientThread(mainClientThread);
     }
-
-
-
 
 
 }

@@ -366,15 +366,24 @@ public class GUIFrame extends JFrame implements Serializable {
      */
     public static void setShowSharedSongs(String user){
         if(mainServerThread != null){
-            mainServerThread.setShowSharedSongs(user);
+            mainServerThread.setShowSharedSongsRequest(user);
         }
         if(mainClientThread != null){
-            mainClientThread.setShowSharedSongs(user);
+            mainClientThread.setShowSharedSongsReqest(user);
         }
     }
-    public static void setRequestDownloadIndex(int requestDownloadIndex, String friendUser) {
+
+    /**
+     * this method works as a linker and set for connected user which is from server or client threads,
+     * a message to gave index of shared of songs to download
+     * @param requestDownloadIndex index we want to download
+     * @param connectedUser whom we want to download
+     */
+    public static void setRequestDownloadIndex(int requestDownloadIndex, String connectedUser) {
         if(mainClientThread != null)
-            mainClientThread.setRequestDownloadIndex(requestDownloadIndex, friendUser);
+            mainClientThread.setRequestDownloadIndex(requestDownloadIndex, connectedUser);
+        if(mainServerThread != null)
+            mainServerThread.setRequestDownloadIndex(requestDownloadIndex,connectedUser);
     }
     public static ImageIcon setIconSize(String directory,int scale) {
         ImageIcon output = new ImageIcon(directory);

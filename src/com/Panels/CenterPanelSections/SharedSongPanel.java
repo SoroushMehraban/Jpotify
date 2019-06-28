@@ -1,5 +1,7 @@
 package com.Panels.CenterPanelSections;
 
+import com.GUIFrame.GUIFrame;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -47,7 +49,7 @@ public class SharedSongPanel extends MusicPanel {
                             //TODO
                         }
                         else{
-
+                            GUIFrame.setRequestDownloadIndex(i,friendUser);
                         }
                         System.out.println("index clicked: " + i);
                         break;

@@ -13,6 +13,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class ServerThread extends Thread {
@@ -32,11 +33,13 @@ public class ServerThread extends Thread {
     private JLabel state;
     private ArrayList<SharedSongPanel> sharedSongPanels;
     private boolean gettingSharedSongsList;
+    //private boolean gettingSharedSong;
     private boolean requestMade;
     private int requestDownloadIndex;
     private String connectedUser;
 
     ServerThread(){
+        //requestDownloadIndex = -1;//default invalid index;
         try {
             ServerSocket mainSocket = new ServerSocket(2019);
             connectedSocket = mainSocket.accept();
@@ -48,6 +51,10 @@ public class ServerThread extends Thread {
 
     String getConnectedUser() {
         return connectedUser;
+    }
+
+    void setRequestDownloadIndex(int requestDownloadIndex) {
+        this.requestDownloadIndex = requestDownloadIndex;
     }
 
     void setRequestMade(boolean requestMade) {
@@ -73,7 +80,11 @@ public class ServerThread extends Thread {
                     System.out.println("start of loop");
                     if (gettingSharedSongsList) {//if we suppose to get shared Songs.
                         createAndShowSharedSongs();
-                    } else {
+                    }
+                    /*else if(gettingSharedSong){
+                        downloadNewSharedSong();
+                    }*/
+                    else {
                         if (songTitle != null && songArtist != null) {
                             serverSocketWriter.println(songTitle);
                             serverSocketWriter.println(songArtist);
@@ -104,7 +115,7 @@ public class ServerThread extends Thread {
 
                             JLabel titleLabel = new JLabel(firstInputSocket);
                             JLabel artistLabel = new JLabel(secondInputSocket);
-                            if (!firstInputSocket.equals("nothingPlayed") && !secondInputSocket.equals("nothingPlayed")) {
+                            if (!firstInputSocket.equals("nothingPlayed") && !firstInputSocket.equals("song received")) {
                                 if (previousArtistReceived == null || (!previousTitleReceived.equals(firstInputSocket) && !previousArtistReceived.equals(secondInputSocket))) {
                                     previousArtistReceived = secondInputSocket;
                                     previousTitleReceived = firstInputSocket;
@@ -123,6 +134,17 @@ public class ServerThread extends Thread {
                                 requestMade = false;
                                 gettingSharedSongsList = true;
                             }
+//                            if(requestDownloadIndex != -1){
+//                                System.out.println("found a index to send mp3 data:"+requestDownloadIndex);
+//                                String sendingNote = "index "+requestDownloadIndex+" needed";
+//                                System.out.println("Sending note: "+sendingNote);
+//                                serverSocketWriter.println(sendingNote);
+//                                serverSocketWriter.println(sendingNote);
+//                                while(!serverSocketReader.nextLine().equals("Index Received")){//wait until client receive index
+//                                }
+//                                requestDownloadIndex = -1;//changing to default for next time, until it is set by our user.
+//                                gettingSharedSong = true;//for next true while, trying to receive shared song.
+//                            }
                         }
                     }
                     GUIFrame.reload();
@@ -130,13 +152,34 @@ public class ServerThread extends Thread {
                 }
 
             }
-        }catch (InterruptedException e1) {
+        } catch (InterruptedException | NoSuchElementException e1) {
             System.err.println("socket ended");
-            System.err.println("(client socket)CAN NOT CONNECT.THERE IS A PROBLEM. ");
             state.setIcon(GUIFrame.setIconSize("Icons/red.PNG", 10));
             GUIFrame.reload();
         }
     }
+
+    /*private void downloadNewSharedSong() {
+        gettingSharedSong = false;//changing to default for next time, until it is  set by our user.
+        try {
+
+            FileOutputStream fos = new FileOutputStream("SharedSongs/test.mp3");
+            System.out.println("Downloading...");
+            int count;
+            while ((count = serverSocketInputStream.read()) != -1) {
+                fos.write(count);
+                System.out.println(count);
+            }
+            fos.close();
+            System.out.println("downloaded!");
+            serverSocketWriter.println("downloaded");
+        } catch (FileNotFoundException e) {
+            System.err.println("error creating output file");
+        } catch (IOException e) {
+            System.out.println("error writing output file");
+        }
+    }
+*/
 
     private void createAndShowSharedSongs() {
         System.out.println("Trying to get shared songs...");

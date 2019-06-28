@@ -22,11 +22,11 @@ public class EastPanelServerThread extends Thread {
     }
 
     /**
-     * This method put a user of showSharedSongs user to true state, so we request him to get his shared songs.
+     * this method send a request to given user to turn back all songs user has in shared songs.
      *
      * @param user user we want to get him/her his/her shared songs.
      */
-    public void setShowSharedSongs(String user) {
+    public void setShowSharedSongsRequest(String user) {
         for (ServerThread serverThread : serverThreads)
             if (serverThread.getConnectedUser().equals(user)) {
                 serverThread.setRequestMade(true);
@@ -35,16 +35,15 @@ public class EastPanelServerThread extends Thread {
     }
 
     /**
-     * This method set a request download index
+     * This method set a request download index to user we want to download from
      *
      * @param requestDownloadIndex index of song in shared song we want to download
      * @param connectedUser        user we want to get Him song
      */
     public void setRequestDownloadIndex(int requestDownloadIndex, String connectedUser) {
-        this.requestDownloadIndex = requestDownloadIndex;
         for (ServerThread serverThread : serverThreads)
             if (serverThread.getConnectedUser().equals(connectedUser)) {
-                //TODO
+                serverThread.setRequestDownloadIndex(requestDownloadIndex);
                 break;
             }
     }

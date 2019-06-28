@@ -9,8 +9,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class UserThread extends Thread {
@@ -30,12 +33,14 @@ public class UserThread extends Thread {
     private ArrayList<SharedSongPanel> sharedSongPanels;
     private boolean gettingSharedSongsList;
     private boolean requestMade;
+    //private boolean gettingSharedSong;
     private int requestDownloadIndex;
     private String connectedUser;
     private String IPv4;
 
 
     UserThread(String IPv4) {
+      //  requestDownloadIndex = -1; //default invalid index;
         this.IPv4 = IPv4;
     }
 
@@ -43,8 +48,16 @@ public class UserThread extends Thread {
         return connectedUser;
     }
 
+    String getIPv4() {
+        return IPv4;
+    }
+
     void setRequestMade(boolean requestMade) {
         this.requestMade = requestMade;
+    }
+
+    void setRequestDownloadIndex(int requestDownloadIndex) {
+        this.requestDownloadIndex = requestDownloadIndex;
     }
 
     @Override
@@ -93,11 +106,32 @@ public class UserThread extends Thread {
                             }
                             clientSocketWriter.println("completed !");
                             System.out.println("Done sending shared songs!");
-                        } else {
+                        }
+                        /*else if(firstInputSocket.contains("index")){
+                            clientSocketWriter.println("Index Received");//saying to other pear that received index
+                            int index = Integer.parseInt(firstInputSocket.split(" ")[1]);
+                            System.out.println("index received to send mp3:"+index);
+                            String inputDirectory = GUIFrame.getSharedSongs().get(index).getMp3Info().getInputFileDirectory();
+
+                            FileInputStream fis = new FileInputStream(inputDirectory);
+                            System.out.println("sending mp3 file...");
+
+                            int count;
+                            while ((count = fis.read()) != -1) {
+                                clientSocketOutputStream.write(count);
+                            }
+                            fis.close();
+                            System.out.println("Sent!");
+                            while(!clientSocketReader.nextLine().equals("downloaded")){
+                                clientSocketOutputStream.flush();
+                            }
+                            //clientSocketOutputStream.write(-1);//for saying other pear it sent
+                        }*/
+                        else {
                             String secondInputSocket = clientSocketReader.nextLine();//expected to be song artist
                             JLabel titleLabel = new JLabel(firstInputSocket);
                             JLabel artistLabel = new JLabel(secondInputSocket);
-                            if (!firstInputSocket.equals("nothingPlayed") && !secondInputSocket.equals("nothingPlayed")) {
+                            if (!firstInputSocket.equals("nothingPlayed") && !firstInputSocket.equals("song received")) {
                                 if (previousArtistReceived == null || (!previousTitleReceived.equals(firstInputSocket) && !previousArtistReceived.equals(secondInputSocket))) {
                                     previousArtistReceived = secondInputSocket;
                                     previousTitleReceived = firstInputSocket;
@@ -122,12 +156,11 @@ public class UserThread extends Thread {
                     Thread.sleep(2000);
                 }
             }
-        } catch (InterruptedException e1) {
+        } catch (InterruptedException | NoSuchElementException e1) {
             System.err.println("socket ended");
-            System.err.println("(client socket)CAN NOT CONNECT.THERE IS A PROBLEM. ");
             state.setIcon(GUIFrame.setIconSize("Icons/red.PNG", 10));
             GUIFrame.reload();
-        } catch (IOException e1) {
+        } catch (IOException e2) {
             System.err.println("socket connecting error");
         }
     }
@@ -160,6 +193,24 @@ public class UserThread extends Thread {
         GUIFrame.showSharedSongs(sharedSongPanels);
     }
 
+    /*private void downloadNewSharedSong() {
+        gettingSharedSong = false;//changing to default for next time, until it is  set by our user.
+        try {
+
+            FileOutputStream fos = new FileOutputStream("SharedSongs/test.mp3");
+            System.out.println("Downloading...");
+            int count;
+            while ((count = clientSocketInputStream.read()) != -1) {
+                fos.write(count);
+            }
+            fos.close();
+            System.out.println("downloaded!");
+        } catch (FileNotFoundException e) {
+            System.err.println("error creating output file");
+        } catch (IOException e) {
+            System.out.println("error writing output file");
+        }
+    }*/
     /**
      * This methods adds a panel in east to show connected user, it's made of:
      * 1)serverInformationPanel: a panel to show information about user and indicate that user is online or not:

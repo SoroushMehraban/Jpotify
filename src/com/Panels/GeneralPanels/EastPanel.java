@@ -41,6 +41,7 @@ public class EastPanel extends JPanel {
      * @param newJPanel desired jpanel to add
      */
     public void addToNorth(JPanel newJPanel){
+
         northContainer.add(newJPanel);
     }
 }
