@@ -1,6 +1,7 @@
 
 package com.Panels.GeneralPanels;
 
+import com.GUIFrame.GUIFrame;
 import com.Panels.WestPanelSections.WestPanelListeners.*;
 
 import javax.swing.*;
@@ -130,12 +131,10 @@ public class WestPanel extends JPanel {
      * @return resized image icon.
      */
     public static ImageIcon setIconSize(String directory,int scale) {
-        ImageIcon output = new ImageIcon(directory);
-        Image newImage = output.getImage();
-        Image newimg = newImage.getScaledInstance(scale, scale, Image.SCALE_SMOOTH);
-        output = new ImageIcon(newimg);
-        return output;
+       ImageIcon output = GUIFrame.setIconSize(directory, scale);
+       return output;
     }
+
 
 
     public static JPanel getAlbumsPanel() {

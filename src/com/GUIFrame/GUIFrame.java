@@ -7,7 +7,7 @@ import com.MP3.AppStorage;
 import com.MP3.MP3Info;
 import com.Panels.CenterPanelSections.SharedSongPanel;
 import com.Panels.CenterPanelSections.SongPanel;
-import com.Panels.EastPanelSections.EastPanelServerThread;
+import com.Panels.NorthPanelSections.EastPanelServerThread;
 import com.Panels.GeneralPanels.*;
 import com.Panels.NorthPanelSections.EastPanelClientThread;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -375,5 +375,12 @@ public class GUIFrame extends JFrame implements Serializable {
     public static void setRequestDownloadIndex(int requestDownloadIndex, String friendUser) {
         if(mainClientThread != null)
             mainClientThread.setRequestDownloadIndex(requestDownloadIndex, friendUser);
+    }
+    public static ImageIcon setIconSize(String directory,int scale) {
+        ImageIcon output = new ImageIcon(directory);
+        Image newImage = output.getImage();
+        Image newimg = newImage.getScaledInstance(scale, scale, Image.SCALE_SMOOTH);
+        output = new ImageIcon(newimg);
+        return output;
     }
 }

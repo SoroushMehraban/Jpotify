@@ -475,7 +475,7 @@ public class CenterPart extends JPanel
         }
         try {
             BufferedImage defaultImage = ImageIO.read(new File("RadioSongs/defaultImage.png"));
-            SharedSongPanel newRadioSong = new SharedSongPanel(defaultImage, songTitle, songArtist,radioSongs);
+            SharedSongPanel newRadioSong = new SharedSongPanel(defaultImage, songTitle, songArtist,radioSongs,null);
             radioSongs.add(newRadioSong);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading radio default image","An Error Occurred",JOptionPane.ERROR_MESSAGE);

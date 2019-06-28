@@ -1,4 +1,4 @@
-package com.Panels.EastPanelSections;
+package com.Panels.NorthPanelSections;
 
 import com.GUIFrame.GUIFrame;
 import com.Panels.CenterPanelSections.SongPanel;
@@ -52,7 +52,6 @@ public class EastPanelServerThread extends Thread {
             ServerSocket mainSocket = new ServerSocket(2019);
             Socket connectedSocket = mainSocket.accept();
             System.out.println("someone connected.");
-
             OutputStream serverSocketOutputStream = connectedSocket.getOutputStream();
             InputStream serverSocketInputStream = connectedSocket.getInputStream();
             PrintWriter serverSocketWriter = new PrintWriter(serverSocketOutputStream, true);
