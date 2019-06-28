@@ -84,7 +84,8 @@ public class ConnectedUserPanel extends JPanel {
         return songTitle;
     }
     void setStopped(){
-        playing.removeAll();
+        playing.setIcon(null);//removing speaker icon
+        playing.setForeground(new Color(179,179,179));
         stoppedTime = System.currentTimeMillis();
         Thread updateTime = new Thread(new Runnable() {
             @Override
@@ -94,12 +95,12 @@ public class ConnectedUserPanel extends JPanel {
                     long diff = now - stoppedTime;
 
                     if(diff < 60000){//if it's less than a minute
-                        playing.setText(String.valueOf(diff/1000 + "S"));
+                        playing.setText(diff/1000 + "S");
                     }
                     else if(diff < 60000 * 60)//if it's less than an hour
-                        playing.setText(String.valueOf(diff/(1000 * 60)) + "M");
+                        playing.setText(diff/(1000 * 60) + "M");
                     else if(diff < 6000 * 60 * 24)//if it's less than a day
-                        playing.setText(String.valueOf(diff/1000 * 60 * 60)+ "H");
+                        playing.setText(diff/1000 * 60 * 60 + "H");
                     else
                         playing.setText("> day");
                     try {
