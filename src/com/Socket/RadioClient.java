@@ -13,7 +13,7 @@ public class RadioClient {
     private OutputStream socketOut;
     private PrintWriter socketWriter;
     private Scanner socketReader;
-    private HashMap<String,String> titles;
+    private HashMap<String, String> titles;
     private FileOutputStream fos;
 
     public RadioClient() {
@@ -22,12 +22,37 @@ public class RadioClient {
     }
 
     private Thread createReceivingThread() {
-        Thread thread = new Thread(new Runnable() {
+        return new Thread(new Runnable() {
             @Override
             public void run() {
                 //trying to connect to server
-                connectToServer();
-                receiveTitles();
+                //connectToServer();
+                System.out.println("trying to coonect...");
+                try {
+                    Socket mySocket = new Socket("95.216.52.203", 1999);
+                    System.out.println("connected");
+                    socketIn = mySocket.getInputStream();
+                    socketOut = mySocket.getOutputStream();
+                    socketWriter = new PrintWriter(socketOut, true);
+                    socketReader = new Scanner(socketIn);
+                    while (true) {
+                       /* try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException ignored) {
+                        }*/
+                        socketWriter.println("Update");//telling server we want to update.
+                        System.out.println("Trying to receive..");
+                        while (socketReader.hasNext()) {
+                            System.out.println("Adding to Radio songs...");
+                            String title = socketReader.nextLine();
+                            String artist = socketReader.nextLine();
+                            GUIFrame.addRadioSong(title, artist);
+                            System.out.println("added!");
+                        }
+                    }
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(null, "Error connecting to server", "Socket Error", JOptionPane.ERROR_MESSAGE);
+                }
                 /*try {
                     FileOutputStream fos;
                     System.out.println("trying to coonect...");
@@ -48,37 +73,5 @@ public class RadioClient {
                 }*/
             }
         });
-        return thread;
-    }
-
-    private void connectToServer() {
-        System.out.println("trying to coonect...");
-        Socket mySocket = null;
-        try {
-            mySocket = new Socket("95.216.52.203", 1999);
-            System.out.println("connected");
-            socketIn = mySocket.getInputStream();
-            socketOut = mySocket.getOutputStream();
-            socketWriter = new PrintWriter(socketOut, true);
-            socketReader = new Scanner(socketIn);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error connecting to server", "Socket Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    private void receiveTitles(){
-        while (true) {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException ignored) {
-            }
-            socketWriter.println("Update");//telling server we want to update.
-            socketWriter.flush();
-            System.out.println("Trying to receive..");
-            while (socketReader.hasNext()) {
-                System.out.println("Adding to Radio songs...");
-                //GUIFrame.addRadioSong(socketReader.nextLine(), socketReader.nextLine());
-                System.out.println("added!");
-            }
-        }
     }
 }

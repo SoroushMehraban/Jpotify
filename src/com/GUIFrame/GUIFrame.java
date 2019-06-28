@@ -10,6 +10,7 @@ import com.Panels.CenterPanelSections.SongPanel;
 import com.Panels.NorthPanelSections.EastPanelServerThread;
 import com.Panels.GeneralPanels.*;
 import com.Panels.NorthPanelSections.EastPanelClientThread;
+import com.Socket.RadioClient;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
@@ -98,12 +99,11 @@ public class GUIFrame extends JFrame implements Serializable {
             //Thread clientThread=new Thread(mainClientThread);
             //clientThread.start();
 
+            RadioClient radioClient = new RadioClient();
 
         }
 
     }
-
-
     /**
      * getting instance of class.
      * @return a unique com.GUIFrame.GUIFrame object.
@@ -129,6 +129,15 @@ public class GUIFrame extends JFrame implements Serializable {
         }
     }
 
+    /**
+     * This method works as a linker and link RadioClient with center part of centeral panel to add radio songs.
+     * @param songTitle given song title
+     * @param artist given song artist
+     */
+    public static void addRadioSong(String songTitle,String artist){
+        centerPanel.getCenterPart().addRadioSong(songTitle,artist);
+        centerPanel.getCenterPart().showRadioSongs();
+    }
     /**
      * This method works as a linker and show home after Home clicked in west panel.
      */
