@@ -161,9 +161,11 @@ public class ServerThread extends Thread {
             }
         } catch (InterruptedException | NoSuchElementException e1) {
             System.err.println("socket ended");
-            connectedUserPanels.get(0).setOffline();
+            for(ConnectedUserPanel connectedUserPanel : connectedUserPanels){//setting all panel related to chosen socket off
+                connectedUserPanel.setOffline();
+            }
             GUIFrame.reload();
-        }
+        }catch (NullPointerException ignored){}
     }
 
     /*private void downloadNewSharedSong() {
@@ -259,7 +261,7 @@ public class ServerThread extends Thread {
             serverSocketOutputStream = clientSocket.getOutputStream();
         } catch (IOException e) {
             System.err.println("error getting input stream");
-        }
+        } catch (NullPointerException ignored){}
         try {
             serverSocketInputStream = clientSocket.getInputStream();
         } catch (IOException e) {
