@@ -9,13 +9,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * in our program user is server and client in same time, as a client for each server we want to connect,
+ * we create a UserThread to handle operations needed to handle with connected server, this class does that.
+ *
+ * @author Soroush Mehraban & Morteza Damghani
+ * @version 1.0
+ */
 public class UserThread extends Thread {
     private OutputStream clientSocketOutputStream;
     private InputStream clientSocketInputStream;
@@ -25,11 +30,6 @@ public class UserThread extends Thread {
     private String songArtist;
     private String previousTitleReceived;
     private String previousArtistReceived;
-    private JPanel connectedServerPanel;
-    private JLabel connectedServerName;
-    private JPanel serverInformationPanel;
-    private JLabel state;
-    private ArrayList<SharedSongPanel> sharedSongPanels;
     private ArrayList<ConnectedUserPanel> connectedUserPanels;
     private boolean gettingSharedSongsList;
     private boolean requestMade;
@@ -37,7 +37,10 @@ public class UserThread extends Thread {
     private String connectedUser;
     private String IPv4;
 
-
+    /**
+     * class constructor, gets IPv4 to make a connection.
+     * @param IPv4 IP address of server we want to connect to(works as a hostname too)
+     */
     UserThread(String IPv4) {
         //  requestDownloadIndex = -1; //default invalid index;
         this.IPv4 = IPv4;
@@ -52,6 +55,10 @@ public class UserThread extends Thread {
         return IPv4;
     }
 
+    /**
+     * when this method is called, we set a request to connected user to get shared songs of him/her
+     * @param requestMade given request made.
+     */
     void setRequestMade(boolean requestMade) {
         this.requestMade = requestMade;
     }
@@ -171,7 +178,7 @@ public class UserThread extends Thread {
 
     private void createAndShowSharedSongs() {
         //System.out.println("Trying to get shared songs...");
-        sharedSongPanels = new ArrayList<>();
+        ArrayList<SharedSongPanel> sharedSongPanels = new ArrayList<>();
         gettingSharedSongsList = false;
         String firstInput;
         String secondInput;
@@ -217,40 +224,9 @@ public class UserThread extends Thread {
     }*/
 
     /**
-     * This methods adds a panel in east to show connected user, it's made of:
-     * 1)serverInformationPanel: a panel to show information about user and indicate that user is online or not:
-     * 2)Songs that user play for last time(it's not set in this method)
+     * creating input output streams.
+     * @param clientSocket socket of server we connected to
      */
-    private void createConnectedServerPanel() {
-        connectedServerPanel = new JPanel();//main panel
-        connectedServerPanel.setLayout(new BoxLayout(connectedServerPanel, BoxLayout.PAGE_AXIS));
-        connectedServerPanel.setBackground(new Color(23, 23, 23));
-
-        serverInformationPanel = new JPanel();
-        serverInformationPanel.setBackground(new Color(23, 23, 23));
-        serverInformationPanel.setLayout(new BoxLayout(serverInformationPanel, BoxLayout.LINE_AXIS));
-
-        //System.out.println("getting connected username...");
-        GUIFrame.addConnectedUserNameJCombobox(connectedUser);//setting connected user to show in JCombobox.
-        //System.out.println("Username connected setted");
-        connectedServerName = new JLabel(" " + connectedUser);
-        connectedServerName.setForeground(Color.WHITE);
-
-        JLabel connectedServerIcon = new JLabel(GUIFrame.setIconSize("Icons/User.PNG", 20));
-        serverInformationPanel.add(connectedServerIcon);
-        serverInformationPanel.add(connectedServerName);
-
-        serverInformationPanel.add(Box.createHorizontalStrut(5));
-        state = new JLabel();
-        state.setIcon(GUIFrame.setIconSize("Icons/green.PNG", 10));
-        serverInformationPanel.add(state);
-
-        connectedServerPanel.add(serverInformationPanel);
-        //GUIFrame.getEastPanel().addToNorth(connectedServerPanel);
-        GUIFrame.reload();
-
-    }
-
     private void createIO(Socket clientSocket) {
         try {
             clientSocketOutputStream = clientSocket.getOutputStream();
@@ -266,10 +242,18 @@ public class UserThread extends Thread {
         clientSocketReader = new Scanner(clientSocketInputStream);
     }
 
+    /**
+     * when we played a new song in shared songs, this method called and set song title to show to our connected user
+     * @param songTitle title of song to send
+     */
     void setSongTitle(String songTitle) {
         this.songTitle = songTitle;
     }
 
+    /**
+     * when we played a new song in shared songs, this method called and set song artist to show to our connected user
+     * @param songArtist artist of song to send
+     */
     void setSongArtist(String songArtist) {
         this.songArtist = songArtist;
     }
