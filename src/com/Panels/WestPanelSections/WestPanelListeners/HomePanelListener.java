@@ -24,6 +24,7 @@ public class HomePanelListener extends MouseAdapter {
 
     /**
      * Class Constructor which sets given parameters.
+     *
      * @param icon icon of Home label
      * @param text a text label which it is " HOME"
      */

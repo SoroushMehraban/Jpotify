@@ -21,7 +21,6 @@ public class UserThread extends Thread {
     private InputStream clientSocketInputStream;
     private PrintWriter clientSocketWriter;
     private Scanner clientSocketReader;
-
     private String songTitle;
     private String songArtist;
     private String previousTitleReceived;
@@ -34,14 +33,13 @@ public class UserThread extends Thread {
     private ArrayList<ConnectedUserPanel> connectedUserPanels;
     private boolean gettingSharedSongsList;
     private boolean requestMade;
-    //private boolean gettingSharedSong;
     private int requestDownloadIndex;
     private String connectedUser;
     private String IPv4;
 
 
     UserThread(String IPv4) {
-      //  requestDownloadIndex = -1; //default invalid index;
+        //  requestDownloadIndex = -1; //default invalid index;
         this.IPv4 = IPv4;
         connectedUserPanels = new ArrayList<>();
     }
@@ -94,7 +92,7 @@ public class UserThread extends Thread {
                             System.out.println("Default sent");
                         } else {
                             clientSocketWriter.println(songArtist);
-                            System.out.println("Artist: "+songArtist);
+                            System.out.println("Artist: " + songArtist);
                             clientSocketWriter.println(songTitle);
                         }
                         String firstInputSocket = clientSocketReader.nextLine();////expected to be song title
@@ -141,8 +139,8 @@ public class UserThread extends Thread {
                                     previousArtistReceived = secondInputSocket;
                                     previousTitleReceived = firstInputSocket;
 
-                                    ConnectedUserPanel connectedUserPanel = new ConnectedUserPanel(connectedUser,firstInputSocket,secondInputSocket);
-                                    if(connectedUserPanels.size() > 0){
+                                    ConnectedUserPanel connectedUserPanel = new ConnectedUserPanel(connectedUser, firstInputSocket, secondInputSocket);
+                                    if (connectedUserPanels.size() > 0) {
                                         ConnectedUserPanel lastConnectedUserPanel = connectedUserPanels.get(connectedUserPanels.size() - 1);
                                         lastConnectedUserPanel.setStopped();//stop last one (changing playing label)
                                     }
@@ -218,6 +216,7 @@ public class UserThread extends Thread {
             System.out.println("error writing output file");
         }
     }*/
+
     /**
      * This methods adds a panel in east to show connected user, it's made of:
      * 1)serverInformationPanel: a panel to show information about user and indicate that user is online or not:

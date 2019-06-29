@@ -1,9 +1,11 @@
 package com.Panels.NorthPanelSections;
+
 import java.util.ArrayList;
 
 
 /**
  * This class handles the operations which are related to the server thread.
+ *
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
@@ -54,12 +56,12 @@ public class EastPanelServerThread extends Thread {
     }
 
     public void setSongTitle(String songTitle) {
-        for(ServerThread serverThread : serverThreads)
+        for (ServerThread serverThread : serverThreads)
             serverThread.setSongTitle(songTitle);
     }
 
     public void setSongArtist(String songArtist) {
-        for(ServerThread serverThread : serverThreads)
+        for (ServerThread serverThread : serverThreads)
             serverThread.setSongArtist(songArtist);
     }
 }

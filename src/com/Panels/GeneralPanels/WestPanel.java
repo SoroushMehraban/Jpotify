@@ -46,7 +46,7 @@ public class WestPanel extends JPanel {
         homePanel.setBackground(new Color(23, 23, 23));
         homePanel.setLayout(new BoxLayout(homePanel, BoxLayout.LINE_AXIS));
         homeIcon = new JLabel();
-        homeIcon.setIcon(setIconSize("Icons/Home-no-select.png",20));
+        homeIcon.setIcon(setIconSize("Icons/Home-no-select.png", 20));
         homeLabel = new JLabel(" HOME");
         homeIcon.addMouseListener(new HomePanelListener(homeIcon, homeLabel));
         homeLabel.addMouseListener(new HomePanelListener(homeIcon, homeLabel));
@@ -63,9 +63,9 @@ public class WestPanel extends JPanel {
         libraryLabel = new JLabel(" Library  ");
         libraryLabel.setForeground(Color.WHITE);
         libraryIcon = new JLabel();
-        libraryIcon.setIcon(setIconSize("Icons/Library-no-select.PNG",20));
+        libraryIcon.setIcon(setIconSize("Icons/Library-no-select.PNG", 20));
         addToLibraryIcon = new JLabel();
-        addToLibraryIcon.setIcon(setIconSize("Icons/Plus-no-select.PNG",10));
+        addToLibraryIcon.setIcon(setIconSize("Icons/Plus-no-select.PNG", 10));
         libraryLabel.addMouseListener(new LibraryPanelListener(libraryIcon, libraryLabel, addToLibraryIcon));
         libraryIcon.addMouseListener(new LibraryPanelListener(libraryIcon, libraryLabel, addToLibraryIcon));
         addToLibraryIcon.addMouseListener(new LibraryPanelListener(libraryIcon, libraryLabel, addToLibraryIcon));
@@ -79,7 +79,7 @@ public class WestPanel extends JPanel {
         songsPanel.setBackground(new Color(23, 23, 23));
         songsPanel.setLayout(new BoxLayout(songsPanel, BoxLayout.LINE_AXIS));
         songsIcon = new JLabel();
-        songsIcon.setIcon(setIconSize("Icons/Song-no-selected.png",20));
+        songsIcon.setIcon(setIconSize("Icons/Song-no-selected.png", 20));
         songsPanel.add(songsIcon);
         songsLabel = new JLabel(" Songs");
         songsIcon.addMouseListener(new SongsPanelListener(songsIcon, songsLabel));
@@ -93,7 +93,7 @@ public class WestPanel extends JPanel {
         albumsPanel.setBackground(new Color(23, 23, 23));
         albumsPanel.setLayout(new BoxLayout(albumsPanel, BoxLayout.LINE_AXIS));
         albumsIcon = new JLabel();
-        albumsIcon.setIcon(setIconSize("Icons/Album-no-selected.png",20));
+        albumsIcon.setIcon(setIconSize("Icons/Album-no-selected.png", 20));
         albumsPanel.add(albumsIcon);
         albumsLabel = new JLabel(" Albums");
         AlbumsPanelListener AlbumsTempListener = new AlbumsPanelListener(albumsIcon, albumsLabel);
@@ -108,7 +108,7 @@ public class WestPanel extends JPanel {
         playListsPanel.setBackground(new Color(23, 23, 23));
         playListsPanel.setLayout(new BoxLayout(playListsPanel, BoxLayout.LINE_AXIS));
         playListsIcon = new JLabel();
-        playListsIcon.setIcon(setIconSize("Icons/p-no-selected.png",20));
+        playListsIcon.setIcon(setIconSize("Icons/p-no-selected.png", 20));
         playListsPanel.add(playListsIcon);
         playListsLabel = new JLabel(" Playlists  ");
         playListsLabel.setForeground(Color.WHITE);
@@ -117,7 +117,7 @@ public class WestPanel extends JPanel {
         playListsIcon.addMouseListener(playlistsTempListener);
         playListsLabel.addMouseListener(playlistsTempListener);
         addToPlaylistsIcon = new JLabel();
-        addToPlaylistsIcon.setIcon(setIconSize("Icons/Plus-no-select.PNG",10));
+        addToPlaylistsIcon.setIcon(setIconSize("Icons/Plus-no-select.PNG", 10));
         playListsPanel.add(addToPlaylistsIcon);
         addToPlaylistsIcon.addMouseListener(new PlaylistsPlusIconListener(addToPlaylistsIcon));
         this.add(playListsPanel);
@@ -125,15 +125,15 @@ public class WestPanel extends JPanel {
 
     /**
      * This method changes size of icons.
+     *
      * @param directory directory of image to change
-     * @param scale scale we want to resize.
+     * @param scale     scale we want to resize.
      * @return resized image icon.
      */
-    public static ImageIcon setIconSize(String directory,int scale) {
-       ImageIcon output = GUIFrame.setIconSize(directory, scale);
-       return output;
+    public static ImageIcon setIconSize(String directory, int scale) {
+        ImageIcon output = GUIFrame.setIconSize(directory, scale);
+        return output;
     }
-
 
 
     public static JPanel getAlbumsPanel() {
@@ -151,7 +151,6 @@ public class WestPanel extends JPanel {
     public static void setPlayListsPanel(JPanel changedPlaylists) {
         playListsPanel = changedPlaylists;
     }
-
 
 
 }

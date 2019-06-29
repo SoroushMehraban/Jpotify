@@ -31,11 +31,11 @@ public class PlayListPanel extends MusicPanel {
     /**
      * Constructor which set information need to show in super class.
      *
-     * @param image         image of panel to show at first in above.
-     * @param title         title to show under the image.
-     * @param description   description to show under the title.
+     * @param image       image of panel to show at first in above.
+     * @param title       title to show under the image.
+     * @param description description to show under the title.
      */
-    PlayListPanel(BufferedImage image, String title, String description, ShowSongsLinker showSongsLinker,SongPanelsLinker songPanelsLinker) {
+    PlayListPanel(BufferedImage image, String title, String description, ShowSongsLinker showSongsLinker, SongPanelsLinker songPanelsLinker) {
         super(image, title, description);
         this.title = title;
         this.description = description;
@@ -53,24 +53,23 @@ public class PlayListPanel extends MusicPanel {
         return description;
     }
 
-    private void createPlayListListener(){
+    private void createPlayListListener() {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
                 PlayListPanel source = (PlayListPanel) e.getSource();
-                source.setBackground(new Color(23,23,23));
+                source.setBackground(new Color(23, 23, 23));
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     showSongsLinker.showPlayListSongs(title);
                     PlayListPanel source = (PlayListPanel) e.getSource();
                     source.setBackground(new Color(23, 23, 23));
-                }
-                else if(SwingUtilities.isRightMouseButton(e)){//if user press right click, he wants to remove playlist
+                } else if (SwingUtilities.isRightMouseButton(e)) {//if user press right click, he wants to remove playlist
                     System.out.println("Right clicked");
-                    if(!title.equals("Favorite Songs") && !title.equals("Shared Songs")) {//if chosen playlist created by user
+                    if (!title.equals("Favorite Songs") && !title.equals("Shared Songs")) {//if chosen playlist created by user
                         int result = JOptionPane.showConfirmDialog(null, "Do you want to remove this playlist?",
                                 "Removing playlist..", JOptionPane.OK_CANCEL_OPTION);
                         if (result == JOptionPane.OK_OPTION) {
@@ -84,21 +83,21 @@ public class PlayListPanel extends MusicPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 PlayListPanel source = (PlayListPanel) e.getSource();
-                source.setBackground(new Color(41,41,41));
+                source.setBackground(new Color(41, 41, 41));
             }
         });
     }
 
-    void addSong(SongPanel songPanel){
+    void addSong(SongPanel songPanel) {
         playListSongs.add(songPanel);
     }
 
-    void removeSong(String title){
+    void removeSong(String title) {
         List<SongPanel> tempSynchronized = Collections.synchronizedList(playListSongs);
         Iterator<SongPanel> it = tempSynchronized.iterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             SongPanel songPanel = it.next();
-            if(songPanel.getMp3Info().getTitle().equals(title))
+            if (songPanel.getMp3Info().getTitle().equals(title))
                 it.remove();
         }
         playListSongs = new ArrayList<>(tempSynchronized);
@@ -111,14 +110,14 @@ public class PlayListPanel extends MusicPanel {
     /**
      * this method update playlist panel every time it called after adding new song(s)
      */
-    void updateImage(){
-        if(!title.equals("Favorite Songs") && !title.equals("Shared Songs")) {
+    void updateImage() {
+        if (!title.equals("Favorite Songs") && !title.equals("Shared Songs")) {
             SongPanel lastSongAdded = playListSongs.get(0);//getting last song artwork added to playlist
             try {
-                Image updatedImage =lastSongAdded.getMp3Info().getImage().getScaledInstance(getImageScale(),getImageScale(),Image.SCALE_SMOOTH);
+                Image updatedImage = lastSongAdded.getMp3Info().getImage().getScaledInstance(getImageScale(), getImageScale(), Image.SCALE_SMOOTH);
                 getImageLabel().setIcon(new ImageIcon(updatedImage));
             } catch (InvalidDataException | IOException | UnsupportedTagException e) {
-                JOptionPane.showMessageDialog(null, "Error reading new playlist song artwork","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Error reading new playlist song artwork", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
             }
         }
 

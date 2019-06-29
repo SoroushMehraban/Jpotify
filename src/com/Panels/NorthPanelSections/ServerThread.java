@@ -39,7 +39,7 @@ public class ServerThread extends Thread {
     private int requestDownloadIndex;
     private String connectedUser;
 
-    ServerThread(){
+    ServerThread() {
         connectedUserPanels = new ArrayList<>();
         //requestDownloadIndex = -1;//default invalid index;
         try {
@@ -62,6 +62,7 @@ public class ServerThread extends Thread {
     void setRequestMade(boolean requestMade) {
         this.requestMade = requestMade;
     }
+
     @Override
     public void run() {
         try {
@@ -126,8 +127,8 @@ public class ServerThread extends Thread {
                                     previousArtistReceived = secondInputSocket;
                                     previousTitleReceived = firstInputSocket;
 
-                                    ConnectedUserPanel connectedUserPanel = new ConnectedUserPanel(connectedUser,firstInputSocket,secondInputSocket);
-                                    if(connectedUserPanels.size() > 0){
+                                    ConnectedUserPanel connectedUserPanel = new ConnectedUserPanel(connectedUser, firstInputSocket, secondInputSocket);
+                                    if (connectedUserPanels.size() > 0) {
                                         ConnectedUserPanel lastConnectedUserPanel = connectedUserPanels.get(connectedUserPanels.size() - 1);
                                         lastConnectedUserPanel.setStopped();//stop last one (changing playing label)
                                     }
@@ -161,11 +162,12 @@ public class ServerThread extends Thread {
             }
         } catch (InterruptedException | NoSuchElementException e1) {
             System.err.println("socket ended");
-            for(ConnectedUserPanel connectedUserPanel : connectedUserPanels){//setting all panel related to chosen socket off
+            for (ConnectedUserPanel connectedUserPanel : connectedUserPanels) {//setting all panel related to chosen socket off
                 connectedUserPanel.setOffline();
             }
             GUIFrame.reload();
-        }catch (NullPointerException ignored){}
+        } catch (NullPointerException ignored) {
+        }
     }
 
     /*private void downloadNewSharedSong() {
@@ -251,7 +253,7 @@ public class ServerThread extends Thread {
         userInformationPanel.add(state);
 
         connectedClientPanel.add(userInformationPanel);
-       // GUIFrame.getEastPanel().addToNorth(connectedClientPanel);
+        // GUIFrame.getEastPanel().addToNorth(connectedClientPanel);
         GUIFrame.reload();
 
     }
@@ -261,7 +263,8 @@ public class ServerThread extends Thread {
             serverSocketOutputStream = clientSocket.getOutputStream();
         } catch (IOException e) {
             System.err.println("error getting input stream");
-        } catch (NullPointerException ignored){}
+        } catch (NullPointerException ignored) {
+        }
         try {
             serverSocketInputStream = clientSocket.getInputStream();
         } catch (IOException e) {

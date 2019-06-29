@@ -2,6 +2,7 @@ package com.Panels.GeneralPanels;
 
 import com.GUIFrame.GUIFrame;
 import com.Panels.CenterPanelSections.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -20,15 +21,16 @@ public class CenterPanel extends JPanel {
     private NorthPart northPart;
     private CenterPart centerPart;
     private SortPart sortPart;
+
     /**
      * Class constructor.
      * it set border layout as it's layout and has only two parts:
      * center part: where music panels is shown there.
      * north part: where search box and user box is located there.
      */
-    public CenterPanel(){
+    public CenterPanel() {
         this.setLayout(new BorderLayout());//creating panel layout
-        this.setBackground(new Color(23,23,23));//creating panel background
+        this.setBackground(new Color(23, 23, 23));//creating panel background
 
         sortPart = new SortPart();
 
@@ -40,23 +42,26 @@ public class CenterPanel extends JPanel {
         JPanel centerContainer = new JPanel();
         centerContainer.setOpaque(false);//to show center panel background behind it.
         centerContainer.setLayout(new BorderLayout());
-        centerContainer.add(sortPart,BorderLayout.NORTH);
+        centerContainer.add(sortPart, BorderLayout.NORTH);
         centerContainer.add(Box.createHorizontalStrut(3));
-        centerContainer.add(jScrollPane,BorderLayout.CENTER);
+        centerContainer.add(jScrollPane, BorderLayout.CENTER);
 
-        this.add(centerContainer,BorderLayout.CENTER);//adding center part to center panel.
+        this.add(centerContainer, BorderLayout.CENTER);//adding center part to center panel.
 
         try {
             northPart = new NorthPart(centerPart);//creating north part of panel
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading north part images","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error reading north part images", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
         }
-        this.add(northPart,BorderLayout.NORTH);//adding north part of panel to center panel
+        this.add(northPart, BorderLayout.NORTH);//adding north part of panel to center panel
 
     }
 
     public CenterPart getCenterPart() {
         return centerPart;
     }
-    public NorthPart getNorthPart(){return northPart;}
+
+    public NorthPart getNorthPart() {
+        return northPart;
+    }
 }

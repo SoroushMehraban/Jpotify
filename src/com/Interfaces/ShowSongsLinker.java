@@ -11,6 +11,7 @@ public interface ShowSongsLinker {
 
     /**
      * This method only shows song panels related to a playlist.
+     *
      * @param playListTitle title of playlist as a key
      */
     void showPlayListSongs(String playListTitle);

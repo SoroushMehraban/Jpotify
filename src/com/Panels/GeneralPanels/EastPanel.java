@@ -9,6 +9,7 @@ import java.awt.*;
 
 /**
  * this class handles the operations which are related to the east panel of the program.
+ *
  * @author Morteza Damghani & Soroush Mehraban
  * @version 1.0
  */
@@ -23,7 +24,6 @@ public class EastPanel extends JPanel {
         this.setLayout(new BorderLayout());
 
         this.setBackground(new Color(23, 23, 23));
-        //this.setSize(new Dimension(150, 300));
         friendActivityPanel = new JPanel();
         friendActivityPanel.setBackground(new Color(23, 23, 23));
         friendActivityPanel.setLayout(new BoxLayout(friendActivityPanel, BoxLayout.LINE_AXIS));
@@ -35,19 +35,20 @@ public class EastPanel extends JPanel {
         friendActivityPanel.add(friendActivityLabel);
 
         northContainer = new JPanel();
-        northContainer.setLayout(new BoxLayout(northContainer,BoxLayout.PAGE_AXIS));
+        northContainer.setLayout(new BoxLayout(northContainer, BoxLayout.PAGE_AXIS));
         northContainer.setOpaque(false);
         northContainer.add(friendActivityPanel, BorderLayout.NORTH);
 
-        this.add(northContainer,BorderLayout.NORTH);
+        this.add(northContainer, BorderLayout.NORTH);
     }
 
     /**
      * This method simply add new ConnectedUserPanel to north of east panel/
+     *
      * @param newConnectedUserPanel desired jpanel to add
      */
-    public void addToNorth(ConnectedUserPanel newConnectedUserPanel){
-        northContainer.add(newConnectedUserPanel,1);
-        northContainer.add(Box.createVerticalStrut(5),2);
+    public void addToNorth(ConnectedUserPanel newConnectedUserPanel) {
+        northContainer.add(newConnectedUserPanel, 1);
+        northContainer.add(Box.createVerticalStrut(5), 2);
     }
 }

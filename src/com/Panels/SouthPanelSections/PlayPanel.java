@@ -49,13 +49,14 @@ public class PlayPanel extends JPanel {
 
     /**
      * inner class constructor.
+     *
      * @throws IOException when failed to open icons.
      */
     public PlayPanel() throws IOException {
         isShuffling = false;
         isRepeating = false;
         //setting background color:
-        this.setBackground(new Color(41,41,41));
+        this.setBackground(new Color(41, 41, 41));
         //setting layout:
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         //loading images:
@@ -114,7 +115,7 @@ public class PlayPanel extends JPanel {
         ) {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(player != null) {
+                if (player != null) {
                     player.resume();
                     changePlayLabel(pauseLabel);
                 }
@@ -142,6 +143,7 @@ public class PlayPanel extends JPanel {
             }
         });
     }
+
     /**
      * This method demonstrate what happens if mouse pressed,entered or exited from pause bottom.
      * when mouse pressed: it changes the bottom to play bottom and pauses the music.
@@ -152,7 +154,7 @@ public class PlayPanel extends JPanel {
         pauseLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(player != null) {
+                if (player != null) {
                     player.pause();
                     changePlayLabel(playLabel);
                 }
@@ -180,8 +182,10 @@ public class PlayPanel extends JPanel {
             }
         });
     }
+
     /**
      * this method changes the play bottom to pause bottom or vice versa.
+     *
      * @param inputLabel bottom label to substitute.
      */
     private void changePlayLabel(JLabel inputLabel) {
@@ -199,6 +203,7 @@ public class PlayPanel extends JPanel {
         this.add(likeLabel);
         GUIFrame.reload();
     }
+
     /**
      * This method demonstrate what happens if mouse pressed,entered or exited from forward bottom.
      * when mouse pressed: it goes to next song.
@@ -208,10 +213,10 @@ public class PlayPanel extends JPanel {
     private void createForwardLabelListener() {
         forwardLabel.addMouseListener(new MouseAdapter(
         ) {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    playControlLinker.goForward();
-                }
+            @Override
+            public void mousePressed(MouseEvent e) {
+                playControlLinker.goForward();
+            }
 
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -235,6 +240,7 @@ public class PlayPanel extends JPanel {
             }
         });
     }
+
     /**
      * This method demonstrate what happens if mouse pressed,entered or exited from backward bottom.
      * when mouse pressed: it goes to previous song.
@@ -244,10 +250,10 @@ public class PlayPanel extends JPanel {
     private void createBackwardLabelListener() {
         backwardLabel.addMouseListener(new MouseAdapter(
         ) {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    playControlLinker.goBack();
-                }
+            @Override
+            public void mousePressed(MouseEvent e) {
+                playControlLinker.goBack();
+            }
 
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -271,6 +277,7 @@ public class PlayPanel extends JPanel {
             }
         });
     }
+
     /**
      * This method demonstrate what happens if mouse pressed,entered or exited from shuffle button.
      * when mouse pressed: it shuffle next songs if it's not pressed before.
@@ -289,7 +296,7 @@ public class PlayPanel extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 try {
-                    if(!isShuffling) {
+                    if (!isShuffling) {
                         shuffleImage = ImageIO.read(new File("Icons/Shuffle.png"));
                         shuffleLabel.setIcon(new ImageIcon(shuffleImage));
                     }
@@ -301,7 +308,7 @@ public class PlayPanel extends JPanel {
             @Override
             public void mouseExited(MouseEvent e) {
                 try {
-                    if(!isShuffling)
+                    if (!isShuffling)
                         shuffleImage = ImageIO.read(new File("Icons/Shuffle-no-select.png"));
                     else
                         shuffleImage = ImageIO.read(new File("Icons/Shuffle.png"));
@@ -313,6 +320,7 @@ public class PlayPanel extends JPanel {
             }
         });
     }
+
     /**
      * This method demonstrate what happens if mouse pressed,entered or exited from repeat bottom.
      * when mouse pressed: it repeat playing music after finished or vice versa if pressed before.
@@ -331,7 +339,7 @@ public class PlayPanel extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 try {
-                    if(!isRepeating) {
+                    if (!isRepeating) {
                         repeatImage = ImageIO.read(new File("Icons/Repeat.png"));
                         repeatLabel.setIcon(new ImageIcon(repeatImage));
                     }
@@ -343,7 +351,7 @@ public class PlayPanel extends JPanel {
             @Override
             public void mouseExited(MouseEvent e) {
                 try {
-                    if(!isRepeating)
+                    if (!isRepeating)
                         repeatImage = ImageIO.read(new File("Icons/Repeat-no-select.png"));
                     else
                         repeatImage = ImageIO.read(new File("Icons/Repeat.png"));
@@ -355,27 +363,27 @@ public class PlayPanel extends JPanel {
             }
         });
     }
+
     /**
      * This method demonstrate what happens if mouse pressed,entered or exited from like button.
      * when mouse pressed: it become red and adds current song to favorites songs.
      * when mouse entered: it made that button look brighter.
      * when mouse exited: it changes to previous form.
      */
-    private void createLikeLabelListener(){
+    private void createLikeLabelListener() {
         likeLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(player != null &&player.isPlaying())
+                if (player != null && player.isPlaying())
                     isLiked = !isLiked;
                 try {
-                    if(isLiked) {
+                    if (isLiked) {
                         likeImage = ImageIO.read(new File("Icons/Heart.png"));
-                        if(player != null &&player.isPlaying())
+                        if (player != null && player.isPlaying())
                             likeLinker.addToFavoritePlayList(player.getDirectory());
-                    }
-                    else {
+                    } else {
                         likeImage = ImageIO.read(new File("Icons/Heart-selected.png"));
-                        if(player != null && player.isPlaying())
+                        if (player != null && player.isPlaying())
                             likeLinker.removeFromFavoritePlayList(player.getDirectory());
                     }
                     likeLabel.setIcon(new ImageIcon(likeImage));
@@ -386,7 +394,7 @@ public class PlayPanel extends JPanel {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                if(!isLiked) {
+                if (!isLiked) {
                     try {
                         likeImage = ImageIO.read(new File("Icons/Heart-selected.png"));
                         likeLabel.setIcon(new ImageIcon(likeImage));
@@ -398,7 +406,7 @@ public class PlayPanel extends JPanel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                if(!isLiked) {
+                if (!isLiked) {
                     try {
                         likeImage = ImageIO.read(new File("Icons/Heart-no-selected.png"));
                         likeLabel.setIcon(new ImageIcon(likeImage));
@@ -412,13 +420,14 @@ public class PlayPanel extends JPanel {
 
     /**
      * this method runs music from beginning after a MusicPanel clicked.
+     *
      * @param player player we want to play
      */
-    public void playMusic(CustomPlayer player){
+    public void playMusic(CustomPlayer player) {
         this.player = player;
         changePlayLabel(pauseLabel);
         this.player.play(CustomPlayer.START_TIME);
-        if(likeLinker.isSongLiked(player.getDirectory())) {
+        if (likeLinker.isSongLiked(player.getDirectory())) {
             isLiked = true;
             try {
                 likeImage = ImageIO.read(new File("Icons/Heart.png"));
@@ -426,8 +435,7 @@ public class PlayPanel extends JPanel {
                 JOptionPane.showMessageDialog(null, "Error reading like image");
             }
             likeLabel.setIcon(new ImageIcon(likeImage));
-        }
-        else{
+        } else {
             isLiked = false;
             try {
                 likeImage = ImageIO.read(new File("Icons/Heart-no-selected.png"));

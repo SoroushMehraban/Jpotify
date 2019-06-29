@@ -35,10 +35,10 @@ public class ConnectedUserPanel extends JPanel {
         connectedClientName.setForeground(Color.WHITE);
         songFullTitle = songTitle;
         JLabel songNameLabel = new JLabel(" " + createShortenedText(songTitle));
-        songNameLabel.setForeground(new Color(179,179,179));
+        songNameLabel.setForeground(new Color(179, 179, 179));
         artistFullName = artist;
         JLabel artistNameLabel = new JLabel(" " + createShortenedText(artist));
-        artistNameLabel.setForeground(new Color(179,179,179));
+        artistNameLabel.setForeground(new Color(179, 179, 179));
 
         JLabel connectedClientIcon = new JLabel(GUIFrame.setIconSize("Icons/User.PNG", 20));
         JLabel songIcon = new JLabel(GUIFrame.setIconSize("Icons/Song-selected.PNG", 15));
@@ -68,10 +68,12 @@ public class ConnectedUserPanel extends JPanel {
         this.add(Box.createVerticalStrut(3));
         this.add(artistInformationPanel);
     }
-    public void setOnline(){
+
+    public void setOnline() {
         state.setIcon(GUIFrame.setIconSize("Icons/green.PNG", 10));
     }
-    void setOffline(){
+
+    void setOffline() {
         state.setIcon(GUIFrame.setIconSize("Icons/red.PNG", 10));
     }
 
@@ -86,24 +88,24 @@ public class ConnectedUserPanel extends JPanel {
     public String getSongFullTitle() {
         return songFullTitle;
     }
-    void setStopped(){
+
+    void setStopped() {
         playing.setIcon(null);//removing speaker icon
-        playing.setForeground(new Color(179,179,179));
+        playing.setForeground(new Color(179, 179, 179));
         stoppedTime = System.currentTimeMillis();
         Thread updateTime = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true){
+                while (true) {
                     long now = System.currentTimeMillis();
                     long diff = now - stoppedTime;
 
-                    if(diff < 60000){//if it's less than a minute
-                        playing.setText(diff/1000 + "S");
-                    }
-                    else if(diff < 60000 * 60)//if it's less than an hour
-                        playing.setText(diff/(1000 * 60) + "M");
-                    else if(diff < 6000 * 60 * 24)//if it's less than a day
-                        playing.setText(diff/1000 * 60 * 60 + "H");
+                    if (diff < 60000) {//if it's less than a minute
+                        playing.setText(diff / 1000 + "S");
+                    } else if (diff < 60000 * 60)//if it's less than an hour
+                        playing.setText(diff / (1000 * 60) + "M");
+                    else if (diff < 6000 * 60 * 24)//if it's less than a day
+                        playing.setText(diff / 1000 * 60 * 60 + "H");
                     else
                         playing.setText("> day");
                     try {
@@ -117,10 +119,10 @@ public class ConnectedUserPanel extends JPanel {
         updateTime.start();
     }
 
-    private String createShortenedText(String text){
-        if(text.length() <= 12)
+    private String createShortenedText(String text) {
+        if (text.length() <= 12)
             return text;
         else
-            return text.substring(0,9) + "...";
+            return text.substring(0, 9) + "...";
     }
 }

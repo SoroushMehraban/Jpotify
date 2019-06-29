@@ -42,7 +42,7 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
         //setting South Panel layout:
         this.setLayout(new BorderLayout());
         //setting background color of com.Panels.GeneralPanels.SouthPanel:
-        this.setBackground(new Color(41,41,41));
+        this.setBackground(new Color(41, 41, 41));
 
         //-----------------------------------------------------------------------------
         //center part where PlayPanel and MusicPlayBar located on:
