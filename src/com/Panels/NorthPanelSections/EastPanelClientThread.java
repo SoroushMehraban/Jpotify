@@ -1,8 +1,11 @@
 package com.Panels.NorthPanelSections;
+
 import javax.swing.*;
 import java.util.ArrayList;
+
 /**
  * This class handles the operations which are related to the client thread.
+ *
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
  */
@@ -16,8 +19,8 @@ public class EastPanelClientThread extends Thread {
      * @param user user we want to get him/her his/her shared songs.
      */
     public void setShowSharedSongsReqest(String user) {
-        for(UserThread userThread : userThreads)
-            if(userThread.getConnectedUser().equals(user)) {
+        for (UserThread userThread : userThreads)
+            if (userThread.getConnectedUser().equals(user)) {
                 userThread.setRequestMade(true);
                 break;
             }
@@ -25,8 +28,9 @@ public class EastPanelClientThread extends Thread {
 
     /**
      * This method set a request download index to user we want to download from
+     *
      * @param requestDownloadIndex index of song in shared song we want to download
-     * @param connectedUser user we want to get Him song
+     * @param connectedUser        user we want to get Him song
      */
     public void setRequestDownloadIndex(int requestDownloadIndex, String connectedUser) {
         for (UserThread userThread : userThreads)
@@ -47,15 +51,15 @@ public class EastPanelClientThread extends Thread {
         if (result == JOptionPane.OK_OPTION) {
             UserThread userThread = new UserThread(hostNameField.getText());
             boolean canAdd = true;
-            System.err.println("current threads:"+userThreads.size());
-            for(UserThread existingThread : userThreads){
-                if (existingThread.getIPv4().equals(userThread.getIPv4())){
+            System.err.println("current threads:" + userThreads.size());
+            for (UserThread existingThread : userThreads) {
+                if (existingThread.getIPv4().equals(userThread.getIPv4())) {
                     canAdd = false;
-                    JOptionPane.showMessageDialog(null, "You are already connected!","Warning!",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "You are already connected!", "Warning!", JOptionPane.WARNING_MESSAGE);
                     break;
                 }
             }
-            if(canAdd) {
+            if (canAdd) {
                 userThreads.add(userThread);
                 System.err.println();
                 userThread.start();
@@ -64,12 +68,12 @@ public class EastPanelClientThread extends Thread {
     }
 
     public void setSongTitle(String songTitle) {
-        for(UserThread userThread : userThreads)
+        for (UserThread userThread : userThreads)
             userThread.setSongTitle(songTitle);
     }
 
     public void setSongArtist(String songArtist) {
-        for(UserThread userThread : userThreads)
+        for (UserThread userThread : userThreads)
             userThread.setSongArtist(songArtist);
     }
 }

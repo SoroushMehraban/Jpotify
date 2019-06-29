@@ -42,14 +42,13 @@ public class SharedSongPanel extends MusicPanel {
                 SharedSongPanel source = (SharedSongPanel) e.getSource();//source is a song panel which mouse clicked on it.
                 //if clicked in order to play song:
                 //play clicked music:
-                for (int i = 0; i < sharedSongPanels.size() ; i++) {
+                for (int i = 0; i < sharedSongPanels.size(); i++) {
                     if (sharedSongPanels.get(i).getTitle().equals(source.getTitle())) {
-                        File sharedSong = new File("SharedSongs/"+source.artist+"-"+source.title+".mp3");
-                        if(sharedSong.exists()){
+                        File sharedSong = new File("SharedSongs/" + source.artist + "-" + source.title + ".mp3");
+                        if (sharedSong.exists()) {
                             //TODO
-                        }
-                        else{
-                            GUIFrame.setRequestDownloadIndex(i,friendUser);
+                        } else {
+                            GUIFrame.setRequestDownloadIndex(i, friendUser);
                         }
                         System.out.println("index clicked: " + i);
                         break;

@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 /**
  * playlist plus icon listener does this jobs:
  * -when mouse Clicked:
@@ -25,6 +26,7 @@ public class PlaylistsPlusIconListener extends MouseAdapter {
 
     /**
      * Class constructor, only sets plus icon
+     *
      * @param icon plus icon.
      */
     public PlaylistsPlusIconListener(JLabel icon) {

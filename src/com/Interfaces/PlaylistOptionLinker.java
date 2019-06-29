@@ -24,6 +24,7 @@ public interface PlaylistOptionLinker {
      * @return true if swap button activated.
      */
     boolean isSwaping();
+
     /**
      * This method indicate that are we removing song from playlist or not
      * if we removing song from playlist, when song panel clicked, it remove that from current playlist after pressing done.
@@ -39,6 +40,7 @@ public interface PlaylistOptionLinker {
      * @return a temporary space for adding panels we want to add.
      */
     ArrayList<SongPanel> getAddingSongPanel();
+
     /**
      * if we are aiming to remove song from playlist, this method help us to remove before pressing done.
      *

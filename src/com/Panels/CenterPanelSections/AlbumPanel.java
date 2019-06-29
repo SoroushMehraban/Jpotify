@@ -22,7 +22,7 @@ import java.util.HashMap;
  * @version 1.0
  */
 public class AlbumPanel extends MusicPanel {
-    private HashMap<String,SongPanel> songPanels;
+    private HashMap<String, SongPanel> songPanels;
     private ShowSongsLinker showSongsLinker;
     private String title;
 
@@ -39,7 +39,7 @@ public class AlbumPanel extends MusicPanel {
      */
     AlbumPanel(BufferedImage image, String title, String description, ArrayList<MP3Info> albumMusicsInfo, ShowSongsLinker showSongsLinker, LyricsLinker lyricsLinker) {
         super(image, title, description);
-        songPanels = createSongPanels(albumMusicsInfo,lyricsLinker);
+        songPanels = createSongPanels(albumMusicsInfo, lyricsLinker);
         this.title = title;
         createAlbumListener();
         this.showSongsLinker = showSongsLinker;
@@ -55,39 +55,40 @@ public class AlbumPanel extends MusicPanel {
      * if mouse exited: it turn to its previous type.
      * if mouse pressed: it show albumSongs related to this album.
      */
-    private void createAlbumListener(){
+    private void createAlbumListener() {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                AlbumPanel source = (AlbumPanel)e.getSource();
-                source.setBackground(new Color(23,23,23));
+                AlbumPanel source = (AlbumPanel) e.getSource();
+                source.setBackground(new Color(23, 23, 23));
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
                 showSongsLinker.showAlbumSongs(title);
-                AlbumPanel source = (AlbumPanel)e.getSource();
-                source.setBackground(new Color(23,23,23));
+                AlbumPanel source = (AlbumPanel) e.getSource();
+                source.setBackground(new Color(23, 23, 23));
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                AlbumPanel source = (AlbumPanel)e.getSource();
-                source.setBackground(new Color(41,41,41));
+                AlbumPanel source = (AlbumPanel) e.getSource();
+                source.setBackground(new Color(41, 41, 41));
             }
         });
     }
 
     /**
      * this method gives list of mp3infos and return Hash Map which keys are song title and values are song panels.
+     *
      * @param mp3Infos list of song infos.
      * @return list of song panels.
      */
-    private HashMap<String,SongPanel> createSongPanels(ArrayList<MP3Info> mp3Infos, LyricsLinker lyricsLinker){
-        HashMap<String,SongPanel> songPanels = new HashMap<>();
-        for(MP3Info mp3Info: mp3Infos ) {
+    private HashMap<String, SongPanel> createSongPanels(ArrayList<MP3Info> mp3Infos, LyricsLinker lyricsLinker) {
+        HashMap<String, SongPanel> songPanels = new HashMap<>();
+        for (MP3Info mp3Info : mp3Infos) {
             try {
-                songPanels.put(mp3Info.getTitle(),new SongPanel(mp3Info, mp3Info.getArtist()));
+                songPanels.put(mp3Info.getTitle(), new SongPanel(mp3Info, mp3Info.getArtist()));
             } catch (InvalidDataException | IOException | UnsupportedTagException e) {
                 JOptionPane.showMessageDialog(null, "Error reading mp3 file image");
             }
@@ -97,13 +98,14 @@ public class AlbumPanel extends MusicPanel {
 
     /**
      * this method called if new songs related to album added, so it add new ones in our album.
-     * @param albumMusicsInfo  new songs info added by user.
-     * @param lyricsLinker a linker helps to show lyrics.
+     *
+     * @param albumMusicsInfo new songs info added by user.
+     * @param lyricsLinker    a linker helps to show lyrics.
      */
-    void addNewSongs(ArrayList<MP3Info> albumMusicsInfo,LyricsLinker lyricsLinker){
-        HashMap<String,SongPanel> newSongs = createSongPanels(albumMusicsInfo,lyricsLinker);//creating hashmap of new songs
-        for(String songTitle : newSongs.keySet())//adding songs which our album doesn't has
-            if(!songPanels.containsKey(songTitle)) {
+    void addNewSongs(ArrayList<MP3Info> albumMusicsInfo, LyricsLinker lyricsLinker) {
+        HashMap<String, SongPanel> newSongs = createSongPanels(albumMusicsInfo, lyricsLinker);//creating hashmap of new songs
+        for (String songTitle : newSongs.keySet())//adding songs which our album doesn't has
+            if (!songPanels.containsKey(songTitle)) {
                 songPanels.put(songTitle, newSongs.get(songTitle));
                 showSongsLinker.getAllSongsPanel().add(newSongs.get(songTitle));//adding new song to allSongsPanel.
                 updateDescription();
@@ -113,8 +115,8 @@ public class AlbumPanel extends MusicPanel {
     /**
      * this method update description after new song added to this album.
      */
-    private void updateDescription(){
-        String newDescription = "Album contains "+songPanels.size()+" songs";
+    private void updateDescription() {
+        String newDescription = "Album contains " + songPanels.size() + " songs";
         getDescriptionLabel().setText(newDescription);
     }
 }

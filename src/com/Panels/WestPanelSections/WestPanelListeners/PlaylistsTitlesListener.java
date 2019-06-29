@@ -19,6 +19,7 @@ public class PlaylistsTitlesListener extends MouseAdapter {
 
     /**
      * class constructor, it sets title of playlist as a label and sets default font.
+     *
      * @param titleTextLabel title of playlist
      */
     PlaylistsTitlesListener(JLabel titleTextLabel) {

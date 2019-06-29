@@ -35,6 +35,7 @@ public class AlbumsPanelListener extends MouseAdapter {
     /**
      * class Constructor, it sets given icon and text
      * and sets default font.
+     *
      * @param icon icon of album panel.
      * @param text text of album panel which is " Albums"
      */

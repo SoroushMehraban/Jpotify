@@ -30,30 +30,31 @@ public class WestPartPanel extends JPanel {
 
     /**
      * Class Constructor.
+     *
      * @throws IOException if opening plus icon failed.
      */
     public WestPartPanel() throws IOException {
         //setting layout to Box layout and Line axis:
         this.setLayout(new GridBagLayout());
-        this.setPreferredSize(new Dimension(100,50));
+        this.setPreferredSize(new Dimension(100, 50));
         GridBagConstraints constraints = new GridBagConstraints();
         //setting background:
-        this.setBackground(new Color(41,41,41));
+        this.setBackground(new Color(41, 41, 41));
         //creating song name label:
         songFullName = "Song Name";
         songName = new JLabel(songFullName);
-        songName.setForeground(new Color(179,179,179));
-        songName.setMaximumSize(new Dimension(72,16));
-        songName.setMinimumSize(new Dimension(72,16));
-        songName.setPreferredSize(new Dimension(72,16));
+        songName.setForeground(new Color(179, 179, 179));
+        songName.setMaximumSize(new Dimension(72, 16));
+        songName.setMinimumSize(new Dimension(72, 16));
+        songName.setPreferredSize(new Dimension(72, 16));
         createSongNameAction();
         //creating artist name label:
         artistFullName = "Artist Name";
         artistName = new JLabel(artistFullName);
-        artistName.setForeground(new Color(92,84,84));
-        artistName.setMaximumSize(new Dimension(72,16));
-        artistName.setMinimumSize(new Dimension(72,16));
-        artistName.setPreferredSize(new Dimension(72,16));
+        artistName.setForeground(new Color(92, 84, 84));
+        artistName.setMaximumSize(new Dimension(72, 16));
+        artistName.setMinimumSize(new Dimension(72, 16));
+        artistName.setPreferredSize(new Dimension(72, 16));
         createArtistNameAction();
         //creating plus label with icon:
         plusIcon = ImageIO.read(new File("Icons/Plus-no-select.png"));
@@ -61,25 +62,26 @@ public class WestPartPanel extends JPanel {
         createplusLabelAction();
         //putting components in panel:
         constraints.fill = GridBagConstraints.BOTH;
-        constraints.insets = new Insets(5,5,0,0);
+        constraints.insets = new Insets(5, 5, 0, 0);
         constraints.gridx = 0;
         constraints.gridy = 0;
         this.add(songName, constraints);
         constraints.gridx = 1;
         constraints.gridy = 0;
-        this.add(plusLabel,constraints);
-        constraints.insets = new Insets(0,5,0,0);
+        this.add(plusLabel, constraints);
+        constraints.insets = new Insets(0, 5, 0, 0);
         constraints.gridx = 0;
         constraints.gridy = 1;
-        this.add(artistName,constraints);
+        this.add(artistName, constraints);
     }
+
     /**
      * This method demonstrate what happens if mouse pressed,entered or exited from plus Icon beside Song name.
      * when mouse pressed: ...
      * when mouse entered: it made that icon look brighter.
      * when mouse exited: it changes to previous form.
      */
-    private void createplusLabelAction(){
+    private void createplusLabelAction() {
         plusLabel.addMouseListener(new MouseAdapter(
         ) {
                 /*@Override
@@ -114,18 +116,18 @@ public class WestPartPanel extends JPanel {
      * when mouse entered: if it's length is more than 15 character, it moves in a animated way.
      * when mouse exited: it changes to previous form.
      */
-    private void createArtistNameAction(){
+    private void createArtistNameAction() {
         artistName.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 isArtistEntered = true;//this variable indicated when should thread in below terminate.
-                if(artistFullName.length() > 12){//if it's size is more than 15 character and doesn't fit
+                if (artistFullName.length() > 12) {//if it's size is more than 15 character and doesn't fit
                     Thread artistNameThread = new Thread(new Runnable() {//creating thread to move the text
                         @Override
                         public void run() {
-                            while(isArtistEntered)//while mouse is Entered
-                                for (int i = 0; i <artistFullName.length() - 9 && isArtistEntered ; i++) {
-                                    artistName.setText(artistFullName.substring(i,i+9)+"  ");
+                            while (isArtistEntered)//while mouse is Entered
+                                for (int i = 0; i < artistFullName.length() - 9 && isArtistEntered; i++) {
+                                    artistName.setText(artistFullName.substring(i, i + 9) + "  ");
                                     try {
                                         Thread.sleep(500);
                                     } catch (InterruptedException e1) {
@@ -145,23 +147,24 @@ public class WestPartPanel extends JPanel {
             }
         });
     }
+
     /**
      * This method demonstrate what happens if mouse pressed or exited from Song name at left down corner.
      * when mouse entered: if it's length is more than 15 character, it moves in a animated way.
      * when mouse exited: it changes to previous form.
      */
-    private void createSongNameAction(){
+    private void createSongNameAction() {
         songName.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 isSongEntered = true;//this variable indicated when should thread in below terminate.
-                if(songFullName.length() > 12){//if it's size is more than 12 character and doesn't fit
+                if (songFullName.length() > 12) {//if it's size is more than 12 character and doesn't fit
                     Thread songNameThread = new Thread(new Runnable() {//creating thread to move the text
                         @Override
                         public void run() {
-                            while(isSongEntered)//while mouse is Entered
-                                for (int i = 0; i <songFullName.length() - 9 && isSongEntered ; i++) {
-                                    songName.setText(songFullName.substring(i,i+9));
+                            while (isSongEntered)//while mouse is Entered
+                                for (int i = 0; i < songFullName.length() - 9 && isSongEntered; i++) {
+                                    songName.setText(songFullName.substring(i, i + 9));
                                     try {
                                         Thread.sleep(500);
                                     } catch (InterruptedException e1) {
@@ -181,7 +184,8 @@ public class WestPartPanel extends JPanel {
             }
         });
     }
-    public void updateNames(String directory){
+
+    public void updateNames(String directory) {
         try {
             MP3Info mp3Info = new MP3Info(directory);
             artistFullName = mp3Info.getArtist();
@@ -196,10 +200,11 @@ public class WestPartPanel extends JPanel {
             JOptionPane.showMessageDialog(null, "There isn't any mp3 file in directory to get info");
         }
     }
-    private String createShortenedText(String text){
-        if(text.length() <= 12)
+
+    private String createShortenedText(String text) {
+        if (text.length() <= 12)
             return text;
         else
-            return text.substring(0,9) + "...";
+            return text.substring(0, 9) + "...";
     }
 }

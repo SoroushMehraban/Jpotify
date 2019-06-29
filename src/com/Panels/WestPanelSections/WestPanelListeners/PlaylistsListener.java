@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+
 /**
  * playlist panel's listener does this jobs:
  * -when mouse Clicked:
@@ -32,7 +33,8 @@ public class PlaylistsListener extends MouseAdapter {
     /**
      * Class constructor.
      * setting given parameters and default font.
-     * @param icon icon of playlist
+     *
+     * @param icon      icon of playlist
      * @param textLabel a text label which it is : " Playlists  "
      */
     public PlaylistsListener(JLabel icon, JLabel textLabel) {

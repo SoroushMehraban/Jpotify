@@ -22,8 +22,7 @@ import java.util.Objects;
  * @author Morteza Damghani & Soroush Mehraban
  * @version 1.0
  */
-public class LibraryPanelListener extends MouseAdapter
-{
+public class LibraryPanelListener extends MouseAdapter {
     private JLabel icon;
     private JLabel label;
     private JLabel plusIcon;
@@ -33,40 +32,37 @@ public class LibraryPanelListener extends MouseAdapter
      * Class constructor.
      * it sets given parameters:
      *
-     * @param icon icon of library to have a action on it.
-     * @param label a label which says it's a "Library"
+     * @param icon     icon of library to have a action on it.
+     * @param label    a label which says it's a "Library"
      * @param plusIcon plus icon to show beside.
      */
-    public LibraryPanelListener(JLabel icon,JLabel label,JLabel plusIcon)
-    {
-        this.icon=icon;
-        this.label=label;
-        this.plusIcon=plusIcon;
-        font=label.getFont();
+    public LibraryPanelListener(JLabel icon, JLabel label, JLabel plusIcon) {
+        this.icon = icon;
+        this.label = label;
+        this.plusIcon = plusIcon;
+        font = label.getFont();
 
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        JFileChooser fileChooser=new JFileChooser();
-        ArrayList<MP3Info> outputArray=new ArrayList<>();//this array sends MP3Info list with their album to show in center panel.
+        JFileChooser fileChooser = new JFileChooser();
+        ArrayList<MP3Info> outputArray = new ArrayList<>();//this array sends MP3Info list with their album to show in center panel.
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);//set to accept files and directories.
         fileChooser.showOpenDialog(GUIFrame.getInstance());//showing open dialog and setting it's owner which is GUIFrame.
-        File inputFile=fileChooser.getSelectedFile();//getting selected files.
+        File inputFile = fileChooser.getSelectedFile();//getting selected files.
 
-        if(inputFile != null) {//if user didn't cancel choosing
+        if (inputFile != null) {//if user didn't cancel choosing
             if (inputFile.isFile()) {//if user chooses file
                 addFile(inputFile);
-            }
-            else if (inputFile.isDirectory()) {//if user chooses directory
+            } else if (inputFile.isDirectory()) {//if user chooses directory
                 if (Objects.requireNonNull(inputFile.listFiles()).length > 0) { //if I/O Error didn't occur(requireNonNull) and Folder is not empty{
                     try {
                         addFiles(inputFile);
                     } catch (IOException | NoSuchFieldException e1) {
-                        JOptionPane.showMessageDialog(null, "Error reading mp3 file for MP3Info","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Error reading mp3 file for MP3Info", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
                     }
-                }
-                else
+                } else
                     JOptionPane.showMessageDialog(null, "Folder is empty!", "Wrong directory input", JOptionPane.INFORMATION_MESSAGE);
             }
         }
@@ -75,50 +71,50 @@ public class LibraryPanelListener extends MouseAdapter
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        icon.setIcon(WestPanel.setIconSize("Icons/Library.PNG",20));
+        icon.setIcon(WestPanel.setIconSize("Icons/Library.PNG", 20));
         label.setFont(new Font("Serif", Font.BOLD, 16));
-        plusIcon.setIcon(WestPanel.setIconSize("Icons/Plus.png",10));
+        plusIcon.setIcon(WestPanel.setIconSize("Icons/Plus.png", 10));
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        icon.setIcon(WestPanel.setIconSize("Icons/Library-no-select.PNG",20));
+        icon.setIcon(WestPanel.setIconSize("Icons/Library-no-select.PNG", 20));
         label.setFont(font);
-        plusIcon.setIcon(WestPanel.setIconSize("Icons/Plus-no-select.png",10));
+        plusIcon.setIcon(WestPanel.setIconSize("Icons/Plus-no-select.png", 10));
 
     }
 
     /**
      * This method adds a song to our library if chosen file is a mp3 file.
+     *
      * @param inputFile input file chosen by user.
      */
-    private void addFile(File inputFile){
+    private void addFile(File inputFile) {
 
         if (inputFile.getName().endsWith(".mp3")) {//if chosen file is a mp3 file
 
-            ArrayList<MP3Info> outputArray=new ArrayList<>();//this array sends a song with it's album to show in center panel..
+            ArrayList<MP3Info> outputArray = new ArrayList<>();//this array sends a song with it's album to show in center panel..
 
             try {
                 MP3Info inputMP3 = new MP3Info(inputFile.getAbsolutePath());//creating MP3Info object of that file.
                 outputArray.add(inputMP3);
                 GUIFrame.addAlbum(inputMP3.getAlbum(), outputArray);//adding this music to show in center panel.
             } catch (IOException | NoSuchFieldException e) {
-                JOptionPane.showMessageDialog(null, "Error reading mp3 file for MP3Info","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Error reading mp3 file for MP3Info", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
             }
-        }
-        else
+        } else
             JOptionPane.showMessageDialog(null, "You should choose mp3 file", "Wrong file input", JOptionPane.INFORMATION_MESSAGE);
-
 
 
     }
 
     /**
      * this method adds list of songs in their albums to our library if chosen folder contains mp3 files.
+     *
      * @param inputFile chosen folder by user
      */
     private void addFiles(File inputFile) throws IOException, NoSuchFieldException {
-        ArrayList<MP3Info> outputArray=new ArrayList<>();//this array sends songs with their album to show in center panel..
+        ArrayList<MP3Info> outputArray = new ArrayList<>();//this array sends songs with their album to show in center panel..
 
         File[] inputFiles = inputFile.listFiles();
         for (int i = 0; i <= Objects.requireNonNull(inputFiles).length - 1; i++) //collecting all mp3 files in folder

@@ -25,7 +25,8 @@ public class SongsPanelListener extends MouseAdapter {
 
     /**
      * Class constructor, it sets given parameters and default fonts
-     * @param icon icon of song panel
+     *
+     * @param icon      icon of song panel
      * @param textLabel a text label which is : " Songs"
      */
     public SongsPanelListener(JLabel icon, JLabel textLabel) {

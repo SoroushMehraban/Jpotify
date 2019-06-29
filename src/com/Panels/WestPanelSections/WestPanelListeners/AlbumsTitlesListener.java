@@ -22,6 +22,7 @@ public class AlbumsTitlesListener extends MouseAdapter {
 
     /**
      * Class constructor, it sets title and default font
+     *
      * @param title title of album.
      */
     AlbumsTitlesListener(JLabel title) {

@@ -23,8 +23,8 @@ import java.util.HashMap;
 
 /**
  * north part of center panel. it has this features:
- *-Search box: user can search musics here.
- *-login box: user can login here to make a connection with network.
+ * -Search box: user can search musics here.
+ * -login box: user can login here to make a connection with network.
  *
  * @author Soroush Mehraban & Morteza Damghani
  * @version 1.0
@@ -35,8 +35,10 @@ public class NorthPart extends JPanel {
     private JLabel plusLabel;
     private JComboBox<String> usersBox;
     private HashMap<String, Boolean> users;//value indicate that it's first selecting(added first) or not
+
     /**
      * class constructor
+     *
      * @param searchLinker a linker helps to searchBox search in centerPart.
      * @throws IOException if opening search box icon failed.
      */
@@ -46,9 +48,9 @@ public class NorthPart extends JPanel {
         //setting background color:
         this.setBackground(new Color(10, 10, 10));
 
-        searchBox = new SearchBox(10,searchLinker);//creating searchbox
-        searchBox.setForeground(new Color(168,168,168));//setting search box text color
-        this.add(searchBox,BorderLayout.WEST);//adding search box in west of our panel.
+        searchBox = new SearchBox(10, searchLinker);//creating searchbox
+        searchBox.setForeground(new Color(168, 168, 168));//setting search box text color
+        this.add(searchBox, BorderLayout.WEST);//adding search box in west of our panel.
 
         plusIcon = ImageIO.read(new File("Icons/PlusCircle-no-select.png"));//loading plus Icon image
         plusLabel = new JLabel(new ImageIcon(plusIcon));//creating plus label to hold that.
@@ -56,21 +58,22 @@ public class NorthPart extends JPanel {
         plusLabel.addMouseListener(new ScrollerPlusIconListener());
 
         users = new HashMap<>();//value helps for firstplaying
-        usersBox=new JComboBox<>();//creating a JComboBox for user.
-        usersBox.setPreferredSize(new Dimension(100,25));//setting PreferredSize to show.
+        usersBox = new JComboBox<>();//creating a JComboBox for user.
+        usersBox.setPreferredSize(new Dimension(100, 25));//setting PreferredSize to show.
         createUserBoxListener();
 
         //creating a container to hold plus label and user box:
         JPanel userContainer = new JPanel();
         userContainer.setOpaque(false);//to show north part background behind it.
-        userContainer.setLayout(new BoxLayout(userContainer,BoxLayout.LINE_AXIS));
+        userContainer.setLayout(new BoxLayout(userContainer, BoxLayout.LINE_AXIS));
         userContainer.add(plusLabel);
         userContainer.add(Box.createHorizontalStrut(3));
         userContainer.add(usersBox);
 
-        this.add(userContainer,BorderLayout.EAST);
+        this.add(userContainer, BorderLayout.EAST);
     }
-    private void createPlusListener(){
+
+    private void createPlusListener() {
         plusLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -83,7 +86,7 @@ public class NorthPart extends JPanel {
                     plusIcon = ImageIO.read(new File("Icons/PlusCircle.png"));
                     plusLabel.setIcon(new ImageIcon(plusIcon));
                 } catch (IOException e1) {
-                    JOptionPane.showMessageDialog(null, "Error updating plus circle image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Error updating plus circle image", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
@@ -93,7 +96,7 @@ public class NorthPart extends JPanel {
                     plusIcon = ImageIO.read(new File("Icons/PlusCircle-no-select.png"));
                     plusLabel.setIcon(new ImageIcon(plusIcon));
                 } catch (IOException e1) {
-                    JOptionPane.showMessageDialog(null, "Error updating plus circle image","An Error Occurred",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Error updating plus circle image", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -101,11 +104,12 @@ public class NorthPart extends JPanel {
 
     /**
      * This method adds a user to userbox only if we haven't that user.
+     *
      * @param newUser new username to add.
      */
-    public void addUser(String newUser){
-        if(!users.keySet().contains(newUser)){
-            users.put(newUser,true);
+    public void addUser(String newUser) {
+        if (!users.keySet().contains(newUser)) {
+            users.put(newUser, true);
             usersBox.addItem(newUser);
         }
     }
@@ -114,16 +118,15 @@ public class NorthPart extends JPanel {
      * This method creates a listener to indicate what happens if our user select a user from JCombobox.
      * it just send a request to that user in other computer to let see his/her shared songs.
      */
-    private void createUserBoxListener(){
+    private void createUserBoxListener() {
         usersBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JComboBox source = (JComboBox) e.getSource();
                 String selectedUser = (String) source.getSelectedItem();
-                if(users.get(selectedUser)) {//if it's first selecting
-                    users.put(selectedUser,false);
-                }
-                else {
+                if (users.get(selectedUser)) {//if it's first selecting
+                    users.put(selectedUser, false);
+                } else {
                     GUIFrame.setShowSharedSongs(selectedUser);
                 }
             }

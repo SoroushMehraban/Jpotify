@@ -15,7 +15,6 @@ import java.util.Comparator;
  * When user opens a playlist, if that playlist consist 2 or more songs, sort box of this part appears
  * in the others parts, removeSortBox method called and no sorting box will show at top of center part.
  *
- *
  * @author Soroush Mehraban & Morteza damghani
  * @version 1.0
  */
@@ -60,19 +59,19 @@ public class SortPart extends JPanel {
     /**
      * this method created a listener for sort box and indicate what happens if user chose an item
      */
-    private void createSortBoxListener(){
+    private void createSortBoxListener() {
         sortBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JComboBox source = (JComboBox)e.getSource();
+                JComboBox source = (JComboBox) e.getSource();
                 String selectedItem = (String) source.getSelectedItem();
-                if(selectedItem != null) {
+                if (selectedItem != null) {
 
                     if (selectedItem.equals("Artist"))
                         sortByArtist(sortLinker.getCurrentPlaylistPanel());
-                    if(selectedItem.equals("Album"))
+                    if (selectedItem.equals("Album"))
                         sortByAlbum(sortLinker.getCurrentPlaylistPanel());
-                    if(selectedItem.equals("Song Title"))
+                    if (selectedItem.equals("Song Title"))
                         sortByeSongName(sortLinker.getCurrentPlaylistPanel());
 
                     sortLinker.showPlayListSongs(sortLinker.getCurrentPlaylistPanel().getTitle());//updating page
@@ -84,7 +83,7 @@ public class SortPart extends JPanel {
     /**
      * this method sorts all of songs in playlist based on artist names.
      */
-    private void sortByArtist(PlayListPanel currentPlaylistPanel){
+    private void sortByArtist(PlayListPanel currentPlaylistPanel) {
         currentPlaylistPanel.getPlayListSongs().sort(new Comparator<>() {
             @Override
             public int compare(SongPanel o1, SongPanel o2) {
@@ -94,10 +93,11 @@ public class SortPart extends JPanel {
             }
         });
     }
+
     /**
      * this method sorts all of songs in playlist based on album names.
      */
-    private void sortByAlbum(PlayListPanel currentPlaylistPanel){
+    private void sortByAlbum(PlayListPanel currentPlaylistPanel) {
         currentPlaylistPanel.getPlayListSongs().sort(new Comparator<>() {
             @Override
             public int compare(SongPanel o1, SongPanel o2) {
@@ -107,10 +107,11 @@ public class SortPart extends JPanel {
             }
         });
     }
+
     /**
      * this method sorts all of songs in playlist based on song names.
      */
-    private void sortByeSongName(PlayListPanel currentPlaylistPanel){
+    private void sortByeSongName(PlayListPanel currentPlaylistPanel) {
         currentPlaylistPanel.getPlayListSongs().sort(new Comparator<>() {
             @Override
             public int compare(SongPanel o1, SongPanel o2) {

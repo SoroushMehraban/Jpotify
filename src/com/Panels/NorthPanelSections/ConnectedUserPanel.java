@@ -105,39 +105,36 @@ public class ConnectedUserPanel extends JPanel {
         Thread updateTime = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true){
+                while (true) {
                     long now = System.currentTimeMillis();
                     long diff = now - stoppedTime;
 
-                    if(diff < 60000){//if it's less than a minute
-                        playing.setText(diff/1000 + "S");
+                    if (diff < 60000) {//if it's less than a minute
+                        playing.setText(diff / 1000 + "S");
                         try {
                             Thread.sleep(1000);//updating every second
                         } catch (InterruptedException e) {
                             System.err.println("connected thread interrupted");
                         }
-                    }
-                    else if(diff < 60000 * 60) {//if it's less than an hour
+                    } else if (diff < 60000 * 60) {//if it's less than an hour
                         playing.setText(diff / (1000 * 60) + "M");
                         try {
                             Thread.sleep(60000);//updating every minute
                         } catch (InterruptedException e) {
                             System.err.println("connected thread interrupted");
                         }
-                    }
-                    else if(diff < 6000 * 60 * 24) {//if it's less than a day
+                    } else if (diff < 6000 * 60 * 24) {//if it's less than a day
                         playing.setText(diff / 1000 * 60 * 60 + "H");
                         try {
                             Thread.sleep(60000 * 60);//updating every hour
                         } catch (InterruptedException e) {
                             System.err.println("connected thread interrupted");
                         }
-                    }
-                    else {
+                        playing.setText(diff / 1000 * 60 * 60 + "H");
+                    } else {
                         playing.setText("> day");
                         break;//never updates
                     }
-
                 }
             }
         });
