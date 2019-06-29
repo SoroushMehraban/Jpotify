@@ -1,18 +1,15 @@
 package com.Panels.NorthPanelSections;
-
 import com.GUIFrame.GUIFrame;
-import com.Panels.GeneralPanels.WestPanel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.*;
-import java.net.Socket;
-import java.util.Scanner;
 
+
+/**
+ * it implements the action of clicking the plus button near the JCombo box.
+ * @author Soroush Mehraban & Morteza Damghani
+ * @version 1.0
+ *
+ */
 public class ScrollerPlusIconListener extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e) {

@@ -1,18 +1,12 @@
 package com.Panels.NorthPanelSections;
-
-import com.GUIFrame.GUIFrame;
-import com.Panels.CenterPanelSections.SongPanel;
-import com.Panels.GeneralPanels.WestPanel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
 
+
+/**
+ * This class handles the operations which are related to the server thread.
+ * @author Soroush Mehraban & Morteza Damghani
+ * @version 1.0
+ */
 public class EastPanelServerThread extends Thread {
     private ArrayList<ServerThread> serverThreads;
     private int requestDownloadIndex;
