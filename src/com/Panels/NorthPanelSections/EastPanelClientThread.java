@@ -26,20 +26,6 @@ public class EastPanelClientThread extends Thread {
             }
     }
 
-    /**
-     * This method set a request download index to user we want to download from
-     *
-     * @param requestDownloadIndex index of song in shared song we want to download
-     * @param connectedUser        user we want to get Him song
-     */
-    public void setRequestDownloadIndex(int requestDownloadIndex, String connectedUser) {
-        for (UserThread userThread : userThreads)
-            if (userThread.getConnectedUser().equals(connectedUser)) {
-                userThread.setRequestDownloadIndex(requestDownloadIndex);
-                break;
-            }
-    }
-
     @Override
     public void run() {
         JTextField hostNameField = new JTextField(10);

@@ -115,6 +115,17 @@ public class NorthPart extends JPanel {
     }
 
     /**
+     * this method removes user from JCombobox if it exists.
+     * @param user given user to remove
+     */
+    public void removeUser(String user){
+        if (users.keySet().contains(user)) {
+            users.remove(user);
+            usersBox.removeItem(user);
+        }
+    }
+
+    /**
      * This method creates a listener to indicate what happens if our user select a user from JCombobox.
      * it just send a request to that user in other computer to let see his/her shared songs.
      */

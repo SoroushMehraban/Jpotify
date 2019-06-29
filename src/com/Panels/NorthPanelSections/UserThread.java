@@ -6,7 +6,6 @@ import com.Panels.CenterPanelSections.SongPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
@@ -33,7 +32,6 @@ public class UserThread extends Thread {
     private ArrayList<ConnectedUserPanel> connectedUserPanels;
     private boolean gettingSharedSongsList;
     private boolean requestMade;
-    private int requestDownloadIndex;
     private String connectedUser;
     private String IPv4;
 
@@ -61,10 +59,6 @@ public class UserThread extends Thread {
      */
     void setRequestMade(boolean requestMade) {
         this.requestMade = requestMade;
-    }
-
-    void setRequestDownloadIndex(int requestDownloadIndex) {
-        this.requestDownloadIndex = requestDownloadIndex;
     }
 
     @Override
@@ -170,6 +164,7 @@ public class UserThread extends Thread {
             }
         } catch (InterruptedException | NoSuchElementException e1) {
             connectedUserPanels.get(0).setOffline();
+            GUIFrame.removeUserNameExited(connectedUser);
             GUIFrame.reload();
         } catch (IOException e2) {
             JOptionPane.showMessageDialog(null, "socket connection error", "An Error Occurred", JOptionPane.ERROR_MESSAGE);

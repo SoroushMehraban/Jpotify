@@ -6,7 +6,6 @@ import com.Panels.CenterPanelSections.SongPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.ServerSocket;
@@ -37,7 +36,6 @@ public class ServerThread extends Thread {
     private boolean gettingSharedSongsList;
     private boolean gettingSharedSong;
     private boolean requestMade;
-    private int requestDownloadIndex;
     private String connectedUser;
 
     /**
@@ -46,7 +44,6 @@ public class ServerThread extends Thread {
      */
     ServerThread() {
         connectedUserPanels = new ArrayList<>();
-        requestDownloadIndex = -1;//default invalid index;
         try {
             ServerSocket mainSocket = new ServerSocket(2019);
             connectedSocket = mainSocket.accept();
@@ -58,9 +55,6 @@ public class ServerThread extends Thread {
         return connectedUser;
     }
 
-    void setRequestDownloadIndex(int requestDownloadIndex) {
-        this.requestDownloadIndex = requestDownloadIndex;
-    }
 
     /**
      * when this method is called, we set a request to connected user to get shared songs of him/her
@@ -94,9 +88,6 @@ public class ServerThread extends Thread {
                 //    System.out.println("start of loop");
                     if (gettingSharedSongsList) {//if we suppose to get shared Songs.
                         createAndShowSharedSongs();
-                    }
-                    else if(gettingSharedSong){//if we suppose to download(not works)
-                        downloadNewSharedSong();
                     }
                     else {
                         if (songTitle != null && songArtist != null) {//if we played a song in shared songs, we sending it
@@ -146,17 +137,6 @@ public class ServerThread extends Thread {
                                 gettingSharedSongsList = true;
                                 requestMade = false;
                             }
-                            if(requestDownloadIndex != -1){//if we clicked on user songs in shared songs list and request to download
-                               // System.out.println("found a index to send mp3 data:"+requestDownloadIndex);
-                                String sendingNote = "index "+requestDownloadIndex+" needed";
-                               // System.out.println("Sending note: "+sendingNote);
-                                serverSocketWriter.println(sendingNote);
-                                serverSocketWriter.println(sendingNote);
-                                while(!serverSocketReader.nextLine().equals("Index Received")){//wait until client receive index
-                                }
-                                requestDownloadIndex = -1;//changing to default for next time, until it is set by our user.
-                                gettingSharedSong = true;//for next true while, trying to receive shared song.
-                            }
                         }
                     }
                     GUIFrame.reload();//reloading lists
@@ -168,30 +148,9 @@ public class ServerThread extends Thread {
             for (ConnectedUserPanel connectedUserPanel : connectedUserPanels) {//setting all panel related to chosen socket off
                 connectedUserPanel.setOffline();
             }
+            GUIFrame.removeUserNameExited(connectedUser);
             GUIFrame.reload();
         } catch (NullPointerException ignored) {
-        }
-    }
-
-    private void downloadNewSharedSong() {
-        gettingSharedSong = false;//changing to default for next time, until it is  set by our user.
-        try {
-
-            FileOutputStream fos = new FileOutputStream("SharedSongs/test.mp3");
-           //
-            // System.out.println("Downloading...");
-            int count;
-            while ((count = serverSocketInputStream.read()) != -1) {
-                fos.write(count);
-               // System.out.println(count);
-            }
-            fos.close();
-           // System.out.println("downloaded!");
-            serverSocketWriter.println("downloaded");
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Error creating output file", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException e) {
-          //  System.out.println("error writing output file");
         }
     }
 

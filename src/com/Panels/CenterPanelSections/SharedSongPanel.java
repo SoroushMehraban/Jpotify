@@ -48,7 +48,7 @@ public class SharedSongPanel extends MusicPanel {
                         if (sharedSong.exists()) {
                             //TODO
                         } else {
-                            GUIFrame.setRequestDownloadIndex(i, friendUser);
+                            //TODO
                         }
                         System.out.println("index clicked: " + i);
                         break;

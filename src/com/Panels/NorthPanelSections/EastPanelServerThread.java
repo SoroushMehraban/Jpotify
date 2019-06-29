@@ -30,20 +30,6 @@ public class EastPanelServerThread extends Thread {
             }
     }
 
-    /**
-     * This method set a request download index to user we want to download from
-     *
-     * @param requestDownloadIndex index of song in shared song we want to download
-     * @param connectedUser        user we want to get Him song
-     */
-    public void setRequestDownloadIndex(int requestDownloadIndex, String connectedUser) {
-        for (ServerThread serverThread : serverThreads)
-            if (serverThread.getConnectedUser().equals(connectedUser)) {
-                serverThread.setRequestDownloadIndex(requestDownloadIndex);
-                break;
-            }
-    }
-
     @Override
     public void run() {
         while (true) {

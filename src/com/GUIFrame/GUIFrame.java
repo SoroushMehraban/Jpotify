@@ -398,6 +398,15 @@ public class GUIFrame extends JFrame implements Serializable {
     public static void addConnectedUserNameJCombobox(String newUser) {
         centerPanel.getNorthPart().addUser(newUser);
     }
+    /**
+     *
+     * This method works as a linker to remove user from north part JCombobox.
+     *
+     * @param user new user to remove.
+     */
+    public static void removeUserNameExited(String user){
+        centerPanel.getNorthPart().removeUser(user);
+    }
 
     /**
      * this method works as a linker and set true value to hash map of showSharedSongs in mainThreads.
@@ -414,19 +423,6 @@ public class GUIFrame extends JFrame implements Serializable {
         }
     }
 
-    /**
-     * this method works as a linker and set for connected user which is from server or client threads,
-     * a message to gave index of shared of songs to download
-     *
-     * @param requestDownloadIndex index we want to download
-     * @param connectedUser        whom we want to download
-     */
-    public static void setRequestDownloadIndex(int requestDownloadIndex, String connectedUser) {
-        if (mainClientThread != null)
-            mainClientThread.setRequestDownloadIndex(requestDownloadIndex, connectedUser);
-        if (mainServerThread != null)
-            mainServerThread.setRequestDownloadIndex(requestDownloadIndex, connectedUser);
-    }
 
     /**
      * it sets the sizes of different images used in different parts of the program.
