@@ -118,7 +118,7 @@ public class GUIFrame extends JFrame implements Serializable {
             try {
                 guiFrame = new GUIFrame();
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(null, "Error creating GUIFrame");
+                JOptionPane.showMessageDialog(null, "Error creating GUIFrame","an error occurred",JOptionPane.ERROR_MESSAGE);
             }
         }
         return guiFrame;
