@@ -34,14 +34,14 @@ public class ServerThread extends Thread {
     private ArrayList<SharedSongPanel> sharedSongPanels;
     private ArrayList<ConnectedUserPanel> connectedUserPanels;
     private boolean gettingSharedSongsList;
-    //private boolean gettingSharedSong;
+    private boolean gettingSharedSong;
     private boolean requestMade;
     private int requestDownloadIndex;
     private String connectedUser;
 
     ServerThread() {
         connectedUserPanels = new ArrayList<>();
-        //requestDownloadIndex = -1;//default invalid index;
+        requestDownloadIndex = -1;//default invalid index;
         try {
             ServerSocket mainSocket = new ServerSocket(2019);
             connectedSocket = mainSocket.accept();
@@ -88,9 +88,9 @@ public class ServerThread extends Thread {
                     if (gettingSharedSongsList) {//if we suppose to get shared Songs.
                         createAndShowSharedSongs();
                     }
-                    /*else if(gettingSharedSong){
+                    else if(gettingSharedSong){
                         downloadNewSharedSong();
-                    }*/
+                    }
                     else {
                         if (songTitle != null && songArtist != null) {
                             serverSocketWriter.println(songTitle);
@@ -142,17 +142,17 @@ public class ServerThread extends Thread {
                                 requestMade = false;
                                 gettingSharedSongsList = true;
                             }
-//                            if(requestDownloadIndex != -1){
-//                                System.out.println("found a index to send mp3 data:"+requestDownloadIndex);
-//                                String sendingNote = "index "+requestDownloadIndex+" needed";
-//                                System.out.println("Sending note: "+sendingNote);
-//                                serverSocketWriter.println(sendingNote);
-//                                serverSocketWriter.println(sendingNote);
-//                                while(!serverSocketReader.nextLine().equals("Index Received")){//wait until client receive index
-//                                }
-//                                requestDownloadIndex = -1;//changing to default for next time, until it is set by our user.
-//                                gettingSharedSong = true;//for next true while, trying to receive shared song.
-//                            }
+                            if(requestDownloadIndex != -1){
+                                System.out.println("found a index to send mp3 data:"+requestDownloadIndex);
+                                String sendingNote = "index "+requestDownloadIndex+" needed";
+                                System.out.println("Sending note: "+sendingNote);
+                                serverSocketWriter.println(sendingNote);
+                                serverSocketWriter.println(sendingNote);
+                                while(!serverSocketReader.nextLine().equals("Index Received")){//wait until client receive index
+                                }
+                                requestDownloadIndex = -1;//changing to default for next time, until it is set by our user.
+                                gettingSharedSong = true;//for next true while, trying to receive shared song.
+                            }
                         }
                     }
                     GUIFrame.reload();
@@ -170,7 +170,7 @@ public class ServerThread extends Thread {
         }
     }
 
-    /*private void downloadNewSharedSong() {
+    private void downloadNewSharedSong() {
         gettingSharedSong = false;//changing to default for next time, until it is  set by our user.
         try {
 
@@ -190,7 +190,6 @@ public class ServerThread extends Thread {
             System.out.println("error writing output file");
         }
     }
-*/
 
     private void createAndShowSharedSongs() {
         System.out.println("Trying to get shared songs...");

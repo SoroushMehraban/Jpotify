@@ -110,7 +110,7 @@ public class UserThread extends Thread {
                             clientSocketWriter.println("completed !");
                             System.out.println("Done sending shared songs!");
                         }
-                        /*else if(firstInputSocket.contains("index")){
+                        else if(firstInputSocket.contains("index")){
                             clientSocketWriter.println("Index Received");//saying to other pear that received index
                             int index = Integer.parseInt(firstInputSocket.split(" ")[1]);
                             System.out.println("index received to send mp3:"+index);
@@ -129,7 +129,7 @@ public class UserThread extends Thread {
                                 clientSocketOutputStream.flush();
                             }
                             //clientSocketOutputStream.write(-1);//for saying other pear it sent
-                        }*/
+                        }
                         else {
                             String secondInputSocket = clientSocketReader.nextLine();//expected to be song artist
                             JLabel titleLabel = new JLabel(firstInputSocket);
