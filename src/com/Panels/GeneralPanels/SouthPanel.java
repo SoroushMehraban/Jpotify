@@ -95,7 +95,7 @@ public class SouthPanel extends JPanel implements PlayControlLinker {
             public void run() {
                 newRunning = false;// this cause outer loop doesn't break.(if we changed newRunning above to break it)
                 outer: for (int i = SongPanels.indexOf(songPanel); i < SongPanels.size()  ; i++) {
-                    System.out.println("index played: "+i);//temporary to show it works correctly.
+                    //System.out.println("index played: "+i);//temporary to show it works correctly.
                     currentSongPanel = SongPanels.get(i);//changing current song panel to play next one
                     customPlayer = new CustomPlayer(currentSongPanel.getInputFileDirectory());
                     playPanel.playMusic(customPlayer);

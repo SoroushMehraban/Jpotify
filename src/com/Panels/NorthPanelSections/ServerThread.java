@@ -46,9 +46,7 @@ public class ServerThread extends Thread {
             ServerSocket mainSocket = new ServerSocket(2019);
             connectedSocket = mainSocket.accept();
 
-        } catch (IOException e) {
-            System.err.println("error connecting to server");
-        }
+        } catch (IOException ignored) { }
     }
 
     String getConnectedUser() {
@@ -66,25 +64,25 @@ public class ServerThread extends Thread {
     @Override
     public void run() {
         try {
-            System.out.println("I am Server!,someone connected.");
+          //  System.out.println("I am Server!,someone connected.");
             createIO(connectedSocket);//creating IO streams.
 
-            System.out.println("sending username..");
+          //  System.out.println("sending username..");
             serverSocketWriter.println(GUIFrame.getUsername());
-            System.out.println("sent");
+          //  System.out.println("sent");
 
-            System.out.println("trying to receive...");
+          //  System.out.println("trying to receive...");
             if (serverSocketReader.nextLine().equals("user Received")) {
-                System.out.println("client received my messaage");
+             //   System.out.println("client received my messaage");
 
-                System.out.println("getting connected username...");
+              //  System.out.println("getting connected username...");
                 connectedUser = serverSocketReader.nextLine();
-                System.out.println("connected:" + connectedUser);
+              //  System.out.println("connected:" + connectedUser);
                 serverSocketWriter.println("user Received");
                 GUIFrame.addConnectedUserNameJCombobox(connectedUser);//setting connected user to show in JCombobox.
 
                 while (true) {
-                    System.out.println("start of loop");
+                //    System.out.println("start of loop");
                     if (gettingSharedSongsList) {//if we suppose to get shared Songs.
                         createAndShowSharedSongs();
                     }
@@ -100,25 +98,25 @@ public class ServerThread extends Thread {
                             serverSocketWriter.println("nothingPlayed");
                             serverSocketWriter.println("nothingPlayed");
                             serverSocketWriter.flush();
-                            System.out.println("Default sent");
+                            //System.out.println("Default sent");
                         }
                         String firstInputSocket = serverSocketReader.nextLine();//expected to be song title
-                        System.out.println("First input received:" + firstInputSocket);
+                        //System.out.println("First input received:" + firstInputSocket);
 
                         if (firstInputSocket.equals("get Shared Songs")) {
                             for (SongPanel sharedSong : GUIFrame.getSharedSongs()) {
-                                System.out.println("Sending a shared songs.......");
+                                //System.out.println("Sending a shared songs.......");
                                 serverSocketWriter.println(sharedSong.getMp3Info().getTitle());
                                 serverSocketWriter.println(sharedSong.getMp3Info().getArtist());
                                 if (!serverSocketReader.nextLine().equals("song received"))
-                                    System.err.println("an error occurred");
+                                    JOptionPane.showMessageDialog(null, "Error getting shared songs", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
 
                             }
                             serverSocketWriter.println("completed !");
-                            System.out.println("Done sending shared songs!");
+                            //System.out.println("Done sending shared songs!");
                         } else {
                             String secondInputSocket = serverSocketReader.nextLine();//expected to be song artist
-                            System.out.println("First input received:" + secondInputSocket);
+                           // System.out.println("First input received:" + secondInputSocket);
 
                             JLabel titleLabel = new JLabel(firstInputSocket);
                             JLabel artistLabel = new JLabel(secondInputSocket);
@@ -137,15 +135,15 @@ public class ServerThread extends Thread {
                                 }
                             }
                             if (requestMade) {//if we made a request from one user to get shared songs
-                                System.out.println("a request made");
+                               // System.out.println("a request made");
                                 serverSocketWriter.println("get Shared Songs");//sending a request
                                 requestMade = false;
                                 gettingSharedSongsList = true;
                             }
                             if(requestDownloadIndex != -1){
-                                System.out.println("found a index to send mp3 data:"+requestDownloadIndex);
+                               // System.out.println("found a index to send mp3 data:"+requestDownloadIndex);
                                 String sendingNote = "index "+requestDownloadIndex+" needed";
-                                System.out.println("Sending note: "+sendingNote);
+                               // System.out.println("Sending note: "+sendingNote);
                                 serverSocketWriter.println(sendingNote);
                                 serverSocketWriter.println(sendingNote);
                                 while(!serverSocketReader.nextLine().equals("Index Received")){//wait until client receive index
@@ -161,7 +159,6 @@ public class ServerThread extends Thread {
 
             }
         } catch (InterruptedException | NoSuchElementException e1) {
-            System.err.println("socket ended");
             for (ConnectedUserPanel connectedUserPanel : connectedUserPanels) {//setting all panel related to chosen socket off
                 connectedUserPanel.setOffline();
             }
@@ -175,24 +172,25 @@ public class ServerThread extends Thread {
         try {
 
             FileOutputStream fos = new FileOutputStream("SharedSongs/test.mp3");
-            System.out.println("Downloading...");
+           //
+            // System.out.println("Downloading...");
             int count;
             while ((count = serverSocketInputStream.read()) != -1) {
                 fos.write(count);
-                System.out.println(count);
+               // System.out.println(count);
             }
             fos.close();
-            System.out.println("downloaded!");
+           // System.out.println("downloaded!");
             serverSocketWriter.println("downloaded");
         } catch (FileNotFoundException e) {
-            System.err.println("error creating output file");
+            JOptionPane.showMessageDialog(null, "Error creating output file", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
         } catch (IOException e) {
-            System.out.println("error writing output file");
+          //  System.out.println("error writing output file");
         }
     }
 
     private void createAndShowSharedSongs() {
-        System.out.println("Trying to get shared songs...");
+       // System.out.println("Trying to get shared songs...");
         sharedSongPanels = new ArrayList<>();
         gettingSharedSongsList = false;
         String firstInput;
@@ -203,14 +201,14 @@ public class ServerThread extends Thread {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading shared default image", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
         }
-        System.out.println("image loaded");
+       // System.out.println("image loaded");
         while (true) {
             firstInput = serverSocketReader.nextLine();//expect to be song title
             if (firstInput.equals("completed !"))
                 break;
-            System.out.println(firstInput);
+         //   System.out.println(firstInput);
             secondInput = serverSocketReader.nextLine();//expect to be song artist
-            System.out.println(secondInput);
+           // System.out.println(secondInput);
             serverSocketWriter.println("song received");
             SharedSongPanel newSharedSong = new SharedSongPanel(defaultImage, firstInput, secondInput, sharedSongPanels, connectedUser);
             sharedSongPanels.add(newSharedSong);
@@ -233,9 +231,9 @@ public class ServerThread extends Thread {
         userInformationPanel.setBackground(new Color(23, 23, 23));
         userInformationPanel.setLayout(new BoxLayout(userInformationPanel, BoxLayout.LINE_AXIS));
 
-        System.out.println("getting connected username...");
+    //    System.out.println("getting connected username...");
         connectedUser = serverSocketReader.nextLine();
-        System.out.println("connected:" + connectedUser);
+      //  System.out.println("connected:" + connectedUser);
         serverSocketWriter.println("user Received");
         GUIFrame.addConnectedUserNameJCombobox(connectedUser);//setting connected user to show in JCombobox.
 
@@ -261,13 +259,13 @@ public class ServerThread extends Thread {
         try {
             serverSocketOutputStream = clientSocket.getOutputStream();
         } catch (IOException e) {
-            System.err.println("error getting input stream");
+            JOptionPane.showMessageDialog(null, "Error getting input stream", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
         } catch (NullPointerException ignored) {
         }
         try {
             serverSocketInputStream = clientSocket.getInputStream();
         } catch (IOException e) {
-            System.err.println("error getting output stream");
+            JOptionPane.showMessageDialog(null, "Error getting output stream", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
         }
         serverSocketWriter = new PrintWriter(serverSocketOutputStream, true);
         serverSocketReader = new Scanner(serverSocketInputStream);

@@ -47,9 +47,9 @@ public class EastPanelServerThread extends Thread {
     @Override
     public void run() {
         while (true) {
-            System.out.println("Trying to connect..");
+            //System.out.println("Trying to connect..");
             ServerThread serverThread = new ServerThread();
-            System.out.println("Connected!");
+           // System.out.println("Connected!");
             serverThread.start();
             serverThreads.add(serverThread);
         }
