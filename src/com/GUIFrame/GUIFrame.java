@@ -398,6 +398,13 @@ public class GUIFrame extends JFrame implements Serializable {
         if(mainServerThread != null)
             mainServerThread.setRequestDownloadIndex(requestDownloadIndex,connectedUser);
     }
+
+    /**
+     * it sets the sizes of different images used in different parts of the program.
+     * @param directory the directory of the image.
+     * @param scale the scale of the image.
+     * @return a preferred size image.
+     */
     public static ImageIcon setIconSize(String directory,int scale) {
         ImageIcon output = new ImageIcon(directory);
         Image newImage = output.getImage();

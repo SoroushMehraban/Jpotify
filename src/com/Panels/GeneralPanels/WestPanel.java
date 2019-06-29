@@ -151,32 +151,7 @@ public class WestPanel extends JPanel {
     public static void setPlayListsPanel(JPanel changedPlaylists) {
         playListsPanel = changedPlaylists;
     }
-    /*public JButton getLibraryButton()
-    {
-        return libraryButton;
-    }
-    public JButton getAddToLibraryButton()
-    {
-        return addToLibraryButton;
-    }
-    public JButton getSongsButton()
-    {
-        return songsButton;
-    }
-    public JButton getAlbumsButton()
-    {
-        return albumsButton;
-    }
-    public JButton getPlayListsButton()
-    {
-        return playListsButton;
 
-    }
-    public JButton getAddToPlaylistsButton()
-    {
-        return addToPlaylistsButton;
-
-    }*/
 
 
 }

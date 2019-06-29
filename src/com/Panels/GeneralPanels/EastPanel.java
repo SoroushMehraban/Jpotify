@@ -7,6 +7,12 @@ import com.Panels.WestPanelSections.WestPanelListeners.SongsPanelListener;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * this class handles the operations which are related to the east panel of the program.
+ * @author Morteza Damghani & Soroush Mehraban
+ * @version 1.0
+ */
+
 public class EastPanel extends JPanel {
     private static JPanel friendActivityPanel;
     private static JLabel friendActivityLabel;

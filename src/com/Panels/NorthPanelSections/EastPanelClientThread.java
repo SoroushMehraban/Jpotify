@@ -1,19 +1,11 @@
 package com.Panels.NorthPanelSections;
-
-import com.GUIFrame.GUIFrame;
-import com.Panels.CenterPanelSections.SharedSongPanel;
-import com.Panels.GeneralPanels.WestPanel;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-
+/**
+ * This class handles the operations which are related to the client thread.
+ * @author Soroush Mehraban & Morteza Damghani
+ * @version 1.0
+ */
 public class EastPanelClientThread extends Thread {
     private static ArrayList<UserThread> userThreads = new ArrayList<>();
 
