@@ -178,7 +178,7 @@ public class UserThread extends Thread {
         String secondInput;
         BufferedImage defaultImage = null;
         try {
-            defaultImage = ImageIO.read(new File("RadioSongs/defaultImage.png"));
+            defaultImage = ImageIO.read(new File("SharedSongs/defaultImage.png"));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error reading shared default image", "An Error Occurred", JOptionPane.ERROR_MESSAGE);
         }

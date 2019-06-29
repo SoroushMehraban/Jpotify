@@ -13,12 +13,14 @@ import com.Panels.NorthPanelSections.EastPanelClientThread;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -57,6 +59,8 @@ public class GUIFrame extends JFrame implements Serializable {
         if (result == JOptionPane.OK_OPTION) {//if user pressed enter
             guiFrame = this;
             username = usernameField.getText();//setting program username.
+            Image frameIcon = ImageIO.read(new File("Icons/frameIcon.png"));
+            this.setIconImage(frameIcon);
             this.setLayout(new BorderLayout()); //frame layout
             this.setSize(1050, 512); //frame length : 940 * 512
             this.setLocationRelativeTo(null); //setting frame at the center of screen

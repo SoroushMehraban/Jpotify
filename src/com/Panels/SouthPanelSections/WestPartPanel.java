@@ -23,8 +23,6 @@ public class WestPartPanel extends JPanel {
     private JLabel artistName;
     private String artistFullName;
     private String songFullName;
-    private BufferedImage plusIcon;
-    private JLabel plusLabel;
     private boolean isArtistEntered;
     private boolean isSongEntered;
 
@@ -56,59 +54,16 @@ public class WestPartPanel extends JPanel {
         artistName.setMinimumSize(new Dimension(72, 16));
         artistName.setPreferredSize(new Dimension(72, 16));
         createArtistNameAction();
-        //creating plus label with icon:
-        plusIcon = ImageIO.read(new File("Icons/Plus-no-select.png"));
-        plusLabel = new JLabel(new ImageIcon(plusIcon));
-        createplusLabelAction();
         //putting components in panel:
         constraints.fill = GridBagConstraints.BOTH;
         constraints.insets = new Insets(5, 5, 0, 0);
         constraints.gridx = 0;
         constraints.gridy = 0;
         this.add(songName, constraints);
-        constraints.gridx = 1;
-        constraints.gridy = 0;
-        this.add(plusLabel, constraints);
         constraints.insets = new Insets(0, 5, 0, 0);
         constraints.gridx = 0;
         constraints.gridy = 1;
         this.add(artistName, constraints);
-    }
-
-    /**
-     * This method demonstrate what happens if mouse pressed,entered or exited from plus Icon beside Song name.
-     * when mouse pressed: ...
-     * when mouse entered: it made that icon look brighter.
-     * when mouse exited: it changes to previous form.
-     */
-    private void createplusLabelAction() {
-        plusLabel.addMouseListener(new MouseAdapter(
-        ) {
-                /*@Override
-                public void mousePressed(MouseEvent e) {
-                    changePlayLabel(pauseLabel);
-                }*/
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                try {
-                    plusIcon = ImageIO.read(new File("Icons/Plus.png"));
-                    plusLabel.setIcon(new ImageIcon(plusIcon));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                try {
-                    plusIcon = ImageIO.read(new File("Icons/Plus-no-select.png"));
-                    plusLabel.setIcon(new ImageIcon(plusIcon));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
     }
 
     /**
@@ -121,7 +76,7 @@ public class WestPartPanel extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 isArtistEntered = true;//this variable indicated when should thread in below terminate.
-                if (artistFullName.length() > 12) {//if it's size is more than 15 character and doesn't fit
+                if (artistFullName.length() > 12) {//if it's size is more than 12 character and doesn't fit
                     Thread artistNameThread = new Thread(new Runnable() {//creating thread to move the text
                         @Override
                         public void run() {
