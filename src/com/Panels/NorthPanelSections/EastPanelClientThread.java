@@ -51,7 +51,6 @@ public class EastPanelClientThread extends Thread {
         if (result == JOptionPane.OK_OPTION) {
             UserThread userThread = new UserThread(hostNameField.getText());
             boolean canAdd = true;
-            System.err.println("current threads:" + userThreads.size());
             for (UserThread existingThread : userThreads) {
                 if (existingThread.getIPv4().equals(userThread.getIPv4())) {
                     canAdd = false;

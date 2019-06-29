@@ -68,7 +68,6 @@ public class PlayListPanel extends MusicPanel {
                     PlayListPanel source = (PlayListPanel) e.getSource();
                     source.setBackground(new Color(23, 23, 23));
                 } else if (SwingUtilities.isRightMouseButton(e)) {//if user press right click, he wants to remove playlist
-                    System.out.println("Right clicked");
                     if (!title.equals("Favorite Songs") && !title.equals("Shared Songs")) {//if chosen playlist created by user
                         int result = JOptionPane.showConfirmDialog(null, "Do you want to remove this playlist?",
                                 "Removing playlist..", JOptionPane.OK_CANCEL_OPTION);
