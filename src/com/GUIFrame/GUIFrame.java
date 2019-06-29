@@ -59,10 +59,10 @@ public class GUIFrame extends JFrame implements Serializable {
             guiFrame=this;
             username=usernameField.getText();//setting program username.
             this.setLayout(new BorderLayout()); //frame layout
-            this.setSize(940,512); //frame length : 940 * 512
+            this.setSize(1050,512); //frame length : 940 * 512
             this.setLocationRelativeTo(null); //setting frame at the center of screen
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing the program when user close the window.
-            this.setMinimumSize(new Dimension(940,512));
+            this.setMinimumSize(new Dimension(1050,512));
 
             centerPanel = new CenterPanel();
             this.add(centerPanel,BorderLayout.CENTER);
@@ -99,7 +99,7 @@ public class GUIFrame extends JFrame implements Serializable {
             //Thread clientThread=new Thread(mainClientThread);
             //clientThread.start();
 
-            RadioClient radioClient = new RadioClient();
+            //RadioClient radioClient = new RadioClient();
 
         }
 
@@ -329,11 +329,12 @@ public class GUIFrame extends JFrame implements Serializable {
         JPanel westContainer = new JPanel();
         westContainer.setLayout(new BoxLayout(westContainer,BoxLayout.PAGE_AXIS));
         JScrollPane leftJScrollPane=new JScrollPane(westPanel);
-        leftJScrollPane.setPreferredSize(new Dimension(150,600));
+        leftJScrollPane.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+        leftJScrollPane.setPreferredSize(new Dimension(150,512));
         customizeJScrollPane(leftJScrollPane);
         westContainer.add(leftJScrollPane);
         westContainer.add(artworkPanel);
-        westContainer.setPreferredSize(new Dimension(150,600));
+        westContainer.setPreferredSize(new Dimension(150,100));
         return westContainer;
     }
     public static EastPanelServerThread getMainThread()

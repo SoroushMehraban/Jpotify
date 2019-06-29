@@ -17,8 +17,7 @@ public class EastPanel extends JPanel {
         this.setLayout(new BorderLayout());
 
         this.setBackground(new Color(23, 23, 23));
-        this.setPreferredSize(new Dimension(150, 600));
-        this.add(Box.createVerticalStrut(20));
+        //this.setSize(new Dimension(150, 300));
         friendActivityPanel = new JPanel();
         friendActivityPanel.setBackground(new Color(23, 23, 23));
         friendActivityPanel.setLayout(new BoxLayout(friendActivityPanel, BoxLayout.LINE_AXIS));
