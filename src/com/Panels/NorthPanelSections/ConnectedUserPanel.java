@@ -5,6 +5,19 @@ import com.GUIFrame.GUIFrame;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ *  This class is a panel of each user which showed in east panel.
+ *  it has 3 parts:
+ *  at first part it shows information about user connected to our program.
+ * it shows the username of user and indicate that user is online or offline with green or red color surrounded into circle
+ *  at second part it shows song of user which is played in shared song of that user,
+ * and at right side of it, if user playing it now it shows an speaker icon otherwise it shows time of playing.
+ *  at third part it shows artist of playing song.
+ *
+ * @author Morteza Damghani & Soroush Mehraban
+ * @version 1.0
+ *
+ */
 public class ConnectedUserPanel extends JPanel {
     private String artistFullName;
     private String songFullTitle;
@@ -13,6 +26,12 @@ public class ConnectedUserPanel extends JPanel {
     private JLabel state;
     private JLabel playing;
 
+    /**
+     * class constructor, creates features which mentioned in definition of class.
+     * @param username user name of connected user
+     * @param songTitle title of song playing in user's shared song playlist
+     * @param artist artist of playing song
+     */
     ConnectedUserPanel(String username, String songTitle, String artist) {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setBackground(new Color(23, 23, 23));
@@ -68,24 +87,17 @@ public class ConnectedUserPanel extends JPanel {
         this.add(Box.createVerticalStrut(3));
         this.add(artistInformationPanel);
     }
-    public void setOnline(){
-        state.setIcon(GUIFrame.setIconSize("Icons/green.PNG", 10));
-    }
+
+    /**
+     * This method simply change state icon to offline(red circle)
+     */
     void setOffline(){
         state.setIcon(GUIFrame.setIconSize("Icons/red.PNG", 10));
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getArtistFullName() {
-        return artistFullName;
-    }
-
-    public String getSongFullTitle() {
-        return songFullTitle;
-    }
+    /**
+     * when this method is called, it removes speaker icons and indicate a time which shows this song played how long ago
+     */
     void setStopped(){
         playing.setIcon(null);//removing speaker icon
         playing.setForeground(new Color(179,179,179));
@@ -99,24 +111,44 @@ public class ConnectedUserPanel extends JPanel {
 
                     if(diff < 60000){//if it's less than a minute
                         playing.setText(diff/1000 + "S");
+                        try {
+                            Thread.sleep(1000);//updating every second
+                        } catch (InterruptedException e) {
+                            System.err.println("connected thread interrupted");
+                        }
                     }
-                    else if(diff < 60000 * 60)//if it's less than an hour
-                        playing.setText(diff/(1000 * 60) + "M");
-                    else if(diff < 6000 * 60 * 24)//if it's less than a day
-                        playing.setText(diff/1000 * 60 * 60 + "H");
-                    else
+                    else if(diff < 60000 * 60) {//if it's less than an hour
+                        playing.setText(diff / (1000 * 60) + "M");
+                        try {
+                            Thread.sleep(60000);//updating every minute
+                        } catch (InterruptedException e) {
+                            System.err.println("connected thread interrupted");
+                        }
+                    }
+                    else if(diff < 6000 * 60 * 24) {//if it's less than a day
+                        playing.setText(diff / 1000 * 60 * 60 + "H");
+                        try {
+                            Thread.sleep(60000 * 60);//updating every hour
+                        } catch (InterruptedException e) {
+                            System.err.println("connected thread interrupted");
+                        }
+                    }
+                    else {
                         playing.setText("> day");
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        System.err.println("connected thread interrupted");
+                        break;//never updates
                     }
+
                 }
             }
         });
         updateTime.start();
     }
 
+    /**
+     * this method create shortened text to fix out of border bugs
+     * @param text text we want to be shortened
+     * @return shortened text
+     */
     private String createShortenedText(String text){
         if(text.length() <= 12)
             return text;
