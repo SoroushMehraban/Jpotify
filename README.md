@@ -1,5 +1,4 @@
-# FinalProjectAP
-Final Project of AP, which is designing a JPotify
+# Jpotify
 
 In this project, we built a application like spotify, however for nework part you can only make a P2P connection and see what your friend is playing right now or have played last time.
 ![Screenshot of Program](http://uupload.ir/files/ns83_screenshot.jpg)
