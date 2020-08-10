@@ -1,6 +1,6 @@
 # Jpotify
 
-In this project, we built a application like spotify, however for nework part you can only make a P2P connection and see what your friend is playing right now or have played last time.
+In this project, we built a application like spotify, however for network part you can only make a P2P connection and see what your friend is playing right now or have played last time.
 ![Screenshot of Program](http://uupload.ir/files/ns83_screenshot.jpg)
 Application features:
 - Playing music after you've chosen the directory.
